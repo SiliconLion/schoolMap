@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>HHS Map App</title>
+    <!-- <link href="index.css" rel="stylesheet" type="text/css" /> -->
+  </head>
+  <body>
+    <canvas id="myCanvas" width="800" height="800"  ></canvas>
+    <img id="bluePrint" width="220" height="277" src="testMap.png" >
+    <script>
+      window.onload = function() {
+          var c = document.getElementById("myCanvas");
+          var ctx = c.getContext("2d");
+          var img = document.getElementById("bluePrint");
+          ctx.drawImage(img, 10, 10);
+      }
+    </script>
+
+    <script src="mapMain.js"></script>
+
+    <script>
+    //creates a node where clicked, and displays it
+    document.getElementById("myCanvas").onclick = function() {
+      /* x and y coords adjusted for the canvas. (clientX & clientY are offset from
+      the cordinate system of the canvas. we use 'getBoundingClientRect' to
+      adjust the client coord system, to the canvas coord system*/
+      var xCoord = event.clientX - myCanvas.getBoundingClientRect().left;
+      var yCoord = event.clientY - myCanvas.getBoundingClientRect().top;
+      console.log(xCoord, yCoord);
+      clickHandler(xCoord, yCoord);
+      //this is a bad way to do this, i just want to see if other stuff works
+      displayAllNodes();
+    }
+    </script>
+
+    <script src="Node.js"></script>
+
+  </body>
+</html>
