@@ -9,13 +9,27 @@ var arrayOfNodes = [];
 //x and y are the mouse coords adjusted for the canvas
 // called every time there is a mouse click. decides what to do with that click
 function clickHandler(x,y){
+  //a bool denoting weather shift is held or not
+  var isShiftHeld = shiftHeld();
+  //if over a node, refrences that node. else will have 'false' value
   var nodeBeneathMouse = overNode(x,y);
 
-  /*checks to see if there is node beneath the mouse. if there is, toogle the color
+  /*checks to see if there is node beneath the mouse. if there is and niether shift nor x are held, toogle the color
   otherwise, place a node.*/
   //this is venurable. should check to see if nodeBeneathMouse is type node
   if (nodeBeneathMouse != false){
-    nodeBeneathMouse.toggleColor();
+    if (isShiftHeld != true){
+      if (isXHeld == true) {
+        //cleanly deletes node from arrayOfNodes, and connections to it
+        deleteNode(nodeBeneathMouse);
+      } else {
+        deleteNode(nodeBeneathMouse);
+        redraw();
+        //nodeBeneathMouse.toggleColor();
+      }
+    } else if(isShiftHeld == true) {
+      //start drawing a connection.
+    }
   } else {
     makeNodeFromCoords(x,y);
   }
