@@ -14,6 +14,7 @@ var keysDown = {
 function eventHandleKeyDown(){
   const keyName = event.key;
   console.log(event, keyName);
+
   if (keyName == "Shift"){
     keysDown.shift = true;
   } else if (keyName == "x"){
@@ -21,6 +22,19 @@ function eventHandleKeyDown(){
   }
   console.log(keysDown);
 }
+
+function eventHandleKeyUp(){
+  const keyName = event.key;
+  console.log(event, keyName);
+
+  if (keyName == "Shift"){
+    keysDown.shift = false;
+  } else if (keyName == "x"){
+    keysDown.x = false;
+  }
+  console.log(keysDown);
+}
+
 
 
 
