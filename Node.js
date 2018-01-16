@@ -27,4 +27,11 @@ class Node {
     }
   }
 
+  makeRoom(){
+    this.location = "room";
+  }
+
+  makeHallway(){
+    this.location = "hallway";
+  }
 }
