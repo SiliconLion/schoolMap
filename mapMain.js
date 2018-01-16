@@ -6,11 +6,30 @@ var ctx = canvas.getContext("2d");
 
 var arrayOfNodes = [];
 
+var keysDown = {
+  shift : false,
+  x : false
+}
+
+function eventHandleKeyDown(){
+  const keyName = event.key;
+  console.log(event, keyName);
+  if (keyName == "Shift"){
+    keysDown.shift = true;
+  } else if (keyName == "x"){
+    keysDown.x = true;
+  }
+  console.log(keysDown);
+}
+
+
+
+
+
 //x and y are the mouse coords adjusted for the canvas
 // called every time there is a mouse click. decides what to do with that click
 function clickHandler(x,y){
-  //a bool denoting weather shift is held or not
-  var isShiftHeld = shiftHeld();
+
   //if over a node, refrences that node. else will have 'false' value
   var nodeBeneathMouse = overNode(x,y);
 
@@ -18,17 +37,17 @@ function clickHandler(x,y){
   otherwise, place a node.*/
   //this is venurable. should check to see if nodeBeneathMouse is type node
   if (nodeBeneathMouse != false){
-    if (isShiftHeld != true){
-      if (isXHeld == true) {
+    if (keysDown.shift != true){
+      if (keysDown.x == true) {
         //cleanly deletes node from arrayOfNodes, and connections to it
         deleteNode(nodeBeneathMouse);
-      } else {
-        deleteNode(nodeBeneathMouse);
         redraw();
-        //nodeBeneathMouse.toggleColor();
+      } else {
+        nodeBeneathMouse.toggleColor();
       }
-    } else if(isShiftHeld == true) {
+    } else if(keysDown.shift == true) {
       //start drawing a connection.
+      console.log("you're on a node, and holding shift")
     }
   } else {
     makeNodeFromCoords(x,y);
@@ -73,14 +92,6 @@ function overNode(xPos,yPos){
    return returnValue;
 }
 
-
-function shiftHeld() {
-  //if shift is held, return true, else return false.
-}
-
-function isXHeld(){
-  //if 'x' is held, return true, else return false.
-}
 
 function deleteNode(node){
   var indexOfNode = arrayOfNodes.indexOf(node);
