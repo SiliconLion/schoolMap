@@ -74,8 +74,32 @@ function overNode(xPos,yPos){
 }
 
 
+function shiftHeld() {
+  //if shift is held, return true, else return false.
+}
 
+function isXHeld(){
+  //if 'x' is held, return true, else return false.
+}
 
+function deleteNode(node){
+  var indexOfNode = arrayOfNodes.indexOf(node);
+
+//removes the node passed into delete node. checks that it is a valid index first just cuz its good practice.
+  if (indexOfNode > -1) {
+    var removed = arrayOfNodes.splice(indexOfNode, 1);
+    console.log(removed);
+  }
+}
+
+function redraw(){
+  //redraws the map image so nodes that no longer exist disapear
+  var img = document.getElementById("bluePrint");
+  ctx.drawImage(img, 10, 10);
+
+  // redraws all the nodes over top that still do exist
+  displayAllNodes();
+}
 
 
 //called from html doc
