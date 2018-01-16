@@ -6,16 +6,63 @@ var ctx = canvas.getContext("2d");
 
 var arrayOfNodes = [];
 
+var keysDown = {
+  shift : false,
+  x : false
+}
+
+function eventHandleKeyDown(){
+  const keyName = event.key;
+  console.log(event, keyName);
+
+  if (keyName == "Shift"){
+    keysDown.shift = true;
+  } else if (keyName == "x"){
+    keysDown.x = true;
+  }
+  console.log(keysDown);
+}
+
+function eventHandleKeyUp(){
+  const keyName = event.key;
+  console.log(event, keyName);
+
+  if (keyName == "Shift"){
+    keysDown.shift = false;
+  } else if (keyName == "x"){
+    keysDown.x = false;
+  }
+  console.log(keysDown);
+}
+
+
+
+
+
+
 //x and y are the mouse coords adjusted for the canvas
 // called every time there is a mouse click. decides what to do with that click
 function clickHandler(x,y){
+
+  //if over a node, refrences that node. else will have 'false' value
   var nodeBeneathMouse = overNode(x,y);
 
-  /*checks to see if there is node beneath the mouse. if there is, toogle the color
+  /*checks to see if there is node beneath the mouse. if there is and niether shift nor x are held, toogle the color
   otherwise, place a node.*/
   //this is venurable. should check to see if nodeBeneathMouse is type node
   if (nodeBeneathMouse != false){
-    nodeBeneathMouse.toggleColor();
+    if (keysDown.shift != true){
+      if (keysDown.x == true) {
+        //cleanly deletes node from arrayOfNodes, and connections to it
+        deleteNode(nodeBeneathMouse);
+        redraw();
+      } else {
+        nodeBeneathMouse.toggleColor();
+      }
+    } else if(keysDown.shift == true) {
+      //start drawing a connection.
+      console.log("you're on a node, and holding shift")
+    }
   } else {
     makeNodeFromCoords(x,y);
   }
@@ -60,8 +107,24 @@ function overNode(xPos,yPos){
 }
 
 
+function deleteNode(node){
+  var indexOfNode = arrayOfNodes.indexOf(node);
 
+//removes the node passed into delete node. checks that it is a valid index first just cuz its good practice.
+  if (indexOfNode > -1) {
+    var removed = arrayOfNodes.splice(indexOfNode, 1);
+    console.log(removed);
+  }
+}
 
+function redraw(){
+  //redraws the map image so nodes that no longer exist disapear
+  var img = document.getElementById("bluePrint");
+  ctx.drawImage(img, 10, 10);
+
+  // redraws all the nodes over top that still do exist
+  displayAllNodes();
+}
 
 
 //called from html doc
