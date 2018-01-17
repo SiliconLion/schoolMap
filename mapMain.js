@@ -18,6 +18,7 @@ var keysDown = {
 // a keyDown event is passed in
 // handles the key down events
 function eventHandleKeyDown(){
+  console.log("key is down");
   /*stores the key that was pressed down as a string ("Shift" instead of 16. also
   doesnt care if it is left shift or right shift etc.) */
   const keyName = event.key;
@@ -38,25 +39,25 @@ function eventHandleKeyDown(){
 //called from html document
 // a keyup event is passed in
 // handles the key up events
-function eventHandleKeyUp(){
-  /*stores the key that was released as a string ("Shift" instead of 16. also
-  doesnt care if it is left shift or right shift etc.) */
-  const keyName = event.key;
-  //this should be reomved soon. currently used just as a debugging helper.
-  console.log(event, keyName);
-
-  /*checks to see if 'keyname' == any of the keys in the object keysDown.
-  if it does, sets that key to false */
-  if (keyName == "Shift"){
-    keysDown.shift = false;
-    connectNodes(connectBuffer);
-    redraw();
-    connectBuffer.splice(0,connectBuffer.length);
-  } else if (keyName == "x"){
-    keysDown.x = false;
-  }
-  console.log(keysDown);
-}
+// function eventHandleKeyUp(){
+//   /*stores the key that was released as a string ("Shift" instead of 16. also
+//   doesnt care if it is left shift or right shift etc.) */
+//   const keyName = event.key;
+//   //this should be reomved soon. currently used just as a debugging helper.
+//   console.log(event, keyName);
+//
+//   /*checks to see if 'keyname' == any of the keys in the object keysDown.
+//   if it does, sets that key to false */
+//   if (keyName == "Shift"){
+//     keysDown.shift = false;
+//     connectNodes(connectBuffer);
+//     redraw();
+//     connectBuffer.splice(0,connectBuffer.length);
+//   } else if (keyName == "x"){
+//     keysDown.x = false;
+//   }
+//   console.log(keysDown);
+// }
 
 
 
@@ -87,6 +88,7 @@ function clickHandler(x,y){
       if (connectBuffer.length < 2){
         connectBuffer.push(nodeBeneathMouse);
       }
+      console.log("in shift mouse mode");
     }
   } else {
     makeNodeFromCoords(x,y);
@@ -148,24 +150,28 @@ function redraw(){
   ctx.drawImage(img, 10, 10);
 
   // redraws all the nodes over top that still do exist
-  displayAllNodes();
+  displayObjects(arrayOfNodes);
+  displayObjects(connections);
 }
 
 
 //called from html doc
 //displays all nodes
-function displayAllNodes(){
-  arrayOfNodes.forEach(function(node){
-    node.display();
+function displayObjects(objArray){
+  objArray.forEach(function(object){
+    object.display();
   });
 }
+
 
 
 
 function connectNodes(nodes){
   nodes[0].neighbors.push(nodes[1]);
   nodes[1].neighbors.push(nodes[0]);
-
+  connectBuffer.push(
+    new Connection(nodes[0].x,nodes[0].y,nodes[1].x,nodes[1].y )
+  );
 
 }
 
