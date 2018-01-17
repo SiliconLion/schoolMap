@@ -5,6 +5,8 @@ var ctx = canvas.getContext("2d");
 
 //holds every node
 var arrayOfNodes = [];
+var connectBuffer = [];
+var connections = [];
 
 // stores information about whether or not a key is currently held down
 var keysDown = {
@@ -47,6 +49,9 @@ function eventHandleKeyUp(){
   if it does, sets that key to false */
   if (keyName == "Shift"){
     keysDown.shift = false;
+    connectNodes(connectBuffer);
+    redraw();
+    connectBuffer.splice(0,connectBuffer.length);
   } else if (keyName == "x"){
     keysDown.x = false;
   }
@@ -79,7 +84,9 @@ function clickHandler(x,y){
       }
     } else if(keysDown.shift == true) {
       //start drawing a connection.
-      console.log("you're on a node, and holding shift")
+      if (connectBuffer.length < 2){
+        connectBuffer.push(nodeBeneathMouse);
+      }
     }
   } else {
     makeNodeFromCoords(x,y);
@@ -151,6 +158,15 @@ function displayAllNodes(){
   arrayOfNodes.forEach(function(node){
     node.display();
   });
+}
+
+
+
+function connectNodes(nodes){
+  nodes[0].neighbors.push(nodes[1]);
+  nodes[1].neighbors.push(nodes[0]);
+
+
 }
 
 
