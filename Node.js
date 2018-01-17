@@ -10,6 +10,7 @@ class Node {
     this.neighbors = [];
     //the color of the node
     this.color = "blue";
+    this.location = "hallway";
   }
   // displays the node as a circle at position (this.x,this.y), with the color "this.color"
   display(){

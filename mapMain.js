@@ -3,30 +3,48 @@
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
-
+//holds every node
 var arrayOfNodes = [];
 
+// stores information about whether or not a key is currently held down
 var keysDown = {
   shift : false,
   x : false
 }
 
+//called from html document
+// a keyDown event is passed in
+// handles the key down events
 function eventHandleKeyDown(){
+  /*stores the key that was pressed down as a string ("Shift" instead of 16. also
+  doesnt care if it is left shift or right shift etc.) */
   const keyName = event.key;
+  //this should be reomved soon. currently used just as a debugging helper.
   console.log(event, keyName);
 
+  /*checks to see if 'keyname' == any of the keys in the object keysDown.
+  if it does, sets that key to true */
   if (keyName == "Shift"){
     keysDown.shift = true;
   } else if (keyName == "x"){
     keysDown.x = true;
   }
+  //this should be reomved soon. currently used just as a debugging helper.
   console.log(keysDown);
 }
 
+//called from html document
+// a keyup event is passed in
+// handles the key up events
 function eventHandleKeyUp(){
+  /*stores the key that was released as a string ("Shift" instead of 16. also
+  doesnt care if it is left shift or right shift etc.) */
   const keyName = event.key;
+  //this should be reomved soon. currently used just as a debugging helper.
   console.log(event, keyName);
 
+  /*checks to see if 'keyname' == any of the keys in the object keysDown.
+  if it does, sets that key to false */
   if (keyName == "Shift"){
     keysDown.shift = false;
   } else if (keyName == "x"){
