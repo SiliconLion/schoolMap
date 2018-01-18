@@ -44,8 +44,7 @@ class Node {
   toggleLocation(){
     if (this.location == "hallway"){
       makeRoom();
-    }
-    else if (this.location == "room") {
+    } else if (this.location == "room") {
       makeHallway();
     }
   }
