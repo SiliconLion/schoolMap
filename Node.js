@@ -9,7 +9,7 @@ class Node {
     //this is who it is connected to.
     this.neighbors = [];
     //the color of the node
-    this.color = "blue";
+    this.color = "red";
     this.location = "hallway";
   }
   // displays the node as a circle at position (this.x,this.y), with the color "this.color"
@@ -19,7 +19,8 @@ class Node {
     ctx.fillStyle = this.color;
     ctx.fill();
   }
-
+//no args
+//changes the color of the node.
   toggleColor(){
     if(this.color == "blue"){
       this.color = "red";
@@ -28,10 +29,14 @@ class Node {
     }
   }
 
+//no args
+//changes the location type to room
   makeRoom(){
     this.location = "room";
   }
 
+//no args
+//changes the location type to hallway
   makeHallway(){
     this.location = "hallway";
   }

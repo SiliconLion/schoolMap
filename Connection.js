@@ -6,7 +6,7 @@ class Connection {
     this.y2 = y2;
     this.color = "red";
   }
-
+//displays the connection as a line with its starting and ending points
   display() {
     ctx.fillStyle = this.color;
     ctx.beginPath();

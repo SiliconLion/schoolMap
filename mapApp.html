@@ -18,10 +18,12 @@
       }
     </script>
 
+    <script src="Connection.js"></script>
+
     <script>
-    debugger;
+
     //listens for keydown events. when called, passes the keydown event to the keydown handler
-      document.addEventListener('keydown', event => { debugger; eventHandleKeyDown(event) } );
+      document.addEventListener('keydown', event => { eventHandleKeyDown(event) } );
       //listens for keyup events. when called, passes the keyup event to the keyup handler
       document.addEventListener('keyup', event => { eventHandleKeyUp(event) } );
     </script>
@@ -30,7 +32,7 @@
 
     <script>
     //creates a node where clicked, and displays it
-    document.getElementById("myCanvas").onclick => {
+    document.getElementById("myCanvas").onclick = function() {
       /* x and y coords adjusted for the canvas. (clientX & clientY are offset from
       the cordinate system of the canvas. we use 'getBoundingClientRect' to
       adjust the client coord system, to the canvas coord system*/
