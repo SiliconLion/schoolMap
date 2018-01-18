@@ -76,6 +76,7 @@ function clickHandler(x,y){
         redraw();
       } else {
         nodeBeneathMouse.toggleColor();
+        nodeBeneathMouse.toggleLocation();
       }
     } else if(keysDown.shift == true) {
       //start drawing a connection.
