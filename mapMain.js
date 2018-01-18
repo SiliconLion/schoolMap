@@ -137,8 +137,14 @@ function overNode(xPos,yPos){
 
 
 function deleteNode(node){
-  var indexOfNode = arrayOfNodes.indexOf(node);
 
+  node.neighbors.forEach(function(neighbor){
+    var indexInNeighbors = neighbor.neighbors.indexOf(node);
+    neighbor.neighbors.splice(indexInNeighbors, 1);
+    console.log("removed from a neighbor");
+  });
+
+  var indexOfNode = arrayOfNodes.indexOf(node);
 //removes the node passed into delete node. checks that it is a valid index first just cuz its good practice.
   if (indexOfNode > -1) {
     var removed = arrayOfNodes.splice(indexOfNode, 1);
@@ -169,9 +175,6 @@ function displayObjects(objArray){
 
 
 function connectNodes(nodes){
-  debugger;
-
-
 
   nodes[0].neighbors.push(nodes[1]);
   nodes[1].neighbors.push(nodes[0]);
