@@ -5,6 +5,9 @@ var ctx = canvas.getContext("2d");
 
 //holds every node
 var arrayOfNodes = [];
+var connectBuffer = [];
+var connections = [];
+
 
 // stores information about whether or not a key is currently held down
 var keysDown = {
@@ -16,6 +19,7 @@ var keysDown = {
 // a keyDown event is passed in
 // handles the key down events
 function eventHandleKeyDown(){
+  console.log("key is down");
   /*stores the key that was pressed down as a string ("Shift" instead of 16. also
   doesnt care if it is left shift or right shift etc.) */
   const keyName = event.key;
@@ -46,7 +50,11 @@ function eventHandleKeyUp(){
   /*checks to see if 'keyname' == any of the keys in the object keysDown.
   if it does, sets that key to false */
   if (keyName == "Shift"){
+
     keysDown.shift = false;
+    connectNodes(connectBuffer);
+    redraw();
+    connectBuffer.splice(0,connectBuffer.length);
   } else if (keyName == "x"){
     keysDown.x = false;
   }
@@ -79,7 +87,10 @@ function clickHandler(x,y){
       }
     } else if(keysDown.shift == true) {
       //start drawing a connection.
-      console.log("you're on a node, and holding shift")
+      if (connectBuffer.length < 2){
+        connectBuffer.push(nodeBeneathMouse);
+      }
+      console.log("in shift mouse mode");
     }
   } else {
     makeNodeFromCoords(x,y);
@@ -141,16 +152,35 @@ function redraw(){
   ctx.drawImage(img, 10, 10);
 
   // redraws all the nodes over top that still do exist
-  displayAllNodes();
+  displayObjects(arrayOfNodes);
+  displayObjects(connections);
 }
 
 
 //called from html doc
 //displays all nodes
-function displayAllNodes(){
-  arrayOfNodes.forEach(function(node){
-    node.display();
+function displayObjects(objArray){
+  objArray.forEach(function(object){
+    object.display();
   });
+}
+
+
+
+
+function connectNodes(nodes){
+  debugger;
+
+
+
+  nodes[0].neighbors.push(nodes[1]);
+  nodes[1].neighbors.push(nodes[0]);
+  var rawPasta = new Connection(nodes[0].x,nodes[0].y,nodes[1].x,nodes[1].y);
+  // connectBuffer.push(
+  //   new Connection(nodes[0].x,nodes[0].y,nodes[1].x,nodes[1].y)
+  // );
+  connections.push(rawPasta);
+
 }
 
 
