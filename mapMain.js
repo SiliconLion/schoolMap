@@ -169,9 +169,6 @@ function displayObjects(objArray){
 
 
 function connectNodes(nodes){
-  debugger;
-
-
 
   nodes[0].neighbors.push(nodes[1]);
   nodes[1].neighbors.push(nodes[0]);
