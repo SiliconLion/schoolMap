@@ -18,7 +18,10 @@
       }
     </script>
 
+    <script src="Connection.js"></script>
+
     <script>
+
     //listens for keydown events. when called, passes the keydown event to the keydown handler
       document.addEventListener('keydown', event => { eventHandleKeyDown(event) } );
       //listens for keyup events. when called, passes the keyup event to the keyup handler
@@ -38,7 +41,7 @@
       console.log(xCoord, yCoord);
       clickHandler(xCoord, yCoord);
       //this is a bad way to do this, i just want to see if other stuff works
-      displayAllNodes();
+      redraw();
     }
     </script>
 
