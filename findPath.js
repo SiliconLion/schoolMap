@@ -38,8 +38,10 @@ function findPath(start, end){
         if (neighbor in openSet){
           continue;
         } else {
-          nodes.push(neighbor);
-          openSet.push(neighbor);
+          
+
+          // nodes.push(neighbor);
+          // openSet.push(neighbor);
       }
       });
     }
@@ -57,21 +59,27 @@ function findPath(start, end){
 
   function huristic(node){ return distance(node, end) }
 
-// @params {node} node || {node} _prevNode
-  function mapNode(node, _prevNode){
+// @params {node} _node || {node} _prevNode
+//_preNode = the current node, and _node will be one of its neighbors
+  function mapNode(_node, _prevNode){
     var prevNode = _preNode;
-    const hValue = huristic(node);
+    const _hValue = huristic(node);
     //the gValue is going to be the previous node's gValue plus the distance to this new node
-    var gValue = prevNode.gValue + distance(node, prevNode);
+    var _gValue = prevNode.gValue + distance(node, prevNode);
 
-    var fValue = hValue + gValue;
-    //
-    // function changeG(node){
-    //
-    // }
+    var _fValue = _hValue + _gValue;
+
 
     function getOriginal(){
       return node;
+    }
+
+    return {
+      original : getOriginal(),
+      previous : prevNode,
+      hValue : _hValue,
+      gValue : gValue,
+      fValue : _fValue
     }
   }
 
@@ -81,6 +89,11 @@ function findPath(start, end){
       neighbor.gValue = tennativeG;
       neighbor.prevNode = currentNode;
     }
+  }
+
+
+  function coordinator(_node, _mapNode){
+    return {node : _node, mapNode : _mapNode}
   }
 
 }
