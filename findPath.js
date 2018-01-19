@@ -38,7 +38,8 @@ function findPath(start, end){
         if (neighbor in openSet){
           continue;
         } else {
-        openSet.push(neighbor);
+          nodes.push(neighbor);
+          openSet.push(neighbor);
       }
       });
     }
@@ -56,7 +57,31 @@ function findPath(start, end){
 
   function huristic(node){ return distance(node, end) }
 
+// @params {node} node || {node} _prevNode
+  function mapNode(node, _prevNode){
+    var prevNode = _preNode;
+    const hValue = huristic(node);
+    //the gValue is going to be the previous node's gValue plus the distance to this new node
+    var gValue = prevNode.gValue + distance(node, prevNode);
 
+    var fValue = hValue + gValue;
+    //
+    // function changeG(node){
+    //
+    // }
+
+    function getOriginal(){
+      return node;
+    }
+  }
+
+  function checkG(currentNode, neighbor){
+    var tenntativeG = currentNode.gValue + distance(currentNode, neighbor);
+    if (tennativeG < neighbor.gValue){
+      neighbor.gValue = tennativeG;
+      neighbor.prevNode = currentNode;
+    }
+  }
 
 }
 
