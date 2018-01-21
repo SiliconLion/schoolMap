@@ -6,7 +6,7 @@
 other nodes in it neighbors*/
 //finds a path from start node to end node using A* algorithym
 function findPath(start, end){
-  var nodes = [start];
+  var nodesUsed = [start];
   var masterArr = [];
 
 //array of nodes that have been evaluated. starts empty
@@ -21,7 +21,7 @@ function findPath(start, end){
   while (openSet.length > 0){
 
     var current = openSet[0];
-    if (current == goal){
+    if (current == end){
       //reconstruct the path and return that
     }
     //next two lines: removing the current from the open list
@@ -33,19 +33,24 @@ function findPath(start, end){
 //will only evaluate using the length before more nodes are added depper in
     var initLength = openSet.length;
     for(var i = 0; i < initLength - 1; i++){
-      openSet[i].neighbors.forEach(function(neighbor){
+      openSet[i].node.neighbors.forEach(function(neighbor){
         //if neighbor is in the open set, move to next iteration of loop
-        if (neighbor in openSet){
+        if (neighbor in nodesUsed){
+          checkG(current.mapNode, openSet[i].mapNode);
           continue;
         } else {
-          
-
-          // nodes.push(neighbor);
-          // openSet.push(neighbor);
+          //fix these variable names
+          var neighborMapNode = mapNode(neighbor, current);
+          var neighborCoordinator = coordinator(neighbor, _mapNode);
+          openSet.push(_coordinator);
+          nodesUsed.push(neighbor);
       }
       });
     }
 
+    openSet.sort(function(a, b){
+      a.mapNode.fValuea.mapNode.fValue - b.mapNode.fValue
+    });
 
   }
 
@@ -78,7 +83,7 @@ function findPath(start, end){
       original : getOriginal(),
       previous : prevNode,
       hValue : _hValue,
-      gValue : gValue,
+      gValue : _gValue,
       fValue : _fValue
     }
   }
