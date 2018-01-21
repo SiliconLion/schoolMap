@@ -21,8 +21,15 @@ function findPath(start, end){
   while (openSet.length > 0){
 
     var current = openSet[0];
-    if (current == end){
+    if (current.node == end){
       //reconstruct the path and return that
+      var path = [current.node];
+      var nextPathNode = current;
+      while (start != nextPathNode){
+        var thePrevious = nextPathNode.previous.getOriginal();
+        path.push(thePrevious);
+        nextPathNode = thePrevious;
+      }
     }
     //next two lines: removing the current from the open list
     var index = openSet.indexOf(current);
@@ -40,8 +47,8 @@ function findPath(start, end){
           continue;
         } else {
           //fix these variable names
-          var neighborMapNode = mapNode(neighbor, current);
-          var neighborCoordinator = coordinator(neighbor, _mapNode);
+          var neighborMapNode = mapNode(neighbor, current.node);
+          var neighborCoordinator = coordinator(neighbor, neighborMapNode);
           openSet.push(_coordinator);
           nodesUsed.push(neighbor);
       }
@@ -49,8 +56,10 @@ function findPath(start, end){
     }
 
     openSet.sort(function(a, b){
-      a.mapNode.fValuea.mapNode.fValue - b.mapNode.fValue
+      a.mapNode.fValue - b.mapNode.fValue
     });
+
+
 
   }
 
@@ -64,13 +73,13 @@ function findPath(start, end){
 
   function huristic(node){ return distance(node, end) }
 
-// @params {node} _node || {node} _prevNode
+// @params {node} _node || {mapNode} _prevNode
 //_preNode = the current node, and _node will be one of its neighbors
   function mapNode(_node, _prevNode){
     var prevNode = _preNode;
     const _hValue = huristic(node);
     //the gValue is going to be the previous node's gValue plus the distance to this new node
-    var _gValue = prevNode.gValue + distance(node, prevNode);
+    var _gValue = prevNode.gValue + distance(node, prevNode.node);
 
     var _fValue = _hValue + _gValue;
 
