@@ -57,6 +57,9 @@ function eventHandleKeyUp(){
     connectBuffer.splice(0,connectBuffer.length);
   } else if (keyName == "x"){
     keysDown.x = false;
+  } else if (keyName == "j"){
+    makeTestingMap();
+    redraw()
   }
   console.log(keysDown);
 }
@@ -188,6 +191,44 @@ function connectNodes(nodes){
 }
 
 
+function makeTestingMap(){
+  //debugger;
+  var suzie = new Librarian();
+  var numbOfNode = 30;
+  //never set incriment to zero
+  var incriment = 1;
+  var minConnections = 2;
+  var chunkArray = [];
+
+  var arrayOfNodes = [];
+  for (var i = 0; i < numbOfNode; i++){
+    //i am just specifing the incriment and minConnections
+    arrayOfNodes[i] = new Node(undefined,undefined,undefined,incriment, minConnections);
+  }
+
+  var arrayOfConnections = [];
+
+  arrayOfNodes.forEach(function(node){
+    suzie.connectNodeVanilla(arrayOfNodes);
+  });
+  console.log("finished connecting");
+
+
+  arrayOfNodes.forEach(function(node){
+
+    suzie.makeConnections(node, arrayOfConnections);
+  });
+
+  arrayOfConnections.forEach(function(connection){
+    connection.display();
+  });
+
+  arrayOfNodes.forEach(function(node){
+    node.display();
+  });
+
+
+}
 
 // the following dont work yet
 // function addSavedNodes(){
