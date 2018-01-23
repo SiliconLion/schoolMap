@@ -118,18 +118,19 @@ function  makeNodeFromCoords(x,y) {
 /*checks to see if the mouse is hovering over a node. If it is,
 it returns the node it is over, else it returns false*/
 function overNode(xPos,yPos){
+  debugger;
   var returnValue = false;
   for (var i = 0; i< arrayOfNodes.length; i++){
     var node = arrayOfNodes[i];
-
-    //if xPos is beween the left and right sides of the node
-    if ((node.x - (0.5 * node.r) <= xPos) && (node.x + (0.5 * node.r) >= xPos)){
-    //if yPos is beween the left and right sides of the node
-      if ((node.y - (0.5 * node.r) <= yPos) && (node.y + (0.5 * node.r) >= yPos)){
-        returnValue = node;
-        break;
+    var dist = Math.sqrt(
+      Math.pow(node.x-xPos,2)+
+      Math.pow(node.y-yPos,2)
+    );
+    if(node.r+5 >= dist)
+      {
+      returnValue = node;
+      break;
       }
-    }
   }
   //will either be false, or a node
    return returnValue;
