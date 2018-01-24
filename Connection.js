@@ -1,19 +1,31 @@
 class Connection {
-  constructor(x1,y1,x2,y2){
-    this.x1 = x1;
-    this.y1 = y1;
-    this.x2 = x2;
-    this.y2 = y2;
+  constructor(node1,node2){
+    this.node1 = node1;
+    this.node2 = node2;
     this.color = "red";
   }
 //displays the connection as a line with its starting and ending points
   display() {
     ctx.fillStyle = this.color;
     ctx.beginPath();
-    ctx.moveTo(this.x1,this.y1);
-    ctx.lineTo(this.x2,this.y2);
-    ctx.strokeStyle = "red";
+    ctx.moveTo(this.node1.x,this.node1.y);
+    ctx.lineTo(this.node2.x,this.node2.y);
+    ctx.strokeStyle = this.color;
     ctx.stroke();
   }
 
+  updateColor() {
+    if(this.node1.location == "room" and this.node2.location == "room"){
+      this.color = "black";
+    }else if(this.node1.location == "room" or this.node2.location == "room"){
+      this.color = "green";
+    }else{
+      this.color = "blue";
+    }
+
+    }
+
+
+
+  }
 }

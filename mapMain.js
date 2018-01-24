@@ -156,6 +156,9 @@ function deleteNode(node){
 function redraw(){
   //redraws the map image so nodes that no longer exist disapear
   var img = document.getElementById("bluePrint");
+  forEach(connection){
+    this.updateColor();
+  }
   ctx.drawImage(img, 10, 10);
 
   // redraws all the nodes over top that still do exist
@@ -179,11 +182,12 @@ function connectNodes(nodes){
 
   nodes[0].neighbors.push(nodes[1]);
   nodes[1].neighbors.push(nodes[0]);
-  var rawPasta = new Connection(nodes[0].x,nodes[0].y,nodes[1].x,nodes[1].y);
+  var nextConnection = new Connection(nodes[0],nodes[1]);
   // connectBuffer.push(
   //   new Connection(nodes[0].x,nodes[0].y,nodes[1].x,nodes[1].y)
   // );
-  connections.push(rawPasta);
+  connections.push(nextConnection);
+  nextConnection.updateColor();
 
 }
 
