@@ -1,6 +1,6 @@
 
 class Node {
-  constructor(x, y, r = 3){
+  constructor(x, y, r = 6){
     //radius
     this.r = r;
     //position

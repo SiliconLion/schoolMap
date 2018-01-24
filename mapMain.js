@@ -156,9 +156,9 @@ function deleteNode(node){
 function redraw(){
   //redraws the map image so nodes that no longer exist disapear
   var img = document.getElementById("bluePrint");
-  forEach(connection){
-    this.updateColor();
-  }
+  connections.forEach(function(connection){
+    connection.updateColor();
+  });
   ctx.drawImage(img, 10, 10);
 
   // redraws all the nodes over top that still do exist

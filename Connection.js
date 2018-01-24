@@ -15,17 +15,12 @@ class Connection {
   }
 
   updateColor() {
-    if(this.node1.location == "room" and this.node2.location == "room"){
+    if(this.node1.location == "room" && this.node2.location == "room"){
       this.color = "black";
-    }else if(this.node1.location == "room" or this.node2.location == "room"){
+    }else if(this.node1.location == "room" || this.node2.location == "room"){
       this.color = "green";
     }else{
       this.color = "blue";
     }
-
-    }
-
-
-
   }
 }
