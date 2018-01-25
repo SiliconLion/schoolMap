@@ -118,7 +118,6 @@ function  makeNodeFromCoords(x,y) {
 /*checks to see if the mouse is hovering over a node. If it is,
 it returns the node it is over, else it returns false*/
 function overNode(xPos,yPos){
-  debugger;
   var returnValue = false;
   for (var i = 0; i< arrayOfNodes.length; i++){
     var node = arrayOfNodes[i];
@@ -138,7 +137,6 @@ function overNode(xPos,yPos){
 
 
 function deleteNode(node){
-
   node.neighbors.forEach(function(neighbor){
     var indexInNeighbors = neighbor.neighbors.indexOf(node);
     neighbor.neighbors.splice(indexInNeighbors, 1);

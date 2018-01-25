@@ -24,8 +24,10 @@ class Node {
   toggleColor(){
     if(this.color == "blue"){
       this.color = "red";
+      this.makeHallway();
     } else if (this.color == "red") {
       this.color = "blue";
+      this.makeRoom();
     }
   }
 

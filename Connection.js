@@ -16,11 +16,11 @@ class Connection {
 
   updateColor() {
     if(this.node1.location == "room" && this.node2.location == "room"){
-      this.color = "black";
+      this.color = "purple";
     }else if(this.node1.location == "room" || this.node2.location == "room"){
-      this.color = "green";
+      this.color = "teal";
     }else{
-      this.color = "blue";
+      this.color = "orange";
     }
   }
 }
