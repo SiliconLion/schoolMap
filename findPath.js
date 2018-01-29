@@ -6,6 +6,8 @@
 other nodes in it neighbors*/
 //finds a path from start node to end node using A* algorithym
 function findPath(start, end){
+  debugger;
+  console.log("in right file");
   var nodesUsed = [start];
   var masterArr = [];
 
@@ -14,12 +16,13 @@ function findPath(start, end){
 //array of nodes that have been discovered. initially, only the start node is known
   var openSet = [start];
 
-  var lowest = //node with lowest fScore[]
+  var lowest = undefined;/*node with lowest fScore[]*/
 
 
 
-  while (openSet.length > 0){
 
+  while(openSet.length > 0){
+    debugger;
     var current = openSet[0];
     if (current.node == end){
       //reconstruct the path and return that
@@ -30,6 +33,8 @@ function findPath(start, end){
         path.push(thePrevious);
         nextPathNode = thePrevious;
       }
+      debugger;
+      console.log(path);
     }
     //next two lines: removing the current from the open list
     var index = openSet.indexOf(current);
@@ -62,6 +67,7 @@ function findPath(start, end){
 
 
   }
+
 
 // @params {node} start || {node} finish
   function distance(start, finish) {
@@ -109,18 +115,4 @@ function findPath(start, end){
   function coordinator(_node, _mapNode){
     return {node : _node, mapNode : _mapNode}
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-.

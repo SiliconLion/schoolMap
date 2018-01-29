@@ -7,12 +7,14 @@ var ctx = canvas.getContext("2d");
 var arrayOfNodes = [];
 var connectBuffer = [];
 var connections = [];
+var pathSpecifications = [];
 
 
 // stores information about whether or not a key is currently held down
 var keysDown = {
   shift : false,
-  x : false
+  x : false,
+  j : false
 }
 
 //called from html document
@@ -32,6 +34,8 @@ function eventHandleKeyDown(){
     keysDown.shift = true;
   } else if (keyName == "x"){
     keysDown.x = true;
+  } else if (keyName == "j"){
+    keysDown.j = true;
   }
   //this should be reomved soon. currently used just as a debugging helper.
   console.log(keysDown);
@@ -58,8 +62,10 @@ function eventHandleKeyUp(){
   } else if (keyName == "x"){
     keysDown.x = false;
   } else if (keyName == "j"){
-    makeTestingMap();
-    redraw()
+    // makeTestingMap();
+    // redraw()
+    findPath(pathSpecifications[0], pathSpecifications[1]);
+
   }
   console.log(keysDown);
 }
@@ -80,7 +86,13 @@ function clickHandler(x,y){
   otherwise, place a node.*/
   //this is venurable. should check to see if nodeBeneathMouse is type node
   if (nodeBeneathMouse != false){
-    if (keysDown.shift != true){
+
+   if (keysDown.j == true){
+    pathSpecifications.push(nodeBeneathMouse);
+    console.log("debugging flag" + pathSpecifications);
+  }
+
+    if (keysDown.shift == false && keysDown.j == false){
       if (keysDown.x == true) {
         //cleanly deletes node from arrayOfNodes, and connections to it
         deleteNode(nodeBeneathMouse);
@@ -96,7 +108,7 @@ function clickHandler(x,y){
       }
       console.log("in shift mouse mode");
     }
-  } else {
+  }else {
     makeNodeFromCoords(x,y);
   }
 
