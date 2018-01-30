@@ -76,24 +76,27 @@ function clickHandler(x,y){
   /*checks to see if there is node beneath the mouse. if there is and niether shift nor x are held, toogle the color
   otherwise, place a node.*/
   //this is venurable. should check to see if nodeBeneathMouse is type node
+
   if (nodeBeneathMouse != false){
-    if (keysDown.shift != true){
-      if (keysDown.x == true) {
-        //cleanly deletes node from arrayOfNodes, and connections to it
+    if (keysDown.shift == false){
+      if (keysDown.x == true){
+        //cleanly deletes node and connections to it from arrayOfNodes
         deleteNode(nodeBeneathMouse);
         redraw();
       } else {
+        //toggles the type of node (hallway or door) and sets it to the respective color
         nodeBeneathMouse.toggleColor();
         nodeBeneathMouse.toggleLocation();
       }
-    } else if(keysDown.shift == true) {
-      //start drawing a connection.
-      if (connectBuffer.length < 2){
+    } else if (keysDown.x != true){
+      //Connects two nodes if both are clicked without releasing shift and no addition nodes are selected.
+      if (connectBuffer.length == 2){
         connectBuffer.push(nodeBeneathMouse);
       }
       console.log("in shift mouse mode");
     }
-  } else {
+  } else if (nodeBeneathMouse == false && keysDown.shift == false && keysDown.x != true){
+    //creates a new node at the mouse's location
     makeNodeFromCoords(x,y);
   }
 
