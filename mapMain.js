@@ -125,15 +125,15 @@ function overNode(xPos,yPos){
   var returnValue = false;
   for (var i = 0; i< arrayOfNodes.length; i++){
     var node = arrayOfNodes[i];
-
-    //if xPos is beween the left and right sides of the node
-    if ((node.x - (0.5 * node.r) <= xPos) && (node.x + (0.5 * node.r) >= xPos)){
-    //if yPos is beween the left and right sides of the node
-      if ((node.y - (0.5 * node.r) <= yPos) && (node.y + (0.5 * node.r) >= yPos)){
-        returnValue = node;
-        break;
+    var dist = Math.sqrt(
+      Math.pow(node.x-xPos,2)+
+      Math.pow(node.y-yPos,2)
+    );
+    if(node.r+5 >= dist)
+      {
+      returnValue = node;
+      break;
       }
-    }
   }
   //will either be false, or a node
    return returnValue;
@@ -141,7 +141,6 @@ function overNode(xPos,yPos){
 
 
 function deleteNode(node){
-
   node.neighbors.forEach(function(neighbor){
     var indexInNeighbors = neighbor.neighbors.indexOf(node);
     neighbor.neighbors.splice(indexInNeighbors, 1);
@@ -159,6 +158,9 @@ function deleteNode(node){
 function redraw(){
   //redraws the map image so nodes that no longer exist disapear
   var img = document.getElementById("bluePrint");
+  connections.forEach(function(connection){
+    connection.updateColor();
+  });
   ctx.drawImage(img, 10, 10);
 
   // redraws all the nodes over top that still do exist
@@ -182,11 +184,12 @@ function connectNodes(nodes){
 
   nodes[0].neighbors.push(nodes[1]);
   nodes[1].neighbors.push(nodes[0]);
-  var rawPasta = new Connection(nodes[0].x,nodes[0].y,nodes[1].x,nodes[1].y);
+  var nextConnection = new Connection(nodes[0],nodes[1]);
   // connectBuffer.push(
   //   new Connection(nodes[0].x,nodes[0].y,nodes[1].x,nodes[1].y)
   // );
-  connections.push(rawPasta);
+  connections.push(nextConnection);
+  nextConnection.updateColor();
 
 }
 

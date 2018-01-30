@@ -1,11 +1,11 @@
 
 class Node {
-  constructor(x, y, r = 3){
+  constructor(x, y, r = 6){
     //radius
     this.r = r;
     //position
-    this.x = x;
-    this.y = y;
+    this.x = Math.floor(x/10)*10;
+    this.y = Math.floor(y/10)*10;
     //this is who it is connected to.
     this.neighbors = [];
     //the color of the node
@@ -24,8 +24,10 @@ class Node {
   toggleColor(){
     if(this.color == "blue"){
       this.color = "red";
+      this.makeHallway();
     } else if (this.color == "red") {
       this.color = "blue";
+      this.makeRoom();
     }
   }
 
