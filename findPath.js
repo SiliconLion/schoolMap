@@ -33,14 +33,9 @@ function findPath(start, end){
         path.push(thePrevious);
         nextPathNode = thePrevious;
       }
-      debugger;
       console.log(path);
+      break;
     }
-    //next two lines: removing the current from the open list
-    var index = openSet.indexOf(current);
-    openSet.splice(index, 1);
-    //adding current to closed list
-    closedSet.push(current);
 
 //will only evaluate using the length before more nodes are added depper in
     var initLength = openSet.length;
@@ -59,6 +54,12 @@ function findPath(start, end){
       }
       });
     }
+
+    //next two lines: removing the current from the open list
+    var index = openSet.indexOf(current);
+    openSet.splice(index, 1);
+    //adding current to closed list
+    closedSet.push(current);
 
     openSet.sort(function(a, b){
       a.mapNode.fValue - b.mapNode.fValue
