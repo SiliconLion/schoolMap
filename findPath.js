@@ -22,7 +22,7 @@ function findPath(start, end){
 
 
   while(openSet.length > 0){
-    debugger;
+    //debugger;
     var current = openSet[0];
     if (current.node == end){
       //reconstruct the path and return that
@@ -39,12 +39,13 @@ function findPath(start, end){
 
 //will only evaluate using the length before more nodes are added depper in
     var initLength = openSet.length;
-    for(var i = 0; i < initLength - 1; i++){
+    for(var i = 0; i < initLength; i++){
       openSet[i].node.neighbors.forEach(function(neighbor){
         //if neighbor is in the open set, move to next iteration of loop
         if (neighbor in nodesUsed){
           checkG(current.mapNode, openSet[i].mapNode);
-          continue;
+          //this will break out of this itteration of the forEach loop
+          return;
         } else {
           //fix these variable names
           var neighborMapNode = mapNode(neighbor, current.node);
