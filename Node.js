@@ -3,9 +3,9 @@ class Node {
   constructor(x, y, r = 3){
     //radius
     this.r = r;
-    //position
-    this.x = x;
-    this.y = y;
+    // Align the possition to a 10 by 10 grid
+    this.x = Math.floor(x/10)*10;
+    this.y = Math.floor(y/10)*10;
     //this is who it is connected to.
     this.neighbors = [];
     //the color of the node

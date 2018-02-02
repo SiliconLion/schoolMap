@@ -157,8 +157,29 @@ function redraw(){
   //redraws the map image so nodes that no longer exist disapear
   var img = document.getElementById("bluePrint");
   ctx.drawImage(img, 10, 10);
-
+  // Draw a 10 by 10 grid
   // redraws all the nodes over top that still do exist
+  for(var i = 0; i < canvas.width / 10; i++)
+    {
+    for(var ii = 0; ii < canvas.height / 10; ii++)
+      {
+      ctx.fillStyle = "black";
+      ctx.beginPath();
+      ctx.moveTo(i*10,0);
+      ctx.lineTo(i*10,ii*10);
+      ctx.strokeStyle = "black";
+      ctx.stroke();
+
+      ctx.fillStyle = "black";
+      ctx.beginPath();
+      ctx.moveTo(0,ii*10);
+      ctx.lineTo(i*10,ii*10);
+      ctx.strokeStyle = "black";
+      ctx.stroke();
+
+      }
+    ii = 0;
+  }
   displayObjects(arrayOfNodes);
   displayObjects(connections);
 }
