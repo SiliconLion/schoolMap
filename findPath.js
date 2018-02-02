@@ -6,15 +6,17 @@
 other nodes in it neighbors*/
 //finds a path from start node to end node using A* algorithym
 function findPath(start, end){
-  debugger;
+  //debugger;
   console.log("in right file");
   var nodesUsed = [start];
   var masterArr = [];
 
 //array of nodes that have been evaluated. starts empty
   var closedSet = [];
-//array of nodes that have been discovered. initially, only the start node is known
-  var openSet = [start];
+
+/*array of nodes that have been discovered. initially, only the start node is known.
+we create a cordinator for the start node*/
+  var openSet = [coordinator(start, mapNode(start, start))];
 
   var lowest = undefined;/*node with lowest fScore[]*/
 
@@ -40,6 +42,7 @@ function findPath(start, end){
 //will only evaluate using the length before more nodes are added depper in
     var initLength = openSet.length;
     for(var i = 0; i < initLength; i++){
+      debugger;
       openSet[i].node.neighbors.forEach(function(neighbor){
         //if neighbor is in the open set, move to next iteration of loop
         if (neighbor in nodesUsed){
@@ -83,8 +86,7 @@ function findPath(start, end){
 
 // @params {node} _node || {mapNode} _prevNode
 //_preNode = the current node, and _node will be one of its neighbors
-  function mapNode(_node, _prevNode){
-    var prevNode = _preNode;
+  function mapNode(node, prevNode){
     const _hValue = huristic(node);
     //the gValue is going to be the previous node's gValue plus the distance to this new node
     var _gValue = prevNode.gValue + distance(node, prevNode.node);
