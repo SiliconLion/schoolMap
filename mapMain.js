@@ -76,27 +76,24 @@ function clickHandler(x,y){
   /*checks to see if there is node beneath the mouse. if there is and niether shift nor x are held, toogle the color
   otherwise, place a node.*/
   //this is venurable. should check to see if nodeBeneathMouse is type node
-
   if (nodeBeneathMouse != false){
-    if (keysDown.shift == false){
-      if (keysDown.x == true){
-        //cleanly deletes node and connections to it from arrayOfNodes
+    if (keysDown.shift != true){
+      if (keysDown.x == true) {
+        //cleanly deletes node from arrayOfNodes, and connections to it
         deleteNode(nodeBeneathMouse);
         redraw();
       } else {
-        //toggles the type of node (hallway or door) and sets it to the respective color
         nodeBeneathMouse.toggleColor();
         nodeBeneathMouse.toggleLocation();
       }
-    } else if (keysDown.x != true){
-      //Connects two nodes if both are clicked without releasing shift and no addition nodes are selected.
-      if (connectBuffer.length == 2){
+    } else if(keysDown.shift == true) {
+      //start drawing a connection.
+      if (connectBuffer.length < 2){
         connectBuffer.push(nodeBeneathMouse);
       }
       console.log("in shift mouse mode");
     }
-  } else if (nodeBeneathMouse == false && keysDown.shift == false && keysDown.x != true){
-    //creates a new node at the mouse's location
+  } else {
     makeNodeFromCoords(x,y);
   }
 
@@ -125,15 +122,15 @@ function overNode(xPos,yPos){
   var returnValue = false;
   for (var i = 0; i< arrayOfNodes.length; i++){
     var node = arrayOfNodes[i];
-    var dist = Math.sqrt(
-      Math.pow(node.x-xPos,2)+
-      Math.pow(node.y-yPos,2)
-    );
-    if(node.r+5 >= dist)
-      {
-      returnValue = node;
-      break;
+
+    //if xPos is beween the left and right sides of the node
+    if ((node.x - (0.5 * node.r) <= xPos) && (node.x + (0.5 * node.r) >= xPos)){
+    //if yPos is beween the left and right sides of the node
+      if ((node.y - (0.5 * node.r) <= yPos) && (node.y + (0.5 * node.r) >= yPos)){
+        returnValue = node;
+        break;
       }
+    }
   }
   //will either be false, or a node
    return returnValue;
@@ -141,6 +138,7 @@ function overNode(xPos,yPos){
 
 
 function deleteNode(node){
+
   node.neighbors.forEach(function(neighbor){
     var indexInNeighbors = neighbor.neighbors.indexOf(node);
     neighbor.neighbors.splice(indexInNeighbors, 1);
@@ -158,9 +156,6 @@ function deleteNode(node){
 function redraw(){
   //redraws the map image so nodes that no longer exist disapear
   var img = document.getElementById("bluePrint");
-  connections.forEach(function(connection){
-    connection.updateColor();
-  });
   ctx.drawImage(img, 10, 10);
 
   // redraws all the nodes over top that still do exist
@@ -184,12 +179,11 @@ function connectNodes(nodes){
 
   nodes[0].neighbors.push(nodes[1]);
   nodes[1].neighbors.push(nodes[0]);
-  var nextConnection = new Connection(nodes[0],nodes[1]);
+  var rawPasta = new Connection(nodes[0].x,nodes[0].y,nodes[1].x,nodes[1].y);
   // connectBuffer.push(
   //   new Connection(nodes[0].x,nodes[0].y,nodes[1].x,nodes[1].y)
   // );
-  connections.push(nextConnection);
-  nextConnection.updateColor();
+  connections.push(rawPasta);
 
 }
 
