@@ -27,6 +27,7 @@ class Node {
     } else if (this.color == "red") {
       this.color = "blue";
     }
+    //redraw();
   }
 
 //no args
@@ -43,9 +44,9 @@ class Node {
 
   toggleLocation(){
     if (this.location == "hallway"){
-      makeRoom();
+      this.makeRoom();
     } else if (this.location == "room") {
-      makeHallway();
+      this.makeHallway();
     }
   }
 }
