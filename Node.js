@@ -27,7 +27,7 @@ class Node {
     } else if (this.color == "red") {
       this.color = "blue";
     }
-    //redraw();
+    redraw();
   }
 
 //no args

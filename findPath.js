@@ -25,7 +25,7 @@ not have the same inheritance.*/
   var nodesUsed = [start];
   /*a list of all the coordinators that are in use, or have been in use.
   provides quick access. initially only startCoordinator exists*/
-  var masterArr = [startMapNode];
+  var masterArr = [startCoordinator];
   /*array of nodes that have been discovered. initially, only the start node is known.
   therefore we initalize the openSet with its coordinator*/
     var openSet = [startCoordinator];
@@ -44,7 +44,7 @@ not have the same inheritance.*/
     console.log(openSet);
     //;
     var current = openSet[0];
-    current.node.toggleColor;
+    current.node.toggleColor();
     if (current.node === end){
       reconstructPath();
     }
@@ -54,9 +54,18 @@ not have the same inheritance.*/
     for(var i = 0; i < initLength; i++){
 
       openSet[i].node.neighbors.forEach(function(neighbor){
-        //if neighbor is in the open set checkG, then move to next iteration of loop
-        if (neighbor in nodesUsed){
-          checkG(current.mapNode, openSet[i].mapNode);
+        let previouslyDiscovered = false;
+        //if neighbor has been discovered, then move to next iteration of loop
+        for(var j = 0; j < nodesUsed.length; j++){
+          if (neighbor === nodesUsed[j]){
+            previouslyDiscovered = true;
+            let neighborCoordinator = nodeToCoordinator(neighbor);
+            checkG(openSet[i], neighborCoordinator);
+          }
+        }
+
+
+        if (previouslyDiscovered === true){
           return;
         } else {
           //fix these variable names
@@ -79,7 +88,7 @@ not have the same inheritance.*/
       a.mapNode.fValue - b.mapNode.fValue
     });
 
-    current.node.toggleColor;
+    current.node.toggleColor();
 
   }
 
@@ -119,11 +128,14 @@ not have the same inheritance.*/
     }
   }
 
-  function checkG(currentNode, neighbor){
-    var tenntativeG = currentNode.gValue + distance(currentNode, neighbor);
-    if (tennativeG < neighbor.gValue){
-      neighbor.gValue = tennativeG;
-      neighbor.prevNode = currentNode;
+//pass in 2 coordinators
+/*checks to see if the new possible G value is lower. If it is,
+asigns the neighbor the new G value, and the currentNode as its 'previous'*/
+  function checkG(currentNode, neighborCoordinator){
+    var tenntativeG = currentNode.gValue + distance(currentNode, neighborCoordinator);
+    if (tenntativeG < neighborCoordinator.mapNode.gValue){
+      neighborCoordinator.mapNode.gValue = tennativeG;
+      neighborCoordinator.mapNode.prevNode = currentNode;
     }
   }
 
@@ -135,16 +147,16 @@ not have the same inheritance.*/
   function reconstructPath(){
     console.log("in reconstruction");
     //reconstruct the path and return that
-    var path = [current.node];
+    var path = [end, current.node];
 
-    var nextPathNode = current;
-    console.log("nextPathNode.node is")
-    console.log(nextPathNode)
-    while (start != nextPathNode.node){
-      var thePrevious = nextPathNode.node.previous;
+    var nextPathCoordinator = current;
+    console.log("nextPathCoordinator.node is")
+    console.log(nextPathCoordinator)
+    while (start != nextPathCoordinator.node){
+      var thePrevious = nextPathCoordinator.mapNode.previous;
       console.log(thePrevious);
       path.push(thePrevious);
-      nextPathNode = mapNodeToCoordinator(thePrevious);
+      nextPathCoordinator = mapNodeToCoordinator(thePrevious);
     }
     console.log(path);
 
@@ -156,8 +168,18 @@ not have the same inheritance.*/
 
 //the orphan is a mapNode that is looking for it's coordinator object
   function mapNodeToCoordinator(orphan){
-    for(var i = 0; i < masterArr; i++){
-      if(masterArr[i].mapNode === orphan){
+    for(var i = 0; i < masterArr.length; i++){
+      let mapNodeAtIndex = masterArr[i].mapNode;
+      if( mapNodeAtIndex === orphan){
+        return masterArr[i];
+      }
+    }
+  }
+
+  function nodeToCoordinator(orphan){
+    for(var i = 0; i < masterArr.length; i++){
+      let nodeAtIndex = masterArr[i].node;
+      if( nodeAtIndex === orphan){
         return masterArr[i];
       }
     }
