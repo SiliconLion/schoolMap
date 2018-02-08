@@ -30,6 +30,11 @@ class Node {
     redraw();
   }
 
+  changeColor(color){
+    this.color = color;
+    redraw();
+  }
+
 //no args
 //changes the location type to room
   makeRoom(){

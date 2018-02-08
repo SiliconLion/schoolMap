@@ -42,9 +42,13 @@ not have the same inheritance.*/
 
   while(openSet.length > 0){
     console.log(openSet);
-    //;
+    closedSet.forEach(function(coordinator){
+      coordinator.node.changeColor("green");
+    });
+
     var current = openSet[0];
-    current.node.toggleColor();
+    current.node.changeColor("blue");
+
     if (current.node === end){
       reconstructPath();
     }
@@ -88,7 +92,7 @@ not have the same inheritance.*/
       a.mapNode.fValue - b.mapNode.fValue
     });
 
-    current.node.toggleColor();
+    current.node.changeColor("red");
 
   }
 
