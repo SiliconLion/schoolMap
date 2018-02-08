@@ -8,11 +8,9 @@ other nodes in it neighbors*/
 function findPath(start, end){
 
   console.log("in 'find Path'");
-  var nodesUsed = [start];
-  var masterArr = [];
-
-//array of nodes that have been evaluated. starts empty
-  var closedSet = [];
+/*because the start node has no previous node to point to, we must create it manually
+this will be functionally the same as if it had come from 'new mapNode()', though it will
+not have the same inheritance.*/
   var startMapNode = {
     original : start,
     previous : undefined,
@@ -20,13 +18,25 @@ function findPath(start, end){
     gValue : 0,
     fValue : huristic(start)
   }
+  //coordinator for start and startMapNode
+  var startCoordinator = coordinator(start, startMapNode);
 
-/*array of nodes that have been discovered. initially, only the start node is known.
-we create a cordinator for the start node*/
-  var openSet = [coordinator(start, startMapNode)];
+  //provides quick acces to every node that's been used
+  var nodesUsed = [start];
+  /*a list of all the coordinators that are in use, or have been in use.
+  provides quick access. initially only startCoordinator exists*/
+  var masterArr = [startMapNode];
+  /*array of nodes that have been discovered. initially, only the start node is known.
+  therefore we initalize the openSet with its coordinator*/
+    var openSet = [startCoordinator];
+//array of nodes that have been evaluated. starts empty
+  var closedSet = [];
+
+
+
+
 
   var lowest = undefined;/*node with lowest fScore[]*/
-
 
 
 
@@ -44,14 +54,13 @@ we create a cordinator for the start node*/
     for(var i = 0; i < initLength; i++){
 
       openSet[i].node.neighbors.forEach(function(neighbor){
-        //if neighbor is in the open set, move to next iteration of loop
+        //if neighbor is in the open set checkG, then move to next iteration of loop
         if (neighbor in nodesUsed){
           checkG(current.mapNode, openSet[i].mapNode);
-          //this will break out of this itteration of the forEach loop
           return;
         } else {
           //fix these variable names
-          var neighborMapNode = mapNode(neighbor, current.node);
+          var neighborMapNode = mapNode(neighbor, current);
           var neighborCoordinator = coordinator(neighbor, neighborMapNode);
           masterArr.push(neighborCoordinator);
           openSet.push(neighborCoordinator);
@@ -77,27 +86,22 @@ we create a cordinator for the start node*/
 
 // @params {node} beginning || {node} finish
   function distance(beginning, finish) {
-    /*if the beginning and finish are the same node, the distance between them is 0,
-     but will be calculated as Math.sqrt(0), which is NaN,*/
-    if (beginning === finish){
-      return 0;
-    } else {
-      return Math.sqrt(
-        Math.pow((beginning.x - finish.x), 2) +
-        Math.pow((beginning.y - finish.y), 2)
-      );
-    }
+    //when simplified, this is the distance formula
+    const xPart = Math.pow((beginning.x - finish.x), 2);
+    const yPart = Math.pow((beginning.y - finish.y), 2);
+    const themAddedTogether = Math.sqrt( xPart + yPart);
+      return themAddedTogether;
   }
 
 
   function huristic(node){ return distance(node, end) }
 
-// @params {node} _node || {mapNode} prevNode
+// @params {node} _node || {coordinator} prevCoord
 //preNode = the current node, and node will be one of its neighbors
-  function mapNode(node, prevNode){
+  function mapNode(node, prevCoord){
     const _hValue = huristic(node);
     //the gValue is going to be the previous node's gValue plus the distance to this new node
-    var _gValue = prevNode.gValue + distance(node, prevNode);
+    var _gValue = prevCoord.mapNode.gValue + distance(node, prevCoord.node);
 
     var _fValue = _hValue + _gValue;
 
@@ -108,7 +112,7 @@ we create a cordinator for the start node*/
 
     return {
       original : getOriginal(),
-      previous : prevNode,
+      previous : prevCoord.mapNode,
       hValue : _hValue,
       gValue : _gValue,
       fValue : _fValue
