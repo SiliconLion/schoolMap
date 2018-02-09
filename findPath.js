@@ -89,7 +89,7 @@ not have the same inheritance.*/
     closedSet.push(current);
 
     openSet.sort(function(a, b){
-      a.mapNode.fValue - b.mapNode.fValue
+      return a.mapNode.fValue - b.mapNode.fValue;
     });
 
     current.node.changeColor("red");
