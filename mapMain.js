@@ -32,6 +32,8 @@ function eventHandleKeyDown(){
     keysDown.shift = true;
   } else if (keyName == "x"){
     keysDown.x = true;
+  } else if (keyName == "A"){
+    keysDown.a = true;
   }
   //this should be reomved soon. currently used just as a debugging helper.
   console.log(keysDown);
@@ -57,6 +59,9 @@ function eventHandleKeyUp(){
     connectBuffer.splice(0,connectBuffer.length);
   } else if (keyName == "x"){
     keysDown.x = false;
+  } else if (keyName == "A"){
+    keysDown.a = false;
+    // need to add the connection buffer stuff here for room corner creation
   }
   console.log(keysDown);
 }
@@ -70,6 +75,8 @@ function eventHandleKeyUp(){
 // called every time there is a mouse click. decides what to do with that click
 function clickHandler(x,y){
 
+
+if (keysDown.a == false){
   //if over a node, refrences that node. else will have 'false' value
   var nodeBeneathMouse = overNode(x,y);
 
@@ -77,33 +84,47 @@ function clickHandler(x,y){
   otherwise, place a node.*/
   //this is venurable. should check to see if nodeBeneathMouse is type node
 
-  if (nodeBeneathMouse != false){
-    if (keysDown.shift == false){
-      if (keysDown.x == true){
-        //cleanly deletes node and connections to it from arrayOfNodes
-        deleteNode(nodeBeneathMouse);
-        redraw();
-      } else {
-        //toggles the type of node (hallway or door) and sets it to the respective color
-        nodeBeneathMouse.toggleColor();
-        nodeBeneathMouse.toggleLocation();
+    if (nodeBeneathMouse != false){
+      if (keysDown.shift == false){
+        if (keysDown.x == true){
+          //cleanly deletes node and connections to it from arrayOfNodes
+          deleteNode(nodeBeneathMouse);
+          redraw();
+        } else {
+          //toggles the type of node (hallway or door) and sets it to the respective color
+          nodeBeneathMouse.toggleColor();
+          nodeBeneathMouse.toggleLocation();
+        }
+      } else if (keysDown.x != true){
+        //Connects two nodes if both are clicked without releasing shift and no addition nodes are selected.
+        if (connectBuffer.length == 2){
+          connectBuffer.push(nodeBeneathMouse);
+        }
+        console.log("in shift mouse mode");
       }
-    } else if (keysDown.x != true){
-      //Connects two nodes if both are clicked without releasing shift and no addition nodes are selected.
-      if (connectBuffer.length == 2){
-        connectBuffer.push(nodeBeneathMouse);
-      }
-      console.log("in shift mouse mode");
+    } else if (nodeBeneathMouse == false && keysDown.shift == false && keysDown.x != true){
+      //creates a new node at the mouse's location
+      makeNodeFromCoords(x,y);
     }
-  } else if (nodeBeneathMouse == false && keysDown.shift == false && keysDown.x != true){
-    //creates a new node at the mouse's location
-    makeNodeFromCoords(x,y);
-  }
 
+  }
+else if (keysDown.shift ==false && keysDown.x ==false){
+  //Room creation and modification mode
+    console.log("in room mode");
+
+
+  }
 
 }
 
 
+
+function makeRoomFromCoords(x,y) {
+
+    var room = new Room(); //with no Corners
+    //add corners to the room
+    //
+}
 
 
 //called from html doc
