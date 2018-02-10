@@ -55,32 +55,31 @@ not have the same inheritance.*/
 
 //will only evaluate using the length before more nodes are added depper in
     var initLength = openSet.length;
-    for(var i = 0; i < initLength; i++){
-
-      openSet[i].node.neighbors.forEach(function(neighbor){
-        let previouslyDiscovered = false;
-        //if neighbor has been discovered, then move to next iteration of loop
-        for(var j = 0; j < nodesUsed.length; j++){
-          if (neighbor === nodesUsed[j]){
-            previouslyDiscovered = true;
-            let neighborCoordinator = nodeToCoordinator(neighbor);
-            checkG(openSet[i], neighborCoordinator);
-          }
+    current.node.neighbors.forEach(function(neighbor){
+      let previouslyDiscovered = false;
+      //if neighbor has been discovered, then move to next iteration of loop
+      for(var j = 0; j < nodesUsed.length; j++){
+        if (neighbor === nodesUsed[j]){
+          previouslyDiscovered = true;
+          let neighborCoordinator = nodeToCoordinator(neighbor);
+          checkG(current, neighborCoordinator);
         }
-
-
-        if (previouslyDiscovered === true){
-          return;
-        } else {
-          //fix these variable names
-          var neighborMapNode = mapNode(neighbor, current);
-          var neighborCoordinator = coordinator(neighbor, neighborMapNode);
-          masterArr.push(neighborCoordinator);
-          openSet.push(neighborCoordinator);
-          nodesUsed.push(neighbor);
       }
-      });
+
+
+      if (previouslyDiscovered === true){
+        return;
+      } else {
+        //fix these variable names
+        var neighborMapNode = mapNode(neighbor, current);
+        var neighborCoordinator = coordinator(neighbor, neighborMapNode);
+        masterArr.push(neighborCoordinator);
+        openSet.push(neighborCoordinator);
+        nodesUsed.push(neighbor);
     }
+    });
+
+
 
     //next two lines: removing the current from the open list
     var index = openSet.indexOf(current);
