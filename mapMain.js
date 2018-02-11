@@ -65,7 +65,12 @@ function eventHandleKeyUp(){
     // makeTestingMap();
     // redraw()
     findPath(pathSpecifications[0], pathSpecifications[1]);
+    pathSpecifications.splice(0,pathSpecifications.length);
 
+  } else if (keyName == "r"){
+    arrayOfNodes.forEach(function(node){
+      node.changeColor("grey");
+    })
   }
   console.log(keysDown);
 }
