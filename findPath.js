@@ -50,7 +50,13 @@ not have the same inheritance.*/
     current.node.changeColor("blue");
 
     if (current.node === end){
-      reconstructPath();
+      current.node.changeColor("green");
+      var path = reconstructPath();
+      path.forEach(function(coordinator){
+        coordinator.node.changeColor("red");
+      });
+
+      break;
     }
 
 //will only evaluate using the length before more nodes are added depper in
@@ -67,16 +73,16 @@ not have the same inheritance.*/
       }
 
 
-      if (previouslyDiscovered === true){
-        return;
-      } else {
+      // if (previouslyDiscovered === true){
+      //    return;
+      // } else {
         //fix these variable names
         var neighborMapNode = mapNode(neighbor, current);
         var neighborCoordinator = coordinator(neighbor, neighborMapNode);
         masterArr.push(neighborCoordinator);
         openSet.push(neighborCoordinator);
         nodesUsed.push(neighbor);
-    }
+    //}
     });
 
 
@@ -147,21 +153,24 @@ asigns the neighbor the new G value, and the currentNode as its 'previous'*/
     return {node : _node, mapNode : _mapNode}
   }
 
+//reconstruct the path and return that
   function reconstructPath(){
     console.log("in reconstruction");
-    //reconstruct the path and return that
-    var path = [end, current.node];
+
+    var path = [current];
 
     var nextPathCoordinator = current;
     console.log("nextPathCoordinator.node is")
     console.log(nextPathCoordinator)
     while (start != nextPathCoordinator.node){
-      var thePrevious = nextPathCoordinator.mapNode.previous;
-      console.log(thePrevious);
-      path.push(thePrevious);
-      nextPathCoordinator = mapNodeToCoordinator(thePrevious);
+      var thePreviousMapNode = nextPathCoordinator.mapNode.previous;
+      nextPathCoordinator = mapNodeToCoordinator(thePreviousMapNode)
+      console.log(nextPathCoordinator);
+      path.push(nextPathCoordinator);
+      ;
     }
     console.log(path);
+    return path;
 
   }
 
