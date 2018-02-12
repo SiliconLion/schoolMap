@@ -51,12 +51,9 @@ not have the same inheritance.*/
 
     if (current.node === end){
       current.node.changeColor("green");
-      var path = reconstructPath();
-      path.forEach(function(coordinator){
-        coordinator.node.changeColor("red");
-      });
-
-      break;
+      let coordPath = reconstructPath();
+      let nodePath = coordPath.map(function (x) { return x.node});
+      return nodePath;
     }
 
 //will only evaluate using the length before more nodes are added depper in

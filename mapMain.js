@@ -62,10 +62,19 @@ function eventHandleKeyUp(){
   } else if (keyName == "x"){
     keysDown.x = false;
   } else if (keyName == "j"){
-    // makeTestingMap();
-    // redraw()
-    findPath(pathSpecifications[0], pathSpecifications[1]);
+    //gets the nodes from the buffer
+    let start = pathSpecifications[0];
+    let end = pathSpecifications[1];
+    //clears the buffer
     pathSpecifications.splice(0,pathSpecifications.length);
+    //'path' will be an array of nodes for the path from start to end
+    let path = findPath(start, end);
+    //colors every node in the path red
+    path.forEach(function(node){
+      node.changeColor("red");
+    });
+
+
 
   } else if (keyName == "r"){
     arrayOfNodes.forEach(function(node){
