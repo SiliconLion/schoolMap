@@ -9,6 +9,8 @@ class Room{
     this.roomName = name;
   }
   display(){
+    console.log("THIS IS BORDERS");
+    console.log(this.borders);
     ctx.fillStyle = "blue";
     ctx.beginPath();
       ctx.moveTo(this.borders[0],this.borders[1]);
