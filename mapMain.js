@@ -5,6 +5,7 @@ var ctx = canvas.getContext("2d");
 
 //holds every node
 var arrayOfNodes = [];
+var arrayOfRooms = [];
 var connectBuffer = [];
 var connections = [];
 
@@ -12,7 +13,8 @@ var connections = [];
 // stores information about whether or not a key is currently held down
 var keysDown = {
   shift : false,
-  x : false
+  x : false,
+  a: false
 }
 
 //called from html document
@@ -32,7 +34,7 @@ function eventHandleKeyDown(){
     keysDown.shift = true;
   } else if (keyName == "x"){
     keysDown.x = true;
-  } else if (keyName == "A"){
+  } else if (keyName == "a"){
     keysDown.a = true;
   }
   //this should be reomved soon. currently used just as a debugging helper.
@@ -59,8 +61,13 @@ function eventHandleKeyUp(){
     connectBuffer.splice(0,connectBuffer.length);
   } else if (keyName == "x"){
     keysDown.x = false;
-  } else if (keyName == "A"){
+  } else if (keyName == "a"){
+    console.log(connectBuffer)
     keysDown.a = false;
+    connectCorners(connectBuffer);
+    redraw();
+    connectBuffer.splice(0,connectBuffer.length);
+
     // need to add the connection buffer stuff here for room corner creation
   }
   console.log(keysDown);
@@ -76,7 +83,7 @@ function eventHandleKeyUp(){
 function clickHandler(x,y){
 
 
-if (keysDown.a == false){
+if (keysDown.a === false){
   //if over a node, refrences that node. else will have 'false' value
   var nodeBeneathMouse = overNode(x,y);
 
@@ -108,23 +115,17 @@ if (keysDown.a == false){
     }
 
   }
-else if (keysDown.shift ==false && keysDown.x ==false){
+else if (keysDown.shift == false && keysDown.x == false ){
   //Room creation and modification mode
-    console.log("in room mode");
-
+    console.log("in corner mode");
+    //adds corners to the connection buffer whereever the mouse clicks
+      connectBuffer.push(x);
+      connectBuffer.push(y);
 
   }
 
 }
 
-
-
-function makeRoomFromCoords(x,y) {
-
-    var room = new Room(); //with no Corners
-    //add corners to the room
-    //
-}
 
 
 //called from html doc
@@ -187,6 +188,7 @@ function redraw(){
   // redraws all the nodes over top that still do exist
   displayObjects(arrayOfNodes);
   displayObjects(connections);
+  displayObjects(arrayOfRooms);
 }
 
 
@@ -212,6 +214,16 @@ function connectNodes(nodes){
   connections.push(nextConnection);
   nextConnection.updateColor();
 
+}
+
+
+
+function connectCorners(corners){
+
+  var room = new Room(1,1,corners)
+  arrayOfRooms.push(room);
+  console.log("Room Created");
+  console.log(room);
 }
 
 
