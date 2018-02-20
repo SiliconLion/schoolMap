@@ -29,6 +29,7 @@ class Node {
       this.color = "blue";
       this.makeRoom();
     }
+    redraw();
   }
 
 //no args

@@ -221,7 +221,7 @@ function connectNodes(nodes){
 
 function connectCorners(corners){
 
-  var room = new Room(undefined,undefined,corners)
+  var room = new Room(undefined,undefined,corners);
   arrayOfRooms.push(room);
   console.log("Room Created");
   console.log(room);
