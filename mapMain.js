@@ -5,6 +5,7 @@ var ctx = canvas.getContext("2d");
 
 //holds every node
 var arrayOfNodes = [];
+var arrayOfRooms = [];
 var connectBuffer = [];
 var connections = [];
 
@@ -12,7 +13,8 @@ var connections = [];
 // stores information about whether or not a key is currently held down
 var keysDown = {
   shift : false,
-  x : false
+  x : false,
+  a: false
 }
 
 //called from html document
@@ -32,6 +34,8 @@ function eventHandleKeyDown(){
     keysDown.shift = true;
   } else if (keyName == "x"){
     keysDown.x = true;
+  } else if (keyName == "a"){
+    keysDown.a = true;
   }
   //this should be reomved soon. currently used just as a debugging helper.
   console.log(keysDown);
@@ -57,6 +61,14 @@ function eventHandleKeyUp(){
     connectBuffer.splice(0,connectBuffer.length);
   } else if (keyName == "x"){
     keysDown.x = false;
+  } else if (keyName == "a"){
+    console.log(connectBuffer)
+    keysDown.a = false;
+    connectCorners(connectBuffer);
+    redraw();
+    connectBuffer.splice(0,connectBuffer.length);
+
+    // need to add the connection buffer stuff here for room corner creation
   }
   console.log(keysDown);
 }
@@ -70,36 +82,49 @@ function eventHandleKeyUp(){
 // called every time there is a mouse click. decides what to do with that click
 function clickHandler(x,y){
 
+
+if (keysDown.a === false){
   //if over a node, refrences that node. else will have 'false' value
   var nodeBeneathMouse = overNode(x,y);
 
   /*checks to see if there is node beneath the mouse. if there is and niether shift nor x are held, toogle the color
   otherwise, place a node.*/
   //this is venurable. should check to see if nodeBeneathMouse is type node
-  if (nodeBeneathMouse != false){
-    if (keysDown.shift != true){
-      if (keysDown.x == true) {
-        //cleanly deletes node from arrayOfNodes, and connections to it
-        deleteNode(nodeBeneathMouse);
-        redraw();
-      } else {
-        nodeBeneathMouse.toggleColor();
-        nodeBeneathMouse.toggleLocation();
+
+    if (nodeBeneathMouse != false){
+      if (keysDown.shift == false){
+        if (keysDown.x == true){
+          //cleanly deletes node and connections to it from arrayOfNodes
+          deleteNode(nodeBeneathMouse);
+          redraw();
+        } else {
+          //toggles the type of node (hallway or door) and sets it to the respective color
+          nodeBeneathMouse.toggleColor();
+          nodeBeneathMouse.toggleLocation();
+        }
+      } else if (keysDown.x != true){
+        //Connects two nodes if both are clicked without releasing shift and no addition nodes are selected.
+        if (connectBuffer.length < 2){
+          connectBuffer.push(nodeBeneathMouse);
+        }
+        console.log("in shift mouse mode");
       }
-    } else if(keysDown.shift == true) {
-      //start drawing a connection.
-      if (connectBuffer.length < 2){
-        connectBuffer.push(nodeBeneathMouse);
-      }
-      console.log("in shift mouse mode");
+    } else if (nodeBeneathMouse == false && keysDown.shift == false && keysDown.x != true){
+      //creates a new node at the mouse's location
+      makeNodeFromCoords(x,y);
     }
-  } else {
-    makeNodeFromCoords(x,y);
+
+  }
+else if (keysDown.shift == false && keysDown.x == false ){
+  //Room creation and modification mode
+    console.log("in corner mode");
+    //adds corners to the connection buffer whereever the mouse clicks
+      connectBuffer.push(x);
+      connectBuffer.push(y);
+
   }
 
-
 }
-
 
 
 
@@ -161,6 +186,8 @@ function redraw(){
   // redraws all the nodes over top that still do exist
   displayObjects(arrayOfNodes);
   displayObjects(connections);
+  displayObjects(arrayOfRooms);
+  console.log(arrayOfRooms);
 }
 
 
@@ -185,6 +212,16 @@ function connectNodes(nodes){
   // );
   connections.push(rawPasta);
 
+}
+
+
+
+function connectCorners(corners){
+
+  var room = new Room(undefined,undefined,corners);
+  arrayOfRooms.push(room);
+  console.log("Room Created");
+  console.log(room);
 }
 
 
