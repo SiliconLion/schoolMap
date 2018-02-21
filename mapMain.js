@@ -104,7 +104,7 @@ if (keysDown.a === false){
         }
       } else if (keysDown.x != true){
         //Connects two nodes if both are clicked without releasing shift and no addition nodes are selected.
-        if (connectBuffer.length == 2){
+        if (connectBuffer.length < 2){
           connectBuffer.push(nodeBeneathMouse);
         }
         console.log("in shift mouse mode");
