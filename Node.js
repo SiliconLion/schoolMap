@@ -1,6 +1,8 @@
 
 class Node {
+
   constructor(x, y, r = 7){
+
     //radius
     this.r = r;
     //position
@@ -28,11 +30,13 @@ class Node {
       this.color = "blue";
     }
     redraw();
+
   }
 
   changeColor(color){
     this.color = color;
     redraw();
+
   }
 
 //no args

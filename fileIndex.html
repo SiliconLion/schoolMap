@@ -1,0 +1,66 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <h1> lets save a file </h1>
+
+    <script src="saveFileScripts.js"></script>
+    <script src="FileSaver.js"></script>
+    <script>
+    // Our save button
+    document.addEventListener('keyup', event => { eventHandleKeyUp(event) } )
+    function eventHandleKeyUp(event){
+        const keyName = event.key;
+        if (keyName == 'p'){ // This is our save key
+          createData(); // This would convert all the objects we want to save into strings
+          writeFile(); // This actually writes the strings to the file
+        }
+    }
+    </script>
+    <script>
+    function readFile(f){
+      var reader = new FileReader(); // Reads the file
+      reader.readAsText(f); // Ok, this actual reads the file
+      reader.onload = function(){ // When it finishes
+          // We have our contents
+          var text = reader.result;
+          array = array.splice(0,array.length);
+          // The @ symbol is how we split the string into the array
+          array = text.split('@');
+          console.log(array);
+
+          // This is the actual logic of the function
+          for(var i = 0; i<array.length;i++)
+            {
+            // This removes the @ symobol
+            array[i] = array[i].replace('@','');
+
+            // If we have an empty array entry
+            if(array[i] == " " || array[i] == "")
+              {
+              array.pop();
+              continue;
+              }
+            // I can't remember why this is necessary, but it breaks if you remove it
+            if(i > 0)
+              {
+              array[i] = array[i].substring(1,array[i].length);
+              }
+
+            // This transforms the entry string into an object
+            array[i] = JSON.parse(array[i]);
+            }
+            console.log(array.length);
+          // This draws stuff, and is mostly unnecessary
+          var out = document.getElementById("output"); // Get the output element
+          out.innerHTML = ""; // Clear it
+          out.appendChild(document.createTextNode(text)); // Display
+        }
+        reader.onerror = function(e) { // If it screws up
+        }
+      }
+    </script>
+    <input type="file" onchange="readFile(this.files[0])"></input>
+    <pre id="output"></pre>
+  </body>
+</html>

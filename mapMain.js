@@ -5,6 +5,7 @@ var ctx = canvas.getContext("2d");
 
 //holds every node
 var arrayOfNodes = [];
+var arrayOfRooms = [];
 var connectBuffer = [];
 var connections = [];
 var pathSpecifications = [];
@@ -14,7 +15,8 @@ var pathSpecifications = [];
 var keysDown = {
   shift : false,
   x : false,
-  j : false
+  j : false,
+  a: false
 }
 
 //called from html document
@@ -36,6 +38,8 @@ function eventHandleKeyDown(){
     keysDown.x = true;
   } else if (keyName == "j"){
     keysDown.j = true;
+  } else if (keyName == "a"){
+    keysDown.a = true;
   }
   //this should be reomved soon. currently used just as a debugging helper.
   console.log(keysDown);
@@ -61,6 +65,7 @@ function eventHandleKeyUp(){
     connectBuffer.splice(0,connectBuffer.length);
   } else if (keyName == "x"){
     keysDown.x = false;
+
   } else if (keyName == "j"){
     //gets the nodes from the buffer
     let start = pathSpecifications[0];
@@ -73,13 +78,18 @@ function eventHandleKeyUp(){
     path.forEach(function(node){
       node.changeColor("red");
     });
-
-
-
   } else if (keyName == "r"){
     arrayOfNodes.forEach(function(node){
       node.changeColor("grey");
     })
+  } else if (keyName == "a"){
+    console.log(connectBuffer)
+    keysDown.a = false;
+    connectCorners(connectBuffer);
+    redraw();
+    connectBuffer.splice(0,connectBuffer.length);
+
+    // need to add the connection buffer stuff here for room corner creation
   }
   console.log(keysDown);
 }
@@ -93,43 +103,64 @@ function eventHandleKeyUp(){
 // called every time there is a mouse click. decides what to do with that click
 function clickHandler(x,y){
 
+
+if (keysDown.a === false){
   //if over a node, refrences that node. else will have 'false' value
   var nodeBeneathMouse = overNode(x,y);
 
   /*checks to see if there is node beneath the mouse. if there is and niether shift nor x are held, toogle the color
   otherwise, place a node.*/
   //this is venurable. should check to see if nodeBeneathMouse is type node
-  if (nodeBeneathMouse != false){
 
-   if (keysDown.j == true){
-    pathSpecifications.push(nodeBeneathMouse);
-    console.log("debugging flag" + pathSpecifications);
-  }
 
-    if (keysDown.shift == false && keysDown.j == false){
-      if (keysDown.x == true) {
-        //cleanly deletes node from arrayOfNodes, and connections to it
-        deleteNode(nodeBeneathMouse);
-        redraw();
-      } else {
-        nodeBeneathMouse.toggleColor();
-        nodeBeneathMouse.toggleLocation();
-      }
-    } else if(keysDown.shift == true) {
-      //start drawing a connection.
-      if (connectBuffer.length < 2){
-        connectBuffer.push(nodeBeneathMouse);
-      }
-      console.log("in shift mouse mode");
+    let pressed = getPressedKeys();
+    //if over a node, refrences that node. else will have 'false' value
+    let nodeBeneathMouse = overNode(x,y);
+
+    switch (pressed[0]) {
+      case 'x':
+          //cleanly deletes node and connections to it from arrayOfNodes
+          deleteNode(nodeBeneathMouse);
+          redraw();
+          break;
+      case 'shift':
+          if (connectBuffer.length < 2){
+            connectBuffer.push(nodeBeneathMouse);
+          }
+          break;
+      case 'a':
+        //adds corners to the connection buffer whereever the mouse clicks
+          connectBuffer.push(x);
+          connectBuffer.push(y);
+          break;
+      case 'j':
+          pathSpecifications.push(nodeBeneathMouse);
+          break;
+
+      default:
+          //this is venurable. should check to see if nodeBeneathMouse is type node
+          if (nodeBeneathMouse != false){
+            nodeBeneathMouse.toggleColor();
+          } else {
+            makeNodeFromCoords(x,y);
+          }
     }
-  }else {
-    makeNodeFromCoords(x,y);
   }
-
-
+// returns all the keys that are pressed down as an array
+function getPressedKeys() {
+  //holds all the keys that are pressed down
+  let pressed = [];
+  //itterates over every key in 'keysDown'
+  for (var key in keysDown){
+    if (keysDown.hasOwnProperty(key)) {
+      //if key is held down, add it to 'pressed'
+      if (keysDown[key] === true){
+        pressed.push(key);
+      }
+    }
+  }
+  return pressed;
 }
-
-
 
 
 //called from html doc
@@ -190,6 +221,8 @@ function redraw(){
   // redraws all the nodes over top that still do exist
   displayObjects(arrayOfNodes);
   displayObjects(connections);
+  displayObjects(arrayOfRooms);
+  console.log(arrayOfRooms);
 }
 
 
@@ -255,6 +288,16 @@ function makeTestingMap(){
 
 
 }
+
+function connectCorners(corners){
+
+  var room = new Room(undefined,undefined,corners);
+  arrayOfRooms.push(room);
+  console.log("Room Created");
+  console.log(room);
+}
+
+
 
 // the following dont work yet
 // function addSavedNodes(){
