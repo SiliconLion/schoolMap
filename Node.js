@@ -1,6 +1,8 @@
 
 class Node {
-  constructor(x, y, r = 6){
+
+  constructor(x, y, r = 7){
+
     //radius
     this.r = r;
     //position
@@ -9,7 +11,7 @@ class Node {
     //this is who it is connected to.
     this.neighbors = [];
     //the color of the node
-    this.color = "red";
+    this.color = "grey";
     this.location = "hallway";
   }
   // displays the node as a circle at position (this.x,this.y), with the color "this.color"
@@ -28,6 +30,13 @@ class Node {
       this.color = "blue";
     }
     redraw();
+
+  }
+
+  changeColor(color){
+    this.color = color;
+    redraw();
+
   }
 
 //no args

@@ -8,12 +8,14 @@ var arrayOfNodes = [];
 var arrayOfRooms = [];
 var connectBuffer = [];
 var connections = [];
+var pathSpecifications = [];
 
 
 // stores information about whether or not a key is currently held down
 var keysDown = {
   shift : false,
   x : false,
+  j : false,
   a: false
 }
 
@@ -34,6 +36,8 @@ function eventHandleKeyDown(){
     keysDown.shift = true;
   } else if (keyName == "x"){
     keysDown.x = true;
+  } else if (keyName == "j"){
+    keysDown.j = true;
   } else if (keyName == "a"){
     keysDown.a = true;
   }
@@ -61,6 +65,23 @@ function eventHandleKeyUp(){
     connectBuffer.splice(0,connectBuffer.length);
   } else if (keyName == "x"){
     keysDown.x = false;
+
+  } else if (keyName == "j"){
+    //gets the nodes from the buffer
+    let start = pathSpecifications[0];
+    let end = pathSpecifications[1];
+    //clears the buffer
+    pathSpecifications.splice(0,pathSpecifications.length);
+    //'path' will be an array of nodes for the path from start to end
+    let path = findPath(start, end);
+    //colors every node in the path red
+    path.forEach(function(node){
+      node.changeColor("red");
+    });
+  } else if (keyName == "r"){
+    arrayOfNodes.forEach(function(node){
+      node.changeColor("grey");
+    })
   } else if (keyName == "a"){
     console.log(connectBuffer)
     keysDown.a = false;
@@ -91,41 +112,55 @@ if (keysDown.a === false){
   otherwise, place a node.*/
   //this is venurable. should check to see if nodeBeneathMouse is type node
 
-    if (nodeBeneathMouse != false){
-      if (keysDown.shift == false){
-        if (keysDown.x == true){
+
+    let pressed = getPressedKeys();
+    //if over a node, refrences that node. else will have 'false' value
+    let nodeBeneathMouse = overNode(x,y);
+
+    switch (pressed[0]) {
+      case 'x':
           //cleanly deletes node and connections to it from arrayOfNodes
           deleteNode(nodeBeneathMouse);
           redraw();
-        } else {
-          //toggles the type of node (hallway or door) and sets it to the respective color
-          nodeBeneathMouse.toggleColor();
-          nodeBeneathMouse.toggleLocation();
-        }
-      } else if (keysDown.x != true){
-        //Connects two nodes if both are clicked without releasing shift and no addition nodes are selected.
-        if (connectBuffer.length < 2){
-          connectBuffer.push(nodeBeneathMouse);
-        }
-        console.log("in shift mouse mode");
-      }
-    } else if (nodeBeneathMouse == false && keysDown.shift == false && keysDown.x != true){
-      //creates a new node at the mouse's location
-      makeNodeFromCoords(x,y);
+          break;
+      case 'shift':
+          if (connectBuffer.length < 2){
+            connectBuffer.push(nodeBeneathMouse);
+          }
+          break;
+      case 'a':
+        //adds corners to the connection buffer whereever the mouse clicks
+          connectBuffer.push(x);
+          connectBuffer.push(y);
+          break;
+      case 'j':
+          pathSpecifications.push(nodeBeneathMouse);
+          break;
+
+      default:
+          //this is venurable. should check to see if nodeBeneathMouse is type node
+          if (nodeBeneathMouse != false){
+            nodeBeneathMouse.toggleColor();
+          } else {
+            makeNodeFromCoords(x,y);
+          }
     }
-
   }
-else if (keysDown.shift == false && keysDown.x == false ){
-  //Room creation and modification mode
-    console.log("in corner mode");
-    //adds corners to the connection buffer whereever the mouse clicks
-      connectBuffer.push(x);
-      connectBuffer.push(y);
-
+// returns all the keys that are pressed down as an array
+function getPressedKeys() {
+  //holds all the keys that are pressed down
+  let pressed = [];
+  //itterates over every key in 'keysDown'
+  for (var key in keysDown){
+    if (keysDown.hasOwnProperty(key)) {
+      //if key is held down, add it to 'pressed'
+      if (keysDown[key] === true){
+        pressed.push(key);
+      }
+    }
   }
-
+  return pressed;
 }
-
 
 
 //called from html doc
@@ -215,6 +250,44 @@ function connectNodes(nodes){
 }
 
 
+function makeTestingMap(){
+  //debugger;
+  var suzie = new Librarian();
+  var numbOfNode = 30;
+  //never set incriment to zero
+  var incriment = 1;
+  var minConnections = 2;
+  var chunkArray = [];
+
+  var arrayOfNodes = [];
+  for (var i = 0; i < numbOfNode; i++){
+    //i am just specifing the incriment and minConnections
+    arrayOfNodes[i] = new Node(undefined,undefined,undefined,incriment, minConnections);
+  }
+
+  var arrayOfConnections = [];
+
+  arrayOfNodes.forEach(function(node){
+    suzie.connectNodeVanilla(arrayOfNodes);
+  });
+  console.log("finished connecting");
+
+
+  arrayOfNodes.forEach(function(node){
+
+    suzie.makeConnections(node, arrayOfConnections);
+  });
+
+  arrayOfConnections.forEach(function(connection){
+    connection.display();
+  });
+
+  arrayOfNodes.forEach(function(node){
+    node.display();
+  });
+
+
+}
 
 function connectCorners(corners){
 
