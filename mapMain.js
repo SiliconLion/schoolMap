@@ -103,49 +103,39 @@ function eventHandleKeyUp(){
 // called every time there is a mouse click. decides what to do with that click
 function clickHandler(x,y){
 
-
-if (keysDown.a === false){
+  let pressed = getPressedKeys();
   //if over a node, refrences that node. else will have 'false' value
-  var nodeBeneathMouse = overNode(x,y);
+  let nodeBeneathMouse = overNode(x,y);
 
-  /*checks to see if there is node beneath the mouse. if there is and niether shift nor x are held, toogle the color
-  otherwise, place a node.*/
-  //this is venurable. should check to see if nodeBeneathMouse is type node
+  switch (pressed[0]) {
+    case 'x':
+        //cleanly deletes node and connections to it from arrayOfNodes
+        deleteNode(nodeBeneathMouse);
+        redraw();
+        break;
+    case 'shift':
+        if (connectBuffer.length < 2){
+          connectBuffer.push(nodeBeneathMouse);
+        }
+        break;
+    case 'a':
+      //adds corners to the connection buffer whereever the mouse clicks
+        connectBuffer.push(x);
+        connectBuffer.push(y);
+        break;
+    case 'j':
+        pathSpecifications.push(nodeBeneathMouse);
+        break;
 
-
-    let pressed = getPressedKeys();
-    //if over a node, refrences that node. else will have 'false' value
-    let nodeBeneathMouse = overNode(x,y);
-
-    switch (pressed[0]) {
-      case 'x':
-          //cleanly deletes node and connections to it from arrayOfNodes
-          deleteNode(nodeBeneathMouse);
-          redraw();
-          break;
-      case 'shift':
-          if (connectBuffer.length < 2){
-            connectBuffer.push(nodeBeneathMouse);
-          }
-          break;
-      case 'a':
-        //adds corners to the connection buffer whereever the mouse clicks
-          connectBuffer.push(x);
-          connectBuffer.push(y);
-          break;
-      case 'j':
-          pathSpecifications.push(nodeBeneathMouse);
-          break;
-
-      default:
-          //this is venurable. should check to see if nodeBeneathMouse is type node
-          if (nodeBeneathMouse != false){
-            nodeBeneathMouse.toggleColor();
-          } else {
-            makeNodeFromCoords(x,y);
-          }
-    }
+    default:
+        //this is venurable. should check to see if nodeBeneathMouse is type node
+        if (nodeBeneathMouse != false){
+          nodeBeneathMouse.toggleColor();
+        } else {
+          makeNodeFromCoords(x,y);
+        }
   }
+}
 // returns all the keys that are pressed down as an array
 function getPressedKeys() {
   //holds all the keys that are pressed down
@@ -222,7 +212,6 @@ function redraw(){
   displayObjects(arrayOfNodes);
   displayObjects(connections);
   displayObjects(arrayOfRooms);
-  console.log(arrayOfRooms);
 }
 
 
@@ -238,56 +227,31 @@ function displayObjects(objArray){
 
 
 function connectNodes(nodes){
-
-  nodes[0].neighbors.push(nodes[1]);
-  nodes[1].neighbors.push(nodes[0]);
-  var rawPasta = new Connection(nodes[0].x,nodes[0].y,nodes[1].x,nodes[1].y);
-  // connectBuffer.push(
-  //   new Connection(nodes[0].x,nodes[0].y,nodes[1].x,nodes[1].y)
-  // );
-  connections.push(rawPasta);
-
-}
-
-
-function makeTestingMap(){
-  //debugger;
-  var suzie = new Librarian();
-  var numbOfNode = 30;
-  //never set incriment to zero
-  var incriment = 1;
-  var minConnections = 2;
-  var chunkArray = [];
-
-  var arrayOfNodes = [];
-  for (var i = 0; i < numbOfNode; i++){
-    //i am just specifing the incriment and minConnections
-    arrayOfNodes[i] = new Node(undefined,undefined,undefined,incriment, minConnections);
+  //checks 'nodes' to make sure there are two nodes
+  var valid = true;
+  for (var i = 0; i < nodes.length; i++){
+    if (nodes[i] == false || nodes[i] == undefined) {
+      console.log("not a vaild selection");
+      valid = false;
+      break;
+    }
+  }
+  if (valid === false || nodes.length != 2){
+    return;
   }
 
-  var arrayOfConnections = [];
+  //adds the nodes to eachother's neighbor array
+    nodes[0].neighbors.push(nodes[1]);
+    nodes[1].neighbors.push(nodes[0]);
 
-  arrayOfNodes.forEach(function(node){
-    suzie.connectNodeVanilla(arrayOfNodes);
-  });
-  console.log("finished connecting");
-
-
-  arrayOfNodes.forEach(function(node){
-
-    suzie.makeConnections(node, arrayOfConnections);
-  });
-
-  arrayOfConnections.forEach(function(connection){
-    connection.display();
-  });
-
-  arrayOfNodes.forEach(function(node){
-    node.display();
-  });
-
-
+    //makes new connection and adds it to the array of connections
+    var line = new Connection(nodes[0].x,nodes[0].y,nodes[1].x,nodes[1].y);
+    console.log(line);
+    connections.push(line);
 }
+
+
+
 
 function connectCorners(corners){
 
