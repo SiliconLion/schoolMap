@@ -36,7 +36,7 @@ not have the same inheritance.*/
 
 
 
-  var lowest = undefined;/*node with lowest fScore[]*/
+  var lowest = startCoordinator;
 
 
 
@@ -46,9 +46,10 @@ not have the same inheritance.*/
       coordinator.node.changeColor("green");
     });
 
-    var current = openSet[0];
+    var current = lowest;
     current.node.changeColor("blue");
 
+    // if the last node is discovered, do this
     if (current.node === end){
       current.node.changeColor("green");
       let coordPath = reconstructPath();
@@ -70,16 +71,16 @@ not have the same inheritance.*/
       }
 
 
-      // if (previouslyDiscovered === true){
-      //    return;
-      // } else {
+      if (previouslyDiscovered === true){
+         return;
+      } else {
         //fix these variable names
         var neighborMapNode = mapNode(neighbor, current);
         var neighborCoordinator = coordinator(neighbor, neighborMapNode);
         masterArr.push(neighborCoordinator);
         openSet.push(neighborCoordinator);
         nodesUsed.push(neighbor);
-    //}
+      }
     });
 
 
@@ -89,12 +90,18 @@ not have the same inheritance.*/
     openSet.splice(index, 1);
     //adding current to closed list
     closedSet.push(current);
-
-    openSet.sort(function(a, b){
-      return a.mapNode.fValue - b.mapNode.fValue;
-    });
-
     current.node.changeColor("red");
+
+    //now that we have removed 'current' from the openSet, we assign current to any other node in the oepn set
+    lowest = openSet[0];
+
+    //now we  find the node with the lowest f-fValue
+    openSet.forEach(function(coordinator){
+      if (coordinator.mapNode.fValue < lowest.mapNode.fValue){
+        lowest = coordinator;
+      }
+
+    })
 
   }
 
