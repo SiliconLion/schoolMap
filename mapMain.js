@@ -67,6 +67,7 @@ function eventHandleKeyUp(){
     keysDown.x = false;
 
   } else if (keyName == "j"){
+    keysDown.j = false;
     //gets the nodes from the buffer
     let start = pathSpecifications[0];
     let end = pathSpecifications[1];
@@ -78,6 +79,7 @@ function eventHandleKeyUp(){
     path.forEach(function(node){
       node.changeColor("red");
     });
+
   } else if (keyName == "r"){
     arrayOfNodes.forEach(function(node){
       node.changeColor("grey");
