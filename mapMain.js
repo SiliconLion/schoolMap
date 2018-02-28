@@ -75,6 +75,7 @@ function eventHandleKeyUp(){
     pathSpecifications.splice(0,pathSpecifications.length);
     //'path' will be an array of nodes for the path from start to end
     let path = findPath(start, end);
+    drawPath(path);
     //colors every node in the path red
     path.forEach(function(node){
       node.changeColor("red");
