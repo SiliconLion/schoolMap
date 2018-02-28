@@ -265,6 +265,19 @@ function connectCorners(corners){
 }
 
 
+function drawPath(pathArray){
+  //Draws a path between an array of nodes. This will draw the final path on the map.
+  ctx.beginPath();
+  ctx.lineWidth = 5;
+
+  ctx.moveTo(pathArray[0].x,pathArray[0].y);
+  for (var i = 1; i < pathArray.length; i += 1) {
+    ctx.lineTo(pathArray[i].x,pathArray[i].y);
+  }
+
+  ctx.strokeStyle = "purple";
+  ctx.stroke();
+}
 
 // the following dont work yet
 // function addSavedNodes(){
