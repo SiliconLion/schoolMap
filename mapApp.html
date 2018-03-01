@@ -9,6 +9,9 @@
   <body>
     <canvas id="myCanvas" width="800" height="800"  ></canvas>
     <img id="bluePrint" width="220" height="277" src="testMap.png" >
+    <input type="button" onclick="saveData()" value="Save Map">
+    <input type="file" onchange="readNodeFile(this.files[0])" value="Load Nodes"></input>
+    <input type="file" onchange="readRoomFile(this.files[0])" value="Load Rooms"></input>
     <script>
       window.onload = function() {
           var c = document.getElementById("myCanvas");
@@ -23,6 +26,8 @@
     <script src="Node.js"></script>
     <script src="Room.js"></script>
     <script src="mapMain.js"></script>
+    <script src="saveFileScripts.js"></script>
+    <script src="FileSaver.js"></script>
     <script>
 
     //listens for keydown events. when called, passes the keydown event to the keydown handler
@@ -46,7 +51,101 @@
       redraw();
     }
     </script>
+    <script>
+    function saveData(event){
+      console.log("Welp");
+        // Save the nodes!
+        date = new Date();
+        fileName = "File of Nodes.txt";
+        createData(arrayOfNodes);
+        writeFile();
+        // Save the rooms!
+        fileName = "File of Rooms.txt";
+        createData(arrayOfRooms);
+        writeFile();
+    }
+    </script>
+    <script>
+    function readNodeFile(f){
+      var reader = new FileReader(); // Reads the file
+      reader.readAsText(f); // Ok, this actual reads the file
+      reader.onload = function(){ // When it finishes
+          // We have our contents
+          var text = reader.result;
+          array = array.splice(0,array.length);
+          // The @ symbol is how we split the string into the array
+          array = text.split('@');
+          console.log(array);
 
+          // This is the actual logic of the function
+          for(var i = 0; i<array.length;i++)
+            {
+            // This removes the @ symobol
+            array[i] = array[i].replace('@','');
+
+            // If we have an empty array entry
+            if(array[i] == " " || array[i] == "")
+              {
+              array.pop();
+              continue;
+              }
+            // I can't remember why this is necessary, but it breaks if you remove it
+            if(i > 0)
+              {
+              array[i] = array[i].substring(1,array[i].length);
+              }
+
+            // This transforms the entry string into an object
+            array[i] = JSON.parse(array[i]);
+            }
+        arrayOfNodes = array;
+        }
+        reader.onerror = function(e) {
+           // If it screws up
+        }
+      }
+    </script>
+    <script>
+    function readRoomFile(f){
+      var reader = new FileReader(); // Reads the file
+      reader.readAsText(f); // Ok, this actual reads the file
+      reader.onload = function(){ // When it finishes
+          // We have our contents
+          var text = reader.result;
+          array = array.splice(0,array.length);
+          // The @ symbol is how we split the string into the array
+          array = text.split('@');
+          console.log(array);
+
+          // This is the actual logic of the function
+          for(var i = 0; i<array.length;i++)
+            {
+            // This removes the @ symobol
+            array[i] = array[i].replace('@','');
+
+            // If we have an empty array entry
+            if(array[i] == " " || array[i] == "")
+              {
+              array.pop();
+              continue;
+              }
+            // I can't remember why this is necessary, but it breaks if you remove it
+            if(i > 0)
+              {
+              array[i] = array[i].substring(1,array[i].length);
+              }
+
+            // This transforms the entry string into an object
+            array[i] = JSON.parse(array[i]);
+            }
+          arrayOfRooms = array;
+          }
+        }
+        reader.onerror = function(e) {
+           // If it screws up
+        }
+    </script>
+    <script>
 
 
   </body>

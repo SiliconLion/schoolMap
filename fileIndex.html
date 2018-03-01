@@ -6,18 +6,7 @@
 
     <script src="saveFileScripts.js"></script>
     <script src="FileSaver.js"></script>
-    <script>
-    // Our save button
-    document.addEventListener('keyup', event => { eventHandleKeyUp(event) } )
-    function eventHandleKeyUp(event){
-        const keyName = event.key;
-        if (keyName == 'p'){ // This is our save key
-          createData(); // This would convert all the objects we want to save into strings
-          writeFile(); // This actually writes the strings to the file
-        }
-    }
-    </script>
-    <script>
+    
     function readFile(f){
       var reader = new FileReader(); // Reads the file
       reader.readAsText(f); // Ok, this actual reads the file
