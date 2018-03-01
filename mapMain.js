@@ -83,7 +83,11 @@ function eventHandleKeyUp(){
 
   } else if (keyName == "r"){
     arrayOfNodes.forEach(function(node){
+      if (node.location === "room"){
+        node.changeColor("blue");
+      } else {
       node.changeColor("grey");
+      }
     })
   } else if (keyName == "a"){
     console.log(connectBuffer)
@@ -134,6 +138,7 @@ function clickHandler(x,y){
         //this is venurable. should check to see if nodeBeneathMouse is type node
         if (nodeBeneathMouse != false){
           nodeBeneathMouse.toggleColor();
+          nodeBeneathMouse.toggleLocation();
         } else {
           makeNodeFromCoords(x,y);
         }
@@ -264,6 +269,30 @@ function connectCorners(corners){
   console.log(room);
 }
 
+function makeHallwaysInvisible() {
+  console.log('make disapear');
+  arrayOfNodes.forEach(function(node){
+    if (node.location === "hallway"){
+      node.color = "#00000000";
+    }
+  });
+  connections.forEach(function(stick){
+    stick.color = "#00000000";
+  })
+  redraw();
+}
+
+function makeHallwaysVisible() {
+  arrayOfNodes.forEach(function(node){
+    if (node.location === "hallway"){
+      node.color = "grey";
+    }
+  });
+  connections.forEach(function(connection){
+    connection.color = "red";
+  })
+  redraw();
+}
 
 
 // the following dont work yet

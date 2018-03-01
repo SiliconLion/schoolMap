@@ -9,6 +9,8 @@
   <body>
     <canvas id="myCanvas" width="800" height="800"  ></canvas>
     <img id="bluePrint" width="220" height="277" src="testMap.png" >
+    <input type="button" value="Make Hallway nodes disapear" onclick="makeHallwaysInvisible()">
+    <input type="button" value="Make Hallway nodes reappear" onclick="makeHallwaysVisible()">
     <script>
       window.onload = function() {
           var c = document.getElementById("myCanvas");

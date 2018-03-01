@@ -25,8 +25,8 @@ class Node {
 //changes the color of the node.
   toggleColor(){
     if(this.color == "blue"){
-      this.color = "red";
-    } else if (this.color == "red") {
+      this.color = "grey";
+    } else if (this.color == "grey") {
       this.color = "blue";
     }
     redraw();
