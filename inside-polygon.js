@@ -8,11 +8,21 @@ function insidePolygon(corners, pointX, pointY) {
   //length is one greater than the last index, so subtract one.
   //there is one more corner than edges so subract one more from length
   for (let i = 0; i <corners.length-2 i++){
-
+    if (
+      lineSegmentIntersect(
+        corners[i].x,
+        corners[i].y,
+        corners[i+1].x,
+        corners[i+1].y,
+        pointX, pointY,
+        ctx.width,
+        pointY
+      ) == true) {
+      numOfIntersections++;
+    }
   }
 
   if (numOfIntersections % 2 == 0 && numOfIntersections != 0){
-
     return true;
   } else {
     return false;
