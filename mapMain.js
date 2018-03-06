@@ -16,7 +16,8 @@ var keysDown = {
   shift : false,
   x : false,
   j : false,
-  a: false
+  a : false,
+  c : false
 }
 
 //called from html document
@@ -40,6 +41,8 @@ function eventHandleKeyDown(){
     keysDown.j = true;
   } else if (keyName == "a"){
     keysDown.a = true;
+  } else if (keyName == "c"){
+    keysDown.c = true;
   }
   //this should be reomved soon. currently used just as a debugging helper.
   console.log(keysDown);
@@ -97,8 +100,10 @@ function eventHandleKeyUp(){
     connectBuffer.splice(0,connectBuffer.length);
 
     // need to add the connection buffer stuff here for room corner creation
+  } else if (keyName == "c") {
+    keysDown.c = false;
   }
-  console.log(keysDown);
+
 }
 
 
@@ -133,6 +138,8 @@ function clickHandler(x,y){
     case 'j':
         pathSpecifications.push(nodeBeneathMouse);
         break;
+    case 'c':
+        console.log(getColorAtPixle(x,y));
 
     default:
         //this is venurable. should check to see if nodeBeneathMouse is type node
@@ -213,8 +220,8 @@ function deleteNode(node){
 
 function redraw(){
   //redraws the map image so nodes that no longer exist disapear
-  var img = document.getElementById("bluePrint");
-  ctx.drawImage(img, 10, 10);
+  // var img = document.getElementById("bluePrint");
+  // ctx.drawImage(img, 10, 10);
 
   // redraws all the nodes over top that still do exist
   displayObjects(arrayOfNodes);
