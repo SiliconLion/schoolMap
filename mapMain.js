@@ -262,8 +262,10 @@ function connectNodes(nodes){
 
 
 function connectCorners(corners){
-
-  var room = new Room(undefined,undefined,corners);
+  //makes a new room with a color that corisponds to the index it will have in "arrayOfRooms"
+  var color = decimalToRGB(arrayOfRooms.length);
+  colorString = "rgb(" + color[0]+","+ color[1] + "," + color[2] + ")"
+  var room = new Room(undefined,undefined,corners,colorString);
   arrayOfRooms.push(room);
   console.log("Room Created");
   console.log(room);

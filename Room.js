@@ -1,8 +1,9 @@
 'use strict';
 class Room{
-  constructor(number, name, arrayOfCorners){
+  constructor(number, name, arrayOfCorners, color){
     //all corners of the room Format (x1,y1,x2,y2,x3,y3,...)
     this.borders =[];
+    this.color = color;
     //Fills the borders array with all of the information from the arrayOfCorners
     //unexpected behavior when initializing this.borders directly to arrayOfCorners
 
@@ -32,7 +33,7 @@ class Room{
   }
   display(){
 
-    ctx.fillStyle = "lightgrey";
+    ctx.fillStyle = this.color;
     ctx.beginPath();
     ctx.lineWidth = 5;
       ctx.moveTo(this.borders[0],this.borders[1]);
