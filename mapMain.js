@@ -2,6 +2,8 @@
 
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
+var hiddenCanvas = document.getElementById("hiddenCanvas");
+var htx = hiddenCanvas.getContext("2d");
 
 //holds every node
 var arrayOfNodes = [];
@@ -24,13 +26,9 @@ var keysDown = {
 // a keyDown event is passed in
 // handles the key down events
 function eventHandleKeyDown(){
-  console.log("key is down");
   /*stores the key that was pressed down as a string ("Shift" instead of 16. also
   doesnt care if it is left shift or right shift etc.) */
   const keyName = event.key;
-  //this should be reomved soon. currently used just as a debugging helper.
-  console.log(event, keyName);
-
   /*checks to see if 'keyname' == any of the keys in the object keysDown.
   if it does, sets that key to true */
   if (keyName == "Shift"){
@@ -45,7 +43,6 @@ function eventHandleKeyDown(){
     keysDown.c = true;
   }
   //this should be reomved soon. currently used just as a debugging helper.
-  console.log(keysDown);
 }
 
 //called from html document
@@ -55,13 +52,9 @@ function eventHandleKeyUp(){
   /*stores the key that was released as a string ("Shift" instead of 16. also
   doesnt care if it is left shift or right shift etc.) */
   const keyName = event.key;
-  //this should be reomved soon. currently used just as a debugging helper.
-  console.log(event, keyName);
-
   /*checks to see if 'keyname' == any of the keys in the object keysDown.
   if it does, sets that key to false */
   if (keyName == "Shift"){
-
     keysDown.shift = false;
     connectNodes(connectBuffer);
     redraw();
@@ -93,7 +86,6 @@ function eventHandleKeyUp(){
       }
     })
   } else if (keyName == "a"){
-    console.log(connectBuffer)
     keysDown.a = false;
     connectCorners(connectBuffer);
     redraw();
@@ -140,6 +132,7 @@ function clickHandler(x,y){
         break;
     case 'c':
         console.log(getColorAtPixle(x,y));
+        break;
 
     default:
         //this is venurable. should check to see if nodeBeneathMouse is type node
@@ -175,8 +168,6 @@ function  makeNodeFromCoords(x,y) {
 
   var node = new Node(x,y);
   arrayOfNodes.push(node);
-  console.log("node added");
-  console.log(node);
 }
 
 
@@ -227,6 +218,9 @@ function redraw(){
   displayObjects(arrayOfNodes);
   displayObjects(connections);
   displayObjects(arrayOfRooms);
+  arrayOfRooms.forEach(function(room){
+    room.hiddenDisplay();
+  });
 }
 
 
@@ -273,9 +267,7 @@ function connectCorners(corners){
   var color = decimalToRGB(arrayOfRooms.length);
   colorString = "rgb(" + color[0]+","+ color[1] + "," + color[2] + ")"
   var room = new Room(undefined,undefined,corners,colorString);
-  arrayOfRooms.push(room);
-  console.log("Room Created");
-  console.log(room);
+  arrayOfRooms[arrayOfRooms.length] = room;
 }
 
 function makeHallwaysInvisible() {

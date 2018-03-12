@@ -6,8 +6,10 @@ var colorIndex = 0;
 
 //takes a rgb color, and treats it as a number in base 255,
 // with r being the ones place, g being the 255's place, and b being the 255^2 place
-function rgbToDecimal(r,g,b) {
-  return (b*255*255) + (g * 255) + r;
+function rgbToDecimal(colorArr) {
+  //colorArr[0] == r, colorArr[1] == g,colorArr[2] == b,
+  //change this to bit manipulation
+  return (colorArr[2]*65025) + (colorArr[1] * 255) + colorArr[0];
 }
 
 //takes a decimal number, and turns it into a rbg color.
@@ -42,5 +44,11 @@ function decimalToRGB(num){
 
 
 function getColorAtPixle(x,y) {
-  return ctx.getImageData(x, y, 1, 1).data
+  return htx.getImageData(x, y, 1, 1).data
+}
+
+//color is an array in the format [r,g,b]
+//returns the room that has the same index as the decimal value of the color
+function getRoomByColor(colorArr) {
+  return arrayOfRooms[rgbToDecimal(colorArr)];
 }

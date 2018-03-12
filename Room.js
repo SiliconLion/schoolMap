@@ -49,4 +49,20 @@ class Room{
 
   }
 
+  hiddenDisplay(){
+    htx.fillStyle = this.color;
+    htx.beginPath();
+    htx.lineWidth = 5;
+      htx.moveTo(this.borders[0],this.borders[1]);
+
+      for (var i = 2; i < (this.borders.length); i += 2){
+        htx.lineTo(this.borders[i],this.borders[i+1]);
+      }
+
+      htx.lineTo(this.borders[0],this.borders[1]);
+    htx.strokeStyle = "blue";
+    htx.stroke();
+    htx.fill();
+  }
+
 }
