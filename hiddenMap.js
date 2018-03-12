@@ -52,3 +52,7 @@ function getColorAtPixle(x,y) {
 function getRoomByColor(colorArr) {
   return arrayOfRooms[rgbToDecimal(colorArr)];
 }
+
+function getRoomByLocation(x,y) {
+  return arrayOfRooms[rgbToDecimal(htx.getImageData(x,y,1,1).data)];
+}

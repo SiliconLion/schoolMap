@@ -131,7 +131,6 @@ function clickHandler(x,y){
         pathSpecifications.push(nodeBeneathMouse);
         break;
     case 'c':
-        console.log(getColorAtPixle(x,y));
         break;
 
     default:
@@ -211,13 +210,14 @@ function deleteNode(node){
 
 function redraw(){
   //redraws the map image so nodes that no longer exist disapear
-  // var img = document.getElementById("bluePrint");
-  // ctx.drawImage(img, 10, 10);
+  var img = document.getElementById("bluePrint");
+  ctx.drawImage(img, 10, 10);
 
   // redraws all the nodes over top that still do exist
+  displayObjects(arrayOfRooms);
   displayObjects(arrayOfNodes);
   displayObjects(connections);
-  displayObjects(arrayOfRooms);
+
   arrayOfRooms.forEach(function(room){
     room.hiddenDisplay();
   });
