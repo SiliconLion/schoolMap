@@ -10,8 +10,8 @@
     <canvas id="myCanvas" width="800" height="800"  ></canvas>
     <img id="bluePrint" width="220" height="277" src="testMap.png" >
     <input type="button" onclick="saveData()" value="Save Map">
-    <input type="file" onchange="readNodeFile(this.files[0])" value="Load Nodes"></input>
-    <input type="file" onchange="readRoomFile(this.files[0])" value="Load Rooms"></input>
+    <input type="file" onchange="readNodeFile(this.files[0])" value="Load Nodes">Nodes</input>
+    <input type="file" onchange="readRoomFile(this.files[0])" value="Load Rooms">Rooms</input>
     <script>
       window.onload = function() {
           var c = document.getElementById("myCanvas");
@@ -53,7 +53,6 @@
     </script>
     <script>
     function saveData(event){
-      console.log("Welp");
         // Save the nodes!
         date = new Date();
         fileName = "File of Nodes.txt";
@@ -68,6 +67,7 @@
     <script>
     function readNodeFile(f){
       var reader = new FileReader(); // Reads the file
+      console.log("Load Node Objects");
       reader.readAsText(f); // Ok, this actual reads the file
       reader.onload = function(){ // When it finishes
           // We have our contents
@@ -94,7 +94,7 @@
               {
               array[i] = array[i].substring(1,array[i].length);
               }
-
+            console.log(array[i]);
             // This transforms the entry string into an object
             array[i] = JSON.parse(array[i]);
             }
@@ -108,6 +108,7 @@
     <script>
     function readRoomFile(f){
       var reader = new FileReader(); // Reads the file
+      console.log("Load Room Objects");
       reader.readAsText(f); // Ok, this actual reads the file
       reader.onload = function(){ // When it finishes
           // We have our contents
@@ -134,7 +135,7 @@
               {
               array[i] = array[i].substring(1,array[i].length);
               }
-
+            console.log(array[i]);
             // This transforms the entry string into an object
             array[i] = JSON.parse(array[i]);
             }
