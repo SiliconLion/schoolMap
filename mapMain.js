@@ -228,6 +228,12 @@ function redraw(){
 
 }
 
+function redrawVTX(){
+
+  vtx.fillStyle="#FFFFFF";
+  vtx.fillRect(0,0,800,800);
+  //Draws the background of VTX, effectivly clearing it.
+}
 
 //called from html doc
 //displays all nodes
