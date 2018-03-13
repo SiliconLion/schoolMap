@@ -4,6 +4,8 @@ var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 var hiddenCanvas = document.getElementById("hiddenCanvas");
 var htx = hiddenCanvas.getContext("2d");
+var visibleCanvas = document.getElementById("visibleCanvas");
+var vtx = visibleCanvas.getContext("2d");
 
 //holds every node
 var arrayOfNodes = [];
@@ -220,7 +222,10 @@ function redraw(){
 
   arrayOfRooms.forEach(function(room){
     room.hiddenDisplay();
+    room.visibleMapDisplay();
   });
+
+
 }
 
 

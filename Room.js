@@ -32,7 +32,6 @@ class Room{
     this.roomName = name;
   }
   display(){
-
     ctx.fillStyle = this.color;
     ctx.beginPath();
     ctx.lineWidth = 5;
@@ -63,6 +62,22 @@ class Room{
     htx.strokeStyle = "blue";
     htx.stroke();
     htx.fill();
+  }
+
+  visibleMapDisplay() {
+    vtx.fillStyle = "pink";
+    vtx.beginPath();
+    vtx.lineWidth = 5;
+      vtx.moveTo(this.borders[0],this.borders[1]);
+
+      for (var i = 2; i < (this.borders.length); i += 2){
+        vtx.lineTo(this.borders[i],this.borders[i+1]);
+      }
+
+      vtx.lineTo(this.borders[0],this.borders[1]);
+    vtx.strokeStyle = "blue";
+    vtx.stroke();
+    vtx.fill();
   }
 
 }
