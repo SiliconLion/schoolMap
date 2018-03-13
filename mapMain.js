@@ -302,16 +302,16 @@ function makeHallwaysVisible() {
 
 function drawPath(pathArray){
   //Draws a path between an array of nodes. This will draw the final path on the map.
-  ctx.beginPath();
-  ctx.lineWidth = 5;
+  vtx.beginPath();
+  vtx.lineWidth = 5;
 
-  ctx.moveTo(pathArray[0].x,pathArray[0].y);
+  vtx.moveTo(pathArray[0].x,pathArray[0].y);
   for (var i = 1; i < pathArray.length; i += 1) {
-    ctx.lineTo(pathArray[i].x,pathArray[i].y);
+    vtx.lineTo(pathArray[i].x,pathArray[i].y);
   }
 
-  ctx.strokeStyle = "purple";
-  ctx.stroke();
+  vtx.strokeStyle = "purple";
+  vtx.stroke();
 }
 
 // the following dont work yet
