@@ -20,3 +20,19 @@ function writeFile(){
   // Destroy the array
   array.splice(0,array.length);
 }
+
+function unwrapNodeJSON() {
+  arrayOfNodes.forEach(function(node){
+    node.neighbors.forEach(function(neighbor){
+      neighbor = arrayOfNodes.getIndexOf(neighbor);
+    });
+  });
+}
+
+function rewrapNodeJSON(){
+  arrayOfNodes.forEach(function(node){
+    node.neighbors.forEach(function(neighbor){
+      neighbor = arrayOfNodes[neighbor];
+    });
+  });
+}
