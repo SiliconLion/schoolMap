@@ -2,6 +2,10 @@
 
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
+var hiddenCanvas = document.getElementById("hiddenCanvas");
+var htx = hiddenCanvas.getContext("2d");
+var visibleCanvas = document.getElementById("visibleCanvas");
+var vtx = visibleCanvas.getContext("2d");
 
 //holds every node
 var arrayOfNodes = [];
@@ -16,20 +20,17 @@ var keysDown = {
   shift : false,
   x : false,
   j : false,
-  a: false
+  a : false,
+  c : false
 }
 
 //called from html document
 // a keyDown event is passed in
 // handles the key down events
 function eventHandleKeyDown(){
-  console.log("key is down");
   /*stores the key that was pressed down as a string ("Shift" instead of 16. also
   doesnt care if it is left shift or right shift etc.) */
   const keyName = event.key;
-  //this should be reomved soon. currently used just as a debugging helper.
-  console.log(event, keyName);
-
   /*checks to see if 'keyname' == any of the keys in the object keysDown.
   if it does, sets that key to true */
   if (keyName == "Shift"){
@@ -40,9 +41,10 @@ function eventHandleKeyDown(){
     keysDown.j = true;
   } else if (keyName == "a"){
     keysDown.a = true;
+  } else if (keyName == "c"){
+    keysDown.c = true;
   }
   //this should be reomved soon. currently used just as a debugging helper.
-  console.log(keysDown);
 }
 
 //called from html document
@@ -52,13 +54,9 @@ function eventHandleKeyUp(){
   /*stores the key that was released as a string ("Shift" instead of 16. also
   doesnt care if it is left shift or right shift etc.) */
   const keyName = event.key;
-  //this should be reomved soon. currently used just as a debugging helper.
-  console.log(event, keyName);
-
   /*checks to see if 'keyname' == any of the keys in the object keysDown.
   if it does, sets that key to false */
   if (keyName == "Shift"){
-
     keysDown.shift = false;
     connectNodes(connectBuffer);
     redraw();
@@ -90,15 +88,16 @@ function eventHandleKeyUp(){
       }
     })
   } else if (keyName == "a"){
-    console.log(connectBuffer)
     keysDown.a = false;
     connectCorners(connectBuffer);
     redraw();
     connectBuffer.splice(0,connectBuffer.length);
 
     // need to add the connection buffer stuff here for room corner creation
+  } else if (keyName == "c") {
+    keysDown.c = false;
   }
-  console.log(keysDown);
+
 }
 
 
@@ -132,6 +131,8 @@ function clickHandler(x,y){
         break;
     case 'j':
         pathSpecifications.push(nodeBeneathMouse);
+        break;
+    case 'c':
         break;
 
     default:
@@ -168,8 +169,6 @@ function  makeNodeFromCoords(x,y) {
 
   var node = new Node(x,y);
   arrayOfNodes.push(node);
-  console.log("node added");
-  console.log(node);
 }
 
 
@@ -217,11 +216,24 @@ function redraw(){
   ctx.drawImage(img, 10, 10);
 
   // redraws all the nodes over top that still do exist
+  displayObjects(arrayOfRooms);
   displayObjects(arrayOfNodes);
   displayObjects(connections);
-  displayObjects(arrayOfRooms);
+
+  arrayOfRooms.forEach(function(room){
+    room.hiddenDisplay();
+    room.visibleMapDisplay();
+  });
+
+
 }
 
+function redrawVTX(){
+
+  vtx.fillStyle="#FFFFFF";
+  vtx.fillRect(0,0,800,800);
+  //Draws the background of VTX, effectivly clearing it.
+}
 
 //called from html doc
 //displays all nodes
@@ -262,11 +274,11 @@ function connectNodes(nodes){
 
 
 function connectCorners(corners){
-
-  var room = new Room(undefined,undefined,corners);
-  arrayOfRooms.push(room);
-  console.log("Room Created");
-  console.log(room);
+  //makes a new room with a color that corisponds to the index it will have in "arrayOfRooms"
+  var color = decimalToRGB(arrayOfRooms.length);
+  colorString = "rgb(" + color[0]+","+ color[1] + "," + color[2] + ")"
+  var room = new Room(undefined,undefined,corners,colorString);
+  arrayOfRooms[arrayOfRooms.length] = room;
 }
 
 function makeHallwaysInvisible() {
@@ -296,16 +308,16 @@ function makeHallwaysVisible() {
 
 function drawPath(pathArray){
   //Draws a path between an array of nodes. This will draw the final path on the map.
-  ctx.beginPath();
-  ctx.lineWidth = 5;
+  vtx.beginPath();
+  vtx.lineWidth = 5;
 
-  ctx.moveTo(pathArray[0].x,pathArray[0].y);
+  vtx.moveTo(pathArray[0].x,pathArray[0].y);
   for (var i = 1; i < pathArray.length; i += 1) {
-    ctx.lineTo(pathArray[i].x,pathArray[i].y);
+    vtx.lineTo(pathArray[i].x,pathArray[i].y);
   }
 
-  ctx.strokeStyle = "purple";
-  ctx.stroke();
+  vtx.strokeStyle = "purple";
+  vtx.stroke();
 }
 
 // the following dont work yet

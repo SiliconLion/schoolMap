@@ -43,12 +43,15 @@ class Node {
 //changes the location type to room
   makeRoom(){
     this.location = "room";
+    this.room = getRoomByLocation(this.x, this.y);
+    console.log(this.room);
   }
 
 //no args
 //changes the location type to hallway
   makeHallway(){
     this.location = "hallway";
+    this.room = "undefined";
   }
 
   toggleLocation(){

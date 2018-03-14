@@ -1,8 +1,9 @@
 'use strict';
 class Room{
-  constructor(number, name, arrayOfCorners){
+  constructor(number, name, arrayOfCorners, color){
     //all corners of the room Format (x1,y1,x2,y2,x3,y3,...)
     this.borders =[];
+    this.color = color;
     //Fills the borders array with all of the information from the arrayOfCorners
     //unexpected behavior when initializing this.borders directly to arrayOfCorners
 
@@ -31,8 +32,7 @@ class Room{
     this.roomName = name;
   }
   display(){
-
-    ctx.fillStyle = "lightgrey";
+    ctx.fillStyle = this.color;
     ctx.beginPath();
     ctx.lineWidth = 5;
       ctx.moveTo(this.borders[0],this.borders[1]);
@@ -46,6 +46,38 @@ class Room{
     ctx.stroke();
     ctx.fill();
 
+  }
+
+  hiddenDisplay(){
+    htx.fillStyle = this.color;
+    htx.beginPath();
+    htx.lineWidth = 5;
+      htx.moveTo(this.borders[0],this.borders[1]);
+
+      for (var i = 2; i < (this.borders.length); i += 2){
+        htx.lineTo(this.borders[i],this.borders[i+1]);
+      }
+
+      htx.lineTo(this.borders[0],this.borders[1]);
+    htx.strokeStyle = "blue";
+    htx.stroke();
+    htx.fill();
+  }
+
+  visibleMapDisplay() {
+    vtx.fillStyle = "pink";
+    vtx.beginPath();
+    vtx.lineWidth = 5;
+      vtx.moveTo(this.borders[0],this.borders[1]);
+
+      for (var i = 2; i < (this.borders.length); i += 2){
+        vtx.lineTo(this.borders[i],this.borders[i+1]);
+      }
+
+      vtx.lineTo(this.borders[0],this.borders[1]);
+    vtx.strokeStyle = "blue";
+    vtx.stroke();
+    vtx.fill();
   }
 
 }

@@ -8,6 +8,8 @@
   </head>
   <body>
     <canvas id="myCanvas" width="800" height="800"  ></canvas>
+    <canvas id="hiddenCanvas" width="800" height="800"  ></canvas>
+    <canvas id="visibleCanvas" width="800" height="800"  ></canvas>
     <img id="bluePrint" width="220" height="277" src="testMap.png" >
     <input type="button" value="Make Hallway nodes disapear" onclick="makeHallwaysInvisible()">
     <input type="button" value="Make Hallway nodes reappear" onclick="makeHallwaysVisible()">
@@ -17,6 +19,9 @@
           var ctx = c.getContext("2d");
           var img = document.getElementById("bluePrint");
           ctx.drawImage(img, 10, 10);
+          htx.fillStyle="#FFFFFF";
+          htx.fillRect(0,0,800,800);
+
       }
     </script>
 
@@ -24,6 +29,7 @@
     <script src="findPath.js"></script>
     <script src="Node.js"></script>
     <script src="Room.js"></script>
+    <script src="hiddenMap.js"></script>
     <script src="mapMain.js"></script>
     <script>
 
@@ -46,6 +52,16 @@
       clickHandler(xCoord, yCoord);
       //this is a bad way to do this, i just want to see if other stuff works
       redraw();
+    }
+    document.getElementById("hiddenCanvas").onclick = function() {
+      /* x and y coords adjusted for the canvas. (clientX & clientY are offset from
+      the cordinate system of the canvas. we use 'getBoundingClientRect' to
+      adjust the client coord system, to the canvas coord system*/
+      var xCoord = event.clientX - hiddenCanvas.getBoundingClientRect().left;
+      var yCoord = event.clientY - hiddenCanvas.getBoundingClientRect().top;
+      console.log("hidden Canvas", xCoord, yCoord);
+      console.log(getRoomByColor(getColorAtPixle(xCoord,yCoord)));
+
     }
     </script>
 
