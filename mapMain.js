@@ -229,10 +229,13 @@ function redraw(){
 }
 
 function redrawVTX(){
-
+//Draws the background of VTX, effectivly clearing it.
   vtx.fillStyle="#FFFFFF";
   vtx.fillRect(0,0,800,800);
-  //Draws the background of VTX, effectivly clearing it.
+
+  arrayOfRooms.forEach(function(room){
+    room.visibleMapDisplay()
+  });
 }
 
 //called from html doc
@@ -242,6 +245,11 @@ function displayObjects(objArray){
     object.display();
   });
 }
+
+for (let i = 0; i < arrayOfRooms.length; i++){
+  arrayOfRooms[i].draw();
+}
+
 
 
 

@@ -4,6 +4,7 @@ class Room{
     //all corners of the room Format (x1,y1,x2,y2,x3,y3,...)
     this.borders =[];
     this.color = color;
+    this.node;
     //Fills the borders array with all of the information from the arrayOfCorners
     //unexpected behavior when initializing this.borders directly to arrayOfCorners
 

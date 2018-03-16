@@ -4,13 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>HHS Map App</title>
+     <link rel="map-app-style-sheet.css" href="styles.css">
     <!-- <link href="index.css" rel="stylesheet" type="text/css" /> -->
   </head>
   <body>
     <canvas id="myCanvas" width="800" height="800"  ></canvas>
     <canvas id="hiddenCanvas" width="800" height="800"  ></canvas>
     <canvas id="visibleCanvas" width="800" height="800"  ></canvas>
-    <img id="bluePrint" width="220" height="277" src="testMap.png" >
+
     <input type="button" value="Make Hallway nodes disapear" onclick="makeHallwaysInvisible()">
     <input type="button" value="Make Hallway nodes reappear" onclick="makeHallwaysVisible()">
     <input type="button" value="Refresh Path Display" onClick="redrawVTX()">
@@ -64,9 +65,33 @@
       console.log(getRoomByColor(getColorAtPixle(xCoord,yCoord)));
 
     }
+    document.getElementById("visibleCanvas").onclick = function() {
+      /* x and y coords adjusted for the canvas. (clientX & clientY are offset from
+      the cordinate system of the canvas. we use 'getBoundingClientRect' to
+      adjust the client coord system, to the canvas coord system*/
+      var xCoord = event.clientX - visibleCanvas.getBoundingClientRect().left;
+      var yCoord = event.clientY - visibleCanvas.getBoundingClientRect().top;
+      let room = getRoomByColor(getColorAtPixle(xCoord,yCoord));
+      pathSpecifications.push(room.node);
+
+      if (pathSpecifications.length === 2) {
+        //gets the nodes from the buffer
+        let start = pathSpecifications[0];
+        let end = pathSpecifications[1];
+        //clears the buffer
+        pathSpecifications.splice(0,pathSpecifications.length);
+        //'path' will be an array of nodes for the path from start to end
+        let path = findPath(start, end);
+        drawPath(path);
+        //colors every node in the path red
+        path.forEach(function(node){
+          node.changeColor("red");
+        });
+      }
+    }
     </script>
 
-
-
+<!-- this image is one pixle because it was an easy way to hide it -->
+  <img id="bluePrint" width="1" height="1" src="testMap.png" >
   </body>
 </html>
