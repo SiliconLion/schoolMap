@@ -1,0 +1,27 @@
+<list>
+  <teacherinfo>
+    <name>
+	<first>adam</first>
+	<last>kaufman</last>
+    </name>
+    <moving>true</moving>
+    <room>
+      <p1>311</p1>
+      <p2>315</p2>
+      <p3>311</p3>
+      <p4>412</p4>
+      <p5>555</p5>
+      <p6>754</p6>
+      <p7>166</p7>
+      <p8>652</p8>
+    </room>
+  </teacherinfo>
+  <teacherinfo>
+    <name>
+	<first>heba</first>
+	<last>ouda</last>
+    </name>
+    <moving>false</moving>
+    <room>666</room>
+  </teacherinfo>
+</list>
