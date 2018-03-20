@@ -1,15 +1,17 @@
+"use strict"
+
+
 var array = []; // YEEEHAAAA
 var fileName = "Data.txt"; // What we call our file that we save
 var reader = new FileReader(); // This is how we read the file
 // We take an array of objects and convert it to a saveable file
 function createData(savedArray){
   array = savedArray;
-  var str;
-  var cache = [];
   // We convert our array to strings
   for(var i = 0; i< array.length; i++)
     {
-    array[i] = JSON.stringify()+"@";
+    console.log(array[i]);
+    array[i] = JSON.stringify(array[i])+"@";
     }
 }
 
@@ -22,17 +24,27 @@ function writeFile(){
 }
 
 function unwrapNodeJSON() {
+  var i,ii,neigh;
   arrayOfNodes.forEach(function(node){
-    node.neighbors.forEach(function(neighbor){
-      neighbor = arrayOfNodes.getIndexOf(neighbor);
-    });
+  for(i=0;i<node.neighbors.length;i++){
+    neigh = node.neighbors[i];
+    for(ii = 0; ii < arrayOfNodes.length;ii++){
+      if(arrayOfNodes[ii] == neigh){
+        break;
+        }
+      }
+    node.neighbors[i] = ii;
+    }
   });
 }
 
 function rewrapNodeJSON(){
+  var i,ii,neigh;
   arrayOfNodes.forEach(function(node){
-    node.neighbors.forEach(function(neighbor){
-      neighbor = arrayOfNodes[neighbor];
-    });
+    for(i=0;i<node.neighbors.length;i++){
+      node.neighbors[i] = arrayOfNodes[node.neighbors[i]];
+      var line = new Connection(node.x,node.y,node.neighbors[i].x,node.neighbors[i].y);
+      connections.push(line);
+      }
   });
 }

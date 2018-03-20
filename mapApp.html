@@ -56,17 +56,23 @@
         // Save the nodes!
         date = new Date();
         fileName = "File of Nodes.txt";
+        debugger;
+        unwrapNodeJSON();
+        console.log(arrayOfNodes);
         createData(arrayOfNodes);
         writeFile();
+        rewrapNodeJSON();
         // Save the rooms!
         fileName = "File of Rooms.txt";
         createData(arrayOfRooms);
         writeFile();
     }
     </script>
+
     <script>
     function readNodeFile(f){
       var reader = new FileReader(); // Reads the file
+      var array = [];
       console.log("Load Node Objects");
       reader.readAsText(f); // Ok, this actual reads the file
       reader.onload = function(){ // When it finishes
@@ -75,7 +81,6 @@
           array = array.splice(0,array.length);
           // The @ symbol is how we split the string into the array
           array = text.split('@');
-          console.log(array);
 
           // This is the actual logic of the function
           for(var i = 0; i<array.length;i++)
@@ -94,30 +99,45 @@
               {
               array[i] = array[i].substring(1,array[i].length);
               }
-            console.log(array[i]);
             // This transforms the entry string into an object
             array[i] = JSON.parse(array[i]);
             }
+        // Transfer all the information from the 'object' class to a node class
+        for(i=0;i<array.length;i++){
+          var node = new Node(array[i].x,array[i].y);
+          node.neighbors = array[i].neighbors;
+          node.color =  array[i].color;
+          node.location =  array[i].location;
+          array[i] = node;
+          }
         arrayOfNodes = array;
+        rewrapNodeJSON();
+        redraw();
         }
         reader.onerror = function(e) {
            // If it screws up
+           redraw();
         }
       }
+    redraw();
     </script>
+
     <script>
     function readRoomFile(f){
       var reader = new FileReader(); // Reads the file
+      var array = [];
       console.log("Load Room Objects");
+      console.log(arrayOfNodes);
       reader.readAsText(f); // Ok, this actual reads the file
       reader.onload = function(){ // When it finishes
           // We have our contents
+          console.log(arrayOfNodes);
           var text = reader.result;
           array = array.splice(0,array.length);
+          console.log(arrayOfNodes);
           // The @ symbol is how we split the string into the array
           array = text.split('@');
-          console.log(array);
-
+          console.log(arrayOfNodes);
           // This is the actual logic of the function
           for(var i = 0; i<array.length;i++)
             {
@@ -135,16 +155,24 @@
               {
               array[i] = array[i].substring(1,array[i].length);
               }
-            console.log(array[i]);
             // This transforms the entry string into an object
             array[i] = JSON.parse(array[i]);
             }
+          // Transfer all the information from the 'object' class to a room class
+          for(i=0;i<array.length;i++){
+              var room = new Room(array[i].number,array[i].name,[1,1,2,2,3,3]);
+              room.borders = array[i].borders;
+              array[i] = room;
+              }
           arrayOfRooms = array;
+          redraw();
+
           }
         }
         reader.onerror = function(e) {
            // If it screws up
         }
+    redraw();
     </script>
     <script>
 
