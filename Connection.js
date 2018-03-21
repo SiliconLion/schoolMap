@@ -12,7 +12,7 @@ class Connection {
     ctx.beginPath();
     ctx.moveTo(this.x1,this.y1);
     ctx.lineTo(this.x2,this.y2);
-    ctx.strokeStyle = "red";
+    ctx.strokeStyle = this.color;
     ctx.stroke();
   }
 

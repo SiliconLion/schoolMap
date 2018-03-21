@@ -41,7 +41,7 @@ not have the same inheritance.*/
 
 
   while(openSet.length > 0){
-    console.log(openSet);
+  
     closedSet.forEach(function(coordinator){
       coordinator.node.changeColor("green");
     });

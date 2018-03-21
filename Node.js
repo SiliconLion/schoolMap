@@ -25,8 +25,8 @@ class Node {
 //changes the color of the node.
   toggleColor(){
     if(this.color == "blue"){
-      this.color = "red";
-    } else if (this.color == "red") {
+      this.color = "grey";
+    } else if (this.color == "grey") {
       this.color = "blue";
     }
     redraw();
@@ -43,12 +43,16 @@ class Node {
 //changes the location type to room
   makeRoom(){
     this.location = "room";
+    this.room = getRoomByLocation(this.x, this.y);
+    this.room.node = this;
+    console.log(this.room);
   }
 
 //no args
 //changes the location type to hallway
   makeHallway(){
     this.location = "hallway";
+    this.room = "undefined";
   }
 
   toggleLocation(){
