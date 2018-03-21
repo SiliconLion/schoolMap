@@ -177,6 +177,7 @@
           for(i=0;i<array.length;i++){
               var room = new Room(array[i].number,array[i].name,[1,1,2,2,3,3]);
               room.borders = array[i].borders;
+              room.color = array[i].color;
               array[i] = room;
               }
           arrayOfRooms = array;
