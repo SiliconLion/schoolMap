@@ -9,12 +9,19 @@
   </head>
   <body>
     <canvas id="myCanvas" width="800" height="800"  ></canvas>
+
+    <img id="bluePrint" width="220" height="277" src="testMap.png" >
+    <input type="button" onclick="saveData()" value="Save Map">
+    <input type="file" onchange="readNodeFile(this.files[0])" value="Load Nodes">Nodes</input>
+    <input type="file" onchange="readRoomFile(this.files[0])" value="Load Rooms">Rooms</input>
+
     <canvas id="hiddenCanvas" width="800" height="800"  ></canvas>
     <canvas id="visibleCanvas" width="800" height="800"  ></canvas>
 
     <input type="button" value="Make Hallway nodes disapear" onclick="makeHallwaysInvisible()">
     <input type="button" value="Make Hallway nodes reappear" onclick="makeHallwaysVisible()">
     <input type="button" value="Refresh Path Display" onClick="redrawVTX()">
+
     <script>
       window.onload = function() {
           var c = document.getElementById("myCanvas");
@@ -33,6 +40,8 @@
     <script src="Room.js"></script>
     <script src="hiddenMap.js"></script>
     <script src="mapMain.js"></script>
+    <script src="saveFileScripts.js"></script>
+    <script src="FileSaver.js"></script>
     <script>
 
     //listens for keydown events. when called, passes the keydown event to the keydown handler
@@ -55,6 +64,133 @@
       //this is a bad way to do this, i just want to see if other stuff works
       redraw();
     }
+
+    </script>
+    <script>
+    function saveData(event){
+        // Save the nodes!
+        date = new Date();
+        fileName = "File of Nodes.txt";
+        debugger;
+        unwrapNodeJSON();
+        console.log(arrayOfNodes);
+        createData(arrayOfNodes);
+        writeFile();
+        rewrapNodeJSON();
+        // Save the rooms!
+        fileName = "File of Rooms.txt";
+        createData(arrayOfRooms);
+        writeFile();
+    }
+    </script>
+
+    <script>
+    function readNodeFile(f){
+      var reader = new FileReader(); // Reads the file
+      var array = [];
+      console.log("Load Node Objects");
+      reader.readAsText(f); // Ok, this actual reads the file
+      reader.onload = function(){ // When it finishes
+          // We have our contents
+          var text = reader.result;
+          array = array.splice(0,array.length);
+          // The @ symbol is how we split the string into the array
+          array = text.split('@');
+
+          // This is the actual logic of the function
+          for(var i = 0; i<array.length;i++)
+            {
+            // This removes the @ symobol
+            array[i] = array[i].replace('@','');
+
+            // If we have an empty array entry
+            if(array[i] == " " || array[i] == "")
+              {
+              array.pop();
+              continue;
+              }
+            // I can't remember why this is necessary, but it breaks if you remove it
+            if(i > 0)
+              {
+              array[i] = array[i].substring(1,array[i].length);
+              }
+            // This transforms the entry string into an object
+            array[i] = JSON.parse(array[i]);
+            }
+        // Transfer all the information from the 'object' class to a node class
+        for(i=0;i<array.length;i++){
+          var node = new Node(array[i].x,array[i].y);
+          node.neighbors = array[i].neighbors;
+          node.color =  array[i].color;
+          node.location =  array[i].location;
+          array[i] = node;
+          }
+        arrayOfNodes = array;
+        rewrapNodeJSON();
+        redraw();
+        }
+        reader.onerror = function(e) {
+           // If it screws up
+           redraw();
+        }
+      }
+    redraw();
+    </script>
+
+    <script>
+    function readRoomFile(f){
+      var reader = new FileReader(); // Reads the file
+      var array = [];
+      console.log("Load Room Objects");
+      console.log(arrayOfNodes);
+      reader.readAsText(f); // Ok, this actual reads the file
+      reader.onload = function(){ // When it finishes
+          // We have our contents
+          console.log(arrayOfNodes);
+          var text = reader.result;
+          array = array.splice(0,array.length);
+          console.log(arrayOfNodes);
+          // The @ symbol is how we split the string into the array
+          array = text.split('@');
+          console.log(arrayOfNodes);
+          // This is the actual logic of the function
+          for(var i = 0; i<array.length;i++)
+            {
+            // This removes the @ symobol
+            array[i] = array[i].replace('@','');
+
+            // If we have an empty array entry
+            if(array[i] == " " || array[i] == "")
+              {
+              array.pop();
+              continue;
+              }
+            // I can't remember why this is necessary, but it breaks if you remove it
+            if(i > 0)
+              {
+              array[i] = array[i].substring(1,array[i].length);
+              }
+            // This transforms the entry string into an object
+            array[i] = JSON.parse(array[i]);
+            }
+          // Transfer all the information from the 'object' class to a room class
+          for(i=0;i<array.length;i++){
+              var room = new Room(array[i].number,array[i].name,[1,1,2,2,3,3]);
+              room.borders = array[i].borders;
+              array[i] = room;
+              }
+          arrayOfRooms = array;
+          redraw();
+
+          }
+        }
+        reader.onerror = function(e) {
+           // If it screws up
+        }
+    redraw();
+    </script>
+    <script>
+
     document.getElementById("hiddenCanvas").onclick = function() {
       /* x and y coords adjusted for the canvas. (clientX & clientY are offset from
       the cordinate system of the canvas. we use 'getBoundingClientRect' to
