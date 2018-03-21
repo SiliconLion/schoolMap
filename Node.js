@@ -44,7 +44,6 @@ class Node {
   makeRoom(){
     this.location = "room";
     this.room = getRoomByLocation(this.x, this.y);
-    this.room.node = this;
     console.log(this.room);
   }
 
