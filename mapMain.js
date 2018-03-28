@@ -100,8 +100,15 @@ function eventHandleKeyUp(){
 
 }
 
-
-
+// Find the room of the given name
+// string is the room number, which is a ###(LETTER), like 112A
+function(string){
+  for(var i=0;i<arrayOfRooms.length;i++){
+    if(string === arrayOfRooms[i].number){
+      return arrayOfRooms[i];
+    }
+  }
+}
 
 
 
