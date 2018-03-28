@@ -28,8 +28,8 @@ not have the same inheritance.*/
   var masterArr = [startCoordinator];
   /*array of nodes that have been discovered. initially, only the start node is known.
   therefore we initalize the openSet with its coordinator*/
-    var openSet = [startCoordinator];
-//array of nodes that have been evaluated. starts empty
+  var openSet = [startCoordinator];
+  //array of nodes that have been evaluated. starts empty
   var closedSet = [];
 
 
@@ -41,7 +41,7 @@ not have the same inheritance.*/
 
 
   while(openSet.length > 0){
-  
+
     closedSet.forEach(function(coordinator){
       coordinator.node.changeColor("green");
     });
@@ -145,6 +145,9 @@ not have the same inheritance.*/
 /*checks to see if the new possible G value is lower. If it is,
 asigns the neighbor the new G value, and the currentNode as its 'previous'*/
   function checkG(currentNode, neighborCoordinator){
+    if(neighborCoordinator.node.room === true && neighborCoordinator.node.room != end){
+      return
+    } 
     var tenntativeG = currentNode.gValue + distance(currentNode, neighborCoordinator);
     if (tenntativeG < neighborCoordinator.mapNode.gValue){
       neighborCoordinator.mapNode.gValue = tennativeG;
