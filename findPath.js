@@ -73,7 +73,7 @@ not have the same inheritance.*/
 
       if (previouslyDiscovered === true){
          return;
-      } else {
+      } else if (neighbor.location === "hallway" || neighbor === end) {
         //fix these variable names
         var neighborMapNode = mapNode(neighbor, current);
         var neighborCoordinator = coordinator(neighbor, neighborMapNode);
@@ -145,9 +145,6 @@ not have the same inheritance.*/
 /*checks to see if the new possible G value is lower. If it is,
 asigns the neighbor the new G value, and the currentNode as its 'previous'*/
   function checkG(currentNode, neighborCoordinator){
-    if(neighborCoordinator.node.room === true && neighborCoordinator.node.room != end){
-      return
-    } 
     var tenntativeG = currentNode.gValue + distance(currentNode, neighborCoordinator);
     if (tenntativeG < neighborCoordinator.mapNode.gValue){
       neighborCoordinator.mapNode.gValue = tennativeG;
