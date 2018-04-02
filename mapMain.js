@@ -100,8 +100,15 @@ function eventHandleKeyUp(){
 
 }
 
-
-
+// Find the room of the given name
+// string is the room number, which is a ###(LETTER), like 112A
+function findRoom(string) {
+  for(var i=0;i<arrayOfRooms.length;i++){
+    if(string === arrayOfRooms[i].number){
+      return arrayOfRooms[i];
+    }
+  }
+}
 
 
 
@@ -176,21 +183,18 @@ function  makeNodeFromCoords(x,y) {
 /*checks to see if the mouse is hovering over a node. If it is,
 it returns the node it is over, else it returns false*/
 function overNode(xPos,yPos){
-  var returnValue = false;
+  var Mdist = 10000;
+  var closestNode = false;
   for (var i = 0; i< arrayOfNodes.length; i++){
     var node = arrayOfNodes[i];
-
-    //if xPos is beween the left and right sides of the node
-    if ((node.x - (0.5 * node.r) <= xPos) && (node.x + (0.5 * node.r) >= xPos)){
-    //if yPos is beween the left and right sides of the node
-      if ((node.y - (0.5 * node.r) <= yPos) && (node.y + (0.5 * node.r) >= yPos)){
-        returnValue = node;
-        break;
-      }
+    var dist = Math.sqrt(Math.pow(node.x-xPos,2)+Math.pow(node.y-yPos,2));
+    if(dist < node.r*1.25 && dist < Mdist){
+      closestNode = node;
+      Mdist = dist;
     }
   }
   //will either be false, or a node
-   return returnValue;
+   return closestNode;
 }
 
 
@@ -229,10 +233,13 @@ function redraw(){
 }
 
 function redrawVTX(){
-
+//Draws the background of VTX, effectivly clearing it.
   vtx.fillStyle="#FFFFFF";
   vtx.fillRect(0,0,800,800);
-  //Draws the background of VTX, effectivly clearing it.
+
+  arrayOfRooms.forEach(function(room){
+    room.visibleMapDisplay()
+  });
 }
 
 //called from html doc
@@ -242,6 +249,11 @@ function displayObjects(objArray){
     object.display();
   });
 }
+
+for (let i = 0; i < arrayOfRooms.length; i++){
+  arrayOfRooms[i].draw();
+}
+
 
 
 

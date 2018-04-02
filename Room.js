@@ -5,6 +5,7 @@ class Room{
     this.borders = [];
     //
     this.color = color;
+    this.node;
     //Fills the borders array with all of the information from the arrayOfCorners
     //unexpected behavior when initializing this.borders directly to arrayOfCorners
 

@@ -43,7 +43,9 @@ class Node {
 //changes the location type to room
   makeRoom(){
     this.location = "room";
-    this.room = getRoomByLocation(this.x, this.y);
+    let room = getRoomByLocation(this.x, this.y);
+    //this.room = getRoomByLocation(this.x, this.y);
+    room.node = this
     console.log(this.room);
   }
 
