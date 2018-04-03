@@ -8,19 +8,19 @@
     <!-- <link href="index.css" rel="stylesheet" type="text/css" /> -->
   </head>
   <body>
-    <canvas id="myCanvas" width="800" height="800"  ></canvas>
+    <input type="button" value="Make Hallway nodes disapear" onclick="makeHallwaysInvisible()">
+    <input type="button" value="Make Hallway nodes reappear" onclick="makeHallwaysVisible()">
+    <input type="button" value="Refresh Path Display" onClick="redrawVTX()">
 
-    <img id="bluePrint" width="220" height="277" src="testMap.png" >
     <input type="button" onclick="saveData()" value="Save Map">
     <input type="file" onchange="readNodeFile(this.files[0])" value="Load Nodes">Nodes</input>
     <input type="file" onchange="readRoomFile(this.files[0])" value="Load Rooms">Rooms</input>
 
+    <canvas id="myCanvas" width="800" height="800"  ></canvas>
     <canvas id="hiddenCanvas" width="800" height="800"  ></canvas>
     <canvas id="visibleCanvas" width="800" height="800"  ></canvas>
 
-    <input type="button" value="Make Hallway nodes disapear" onclick="makeHallwaysInvisible()">
-    <input type="button" value="Make Hallway nodes reappear" onclick="makeHallwaysVisible()">
-    <input type="button" value="Refresh Path Display" onClick="redrawVTX()">
+
 
     <script>
       window.onload = function() {
@@ -34,14 +34,14 @@
       }
     </script>
 
-    <script src="Connection.js"></script>
-    <script src="findPath.js"></script>
-    <script src="Node.js"></script>
-    <script src="Room.js"></script>
-    <script src="hiddenMap.js"></script>
-    <script src="mapMain.js"></script>
-    <script src="saveFileScripts.js"></script>
-    <script src="FileSaver.js"></script>
+    <script src="/javascript/Connection.js"></script>
+    <script src="/javascript/findPath.js"></script>
+    <script src="/javascript/Node.js"></script>
+    <script src="/javascript/Room.js"></script>
+    <script src="/javascript/hiddenMap.js"></script>
+    <script src="/javascript/mapMain.js"></script>
+    <script src="/javascript/saveFileScripts.js"></script>
+    <script src="/javascript/FileSaver.js"></script>
     <script>
 
     //listens for keydown events. when called, passes the keydown event to the keydown handler
@@ -229,6 +229,6 @@
     </script>
 
 <!-- this image is one pixle because it was an easy way to hide it -->
-  <img id="bluePrint" width="1" height="1" src="testMap.png" >
+  <img id="bluePrint" width="1" height="1" src="/images/testMap.png" >
   </body>
 </html>
