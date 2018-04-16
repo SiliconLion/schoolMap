@@ -1,6 +1,7 @@
 'use strict'
 
 //Data values used in scanning for nodes
+var emptyVal = rgbToDecimal([?,?,?]); //<--- potentially the same as blueVar, if so we can just substitute all references to emptyVal with blueVal
 var blueVal = rgbToDecimal([0,0,255]);
 var roomColorVal = rgbToDecimal([?,?,?]);
 var nodeWidth = 13;
@@ -8,12 +9,69 @@ var nodeWidth = 13;
 //List of the x and y values of nodes in the format [x,y],[x,y]
 var foundNodes[];
 
+//Height and width of the image that the nodes are being generated from in pixels
 //temporary, for testing purposes
 var height = 800;
 var width = 800;
 //End temp.
 
-//Function used to generate node data from an image.
+//loops to run the connectNodesFromImage() funtion on each found node, accepts input of an array in the format of [[x,y],[x,y],[x,y]]
+function connectAllFoundNodes(nodeCoordList){
+  for (i=0, i < nodeCoordList.length; i++){
+    connectNodesFromImage(nodeCoordList[i][0],nodeCoordList[i][1]);
+  }
+}
+
+//Function used to connect nodes using the image they were generated from, accepts input of (x,y), called from connectAllFoundNodes
+function connectNodesFromImage(x,y){
+
+  //creates a variable that stores the index in arrayOfNodes of the node whose neighbors array is currently being built
+  homeColorID = getPixelColor(x,y);
+
+  //Checks top left corner of the node for a color other than emptyVal and adds the corresponding node to arrayOfNodes[homeColorID].neighbors
+  if (getPixelColor(x-4,y-4) !== emptyVal)
+    arrayOfNodes[homeColorID].neighbors.push(
+      arrayOfNodes[getPixelColor(x-4,y-4)]);
+
+//Checks top middle of the node for a color other than emptyVal and adds the corresponding node to arrayOfNodes[homeColorID].neighbors
+  if (getPixelColor(x,y-4) !== emptyVal)
+    arrayOfNodes[homeColorID].neighbors.push(
+      arrayOfNodes[getPixelColor(x,y-4)]);
+
+//Checks top right corner of the node for a color other than emptyVal and adds the corresponding node to arrayOfNodes[homeColorID].neighbors
+  if (getPixelColor(x+4,y-4) !== emptyVal)
+    arrayOfNodes[homeColorID].neighbors.push(
+      arrayOfNodes[getPixelColor(x+4,y-4)]);
+
+//Checks left side of the node for a color other than emptyVal and adds the corresponding node to arrayOfNodes[homeColorID].neighbors
+  if (getPixelColor(x-4,y) !== emptyVal)
+    arrayOfNodes[homeColorID].neighbors.push(
+      arrayOfNodes[getPixelColor(x-4,y)]);
+
+//Checks right side of the node for a color other than emptyVal and adds the corresponding node to arrayOfNodes[homeColorID].neighbors
+  if (getPixelColor(x+4,y) !== emptyVal)
+    arrayOfNodes[homeColorID].neighbors.push(
+      arrayOfNodes[getPixelColor(x+4,y)]);
+
+//Checks bottom left corner of the node for a color other than emptyVal and adds the corresponding node to arrayOfNodes[homeColorID].neighbors
+  if (getPixelColor(x-4,y+4) !== emptyVal)
+    arrayOfNodes[homeColorID].neighbors.push(
+      arrayOfNodes[getPixelColor(x-4,y+4)]);
+
+//Checks bottom middle of the node for a color other than emptyVal and adds the corresponding node to arrayOfNodes[homeColorID].neighbors
+  if (getPixelColor(x,y+4) !== emptyVal)
+    arrayOfNodes[homeColorID].neighbors.push(
+      arrayOfNodes[getPixelColor(x,y+4)]);
+
+//Checks bottom right corner of the node for a color other than emptyVal and adds the corresponding node to arrayOfNodes[homeColorID].neighbors
+  if (getPixelColor(x+4,y+4) !== emptyVal)
+    arrayOfNodes[homeColorID].neighbors.push(
+      arrayOfNodes[getPixelColor(x+4,y+4)]);
+
+}
+
+//Primary method of this Class, We should only ever need to call this function, it will run the rest.
+//Function used to generate node data from an image, also calls connectAllFoundNodes() at the end to link all the newly created nodes
 function scanForNodes(){
   //Scans through all y values from 0 to the height of the canvas
   for (h = 0; h < height; h++){
@@ -41,6 +99,7 @@ function scanForNodes(){
       }//End if (getPixelColor(w,h) ...)
     }//End for (w = 0; w ...)
   }//End for (h = 0; h ...)
+  connectAllFoundNodes(foundNodes);
 }//End scanForNodes()
 
 //Called from iFoundANode(x,y), whichLocation(x,y), and scanForNodes() and accepts two integers as input.
@@ -66,7 +125,13 @@ function whichLocation(x,y){
     return "hallway";
 }//End whichLocation(x,y)
 
-//Creates a new node at (x,y) with a radius of 7, assigns the node it's color ID, and tells it whether it is a room or hallway
+//Called from scanForNodes, Creates a new node at (x,y) with a radius of 7, assigns the node it's color ID, and tells it whether it is a room or hallway
 function iFoundANode(x,y){
-  makeNodeFromCoords(x,y,7,getPixelColor(x, y),whichLocation(x,y));
+  makeNodeFromColors(x,y,undefined,getPixelColor(x, y),whichLocation(x,y));
 }//End iFoundANode(x,y)
+
+//Generates a node in the arrayOfNodes at the index of it's color ID
+function makeNodeFromColors(x,y,rad,colorID,location){
+  var node = new Node(x,y,rad,colorID,location);
+  arrayOfNodes[colorID] = node;
+}
