@@ -1,9 +1,9 @@
 'use strict'
 
 //Data values used in scanning for nodes
-var emptyVal = rgbToDecimal([?,?,?]); //<--- potentially the same as blueVar, if so we can just substitute all references to emptyVal with blueVal
+var emptyVal = rgbToDecimal([255,255,255]); //<--- potentially the same as blueVar, if so we can just substitute all references to emptyVal with blueVal
 var blueVal = rgbToDecimal([0,0,255]);
-var roomColorVal = rgbToDecimal([?,?,?]);
+var roomColorVal = rgbToDecimal([0,255,255]);
 var nodeWidth = 13;
 
 //List of the x and y values of nodes in the format [x,y],[x,y]
@@ -11,8 +11,8 @@ var foundNodes[];
 
 //Height and width of the image that the nodes are being generated from in pixels
 //temporary, for testing purposes
-var height = 800;
-var width = 800;
+var height = 80;
+var width = 80;
 //End temp.
 
 //loops to run the connectNodesFromImage() funtion on each found node, accepts input of an array in the format of [[x,y],[x,y],[x,y]]
@@ -117,7 +117,7 @@ function getColorAtPixleNTX(x,y){
 //Called from iFoundANode(x,y) and accepts two integers as input.
 function whichLocation(x,y){
   //Checks if the pixel to the right of the top left corner is the color (roomColorVal) that indicates that the node is a room
-  if (getPixelColor(x+1,y)===roomColorVal)
+  if (getPixelColor(x+2,y)===roomColorVal)
     //Returns "room" if the node is indicated to be a room
     return "room";
   else
