@@ -45,8 +45,7 @@ class Node {
     this.location = "room";
     let room = getRoomByLocation(this.x, this.y);
     //this.room = getRoomByLocation(this.x, this.y);
-    room.node = this
-    console.log(this.room);
+    room.node = this;
   }
 
 //no args

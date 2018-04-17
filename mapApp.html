@@ -12,8 +12,7 @@
 
     <img id="bluePrint" width="220" height="277" src="testMap.png" >
     <input type="button" onclick="saveData()" value="Save Map">
-    <input type="file" onchange="readNodeFile(this.files[0])" value="Load Nodes">Nodes</input>
-    <input type="file" onchange="readRoomFile(this.files[0])" value="Load Rooms">Rooms</input>
+    <input type="file" onchange="readSavedFile(this.files[0])" value="Load Map">File</input>
 
     <canvas id="hiddenCanvas" width="800" height="800"  ></canvas>
     <canvas id="visibleCanvas" width="800" height="800"  ></canvas>
@@ -68,64 +67,96 @@
     </script>
     <script>
     function saveData(event){
-        // Save the nodes!
-        date = new Date();
-        fileName = "File of Nodes.txt";
-        debugger;
+        // Save the map!
+        fileName = "Saved map.txt";
         unwrapNodeJSON();
-        console.log(arrayOfNodes);
-        createData(arrayOfNodes);
+        console.log("WORK YOU BASTARD");
+        createData(arrayOfNodes,arrayOfRooms);
         writeFile();
         rewrapNodeJSON();
-        // Save the rooms!
-        fileName = "File of Rooms.txt";
-        createData(arrayOfRooms);
-        writeFile();
-    }
+        }
     </script>
 
     <script>
-    function readNodeFile(f){
+    function readSavedFile(f){
       var reader = new FileReader(); // Reads the file
-      var array = [];
+      var masterArray = [];
+      var roomArray = [];
+      var nodeArray = [];
       console.log("Load Node Objects");
       reader.readAsText(f); // Ok, this actual reads the file
       reader.onload = function(){ // When it finishes
           // We have our contents
           var text = reader.result;
-          array = array.splice(0,array.length);
+          masterArray = masterArray.splice(0,array.length);
           // The @ symbol is how we split the string into the array
-          array = text.split('@');
+          masterArray = text.split("@@");
+          nodeArray = masterArray[0];
+          roomArray = masterArray[1];
 
+          nodeArray = nodeArray.split("@");
+          roomArray = roomArray.split("@");
+          nodeArray.pop();
+          roomArray.pop();
+          roomArray[0] = roomArray[0].substring(1);
           // This is the actual logic of the function
-          for(var i = 0; i<array.length;i++)
+          for(var i = 0; i<nodeArray.length;i++)
             {
             // This removes the @ symobol
-            array[i] = array[i].replace('@','');
+            nodeArray[i] = nodeArray[i].replace('@','');
 
             // If we have an empty array entry
-            if(array[i] == " " || array[i] == "")
+            if(nodeArray[i] == " " || nodeArray[i] == "")
               {
-              array.pop();
+              nodeArray.pop();
               continue;
               }
             // I can't remember why this is necessary, but it breaks if you remove it
             if(i > 0)
               {
-              array[i] = array[i].substring(1,array[i].length);
+              nodeArray[i] = nodeArray[i].substring(1,nodeArray[i].length);
               }
             // This transforms the entry string into an object
-            array[i] = JSON.parse(array[i]);
+            nodeArray[i] = JSON.parse(nodeArray[i]);
             }
         // Transfer all the information from the 'object' class to a node class
-        for(i=0;i<array.length;i++){
-          var node = new Node(array[i].x,array[i].y);
-          node.neighbors = array[i].neighbors;
-          node.color =  array[i].color;
-          node.location =  array[i].location;
-          array[i] = node;
+        for(i=0;i<nodeArray.length;i++){
+          var node = new Node(nodeArray[i].x,nodeArray[i].y);
+          node.neighbors = nodeArray[i].neighbors;
+          node.color =  nodeArray[i].color;
+          node.location =  nodeArray[i].location;
+          nodeArray[i] = node;
           }
-        arrayOfNodes = array;
+        arrayOfNodes = nodeArray.slice();
+
+        for(var i = 0; i<roomArray.length;i++)
+          {
+          // This removes the @ symobol
+          roomArray[i] = roomArray[i].replace('@','');
+
+          // If we have an empty array entry
+          if(roomArray[i] == " " || roomArray[i] == "")
+            {
+            roomArray.pop();
+            continue;
+            }
+          // I can't remember why this is necessary, but it breaks if you remove it
+          if(i > 0)
+            {
+            roomArray[i] = roomArray[i].substring(1,roomArray[i].length);
+            }
+          // This transforms the entry string into an object
+          roomArray[i] = JSON.parse(roomArray[i]);
+          }
+        // Transfer all the information from the 'object' class to a room class
+        for(i=0;i<roomArray.length;i++){
+            var room = new Room(roomArray[i].number,roomArray[i].name,[1,1,2,2,3,3]);
+            room.borders = roomArray[i].borders;
+            room.color = roomArray[i].color;
+            room.node = roomArray[i].node;
+            roomArray[i] = room;
+            }
+        arrayOfRooms = roomArray.slice();
         rewrapNodeJSON();
         redraw();
         }
@@ -136,62 +167,8 @@
       }
     redraw();
     </script>
-
+    
     <script>
-    function readRoomFile(f){
-      var reader = new FileReader(); // Reads the file
-      var array = [];
-      console.log("Load Room Objects");
-      console.log(arrayOfNodes);
-      reader.readAsText(f); // Ok, this actual reads the file
-      reader.onload = function(){ // When it finishes
-          // We have our contents
-          console.log(arrayOfNodes);
-          var text = reader.result;
-          array = array.splice(0,array.length);
-          console.log(arrayOfNodes);
-          // The @ symbol is how we split the string into the array
-          array = text.split('@');
-          console.log(arrayOfNodes);
-          // This is the actual logic of the function
-          for(var i = 0; i<array.length;i++)
-            {
-            // This removes the @ symobol
-            array[i] = array[i].replace('@','');
-
-            // If we have an empty array entry
-            if(array[i] == " " || array[i] == "")
-              {
-              array.pop();
-              continue;
-              }
-            // I can't remember why this is necessary, but it breaks if you remove it
-            if(i > 0)
-              {
-              array[i] = array[i].substring(1,array[i].length);
-              }
-            // This transforms the entry string into an object
-            array[i] = JSON.parse(array[i]);
-            }
-          // Transfer all the information from the 'object' class to a room class
-          for(i=0;i<array.length;i++){
-              var room = new Room(array[i].number,array[i].name,[1,1,2,2,3,3]);
-              room.borders = array[i].borders;
-              room.color = array[i].color;
-              array[i] = room;
-              }
-          arrayOfRooms = array;
-          redraw();
-
-          }
-        }
-        reader.onerror = function(e) {
-           // If it screws up
-        }
-    redraw();
-    </script>
-    <script>
-
     document.getElementById("hiddenCanvas").onclick = function() {
       /* x and y coords adjusted for the canvas. (clientX & clientY are offset from
       the cordinate system of the canvas. we use 'getBoundingClientRect' to
