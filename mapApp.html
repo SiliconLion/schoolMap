@@ -17,6 +17,9 @@
     <canvas id="hiddenCanvas" width="800" height="800"  ></canvas>
     <canvas id="visibleCanvas" width="800" height="800"  ></canvas>
 
+    <canvas id="nodeCanvas" width="800" height="800" ></canvas>
+    <img id="bluePrint" width="220" height="277" src="testMap.png" >
+
     <input type="button" value="Make Hallway nodes disapear" onclick="makeHallwaysInvisible()">
     <input type="button" value="Make Hallway nodes reappear" onclick="makeHallwaysVisible()">
     <input type="button" value="Refresh Path Display" onClick="redrawVTX()">
@@ -34,6 +37,7 @@
     </script>
 
     <script src="Connection.js"></script>
+    <script src="imageHandler.js"></script>
     <script src="findPath.js"></script>
     <script src="Node.js"></script>
     <script src="Room.js"></script>

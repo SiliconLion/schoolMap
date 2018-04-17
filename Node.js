@@ -1,8 +1,10 @@
 
 class Node {
 
-  constructor(x, y, r = 7){
+  constructor(x, y, r = 7, colorID, roomOrHall){
 
+    //The nodes color ID in decimal, derived from rgb
+    this.colorID = colorID;
     //radius
     this.r = r;
     //position
@@ -12,7 +14,7 @@ class Node {
     this.neighbors = [];
     //the color of the node
     this.color = "grey";
-    this.location = "hallway";
+    this.location = roomOrHall;
   }
   // displays the node as a circle at position (this.x,this.y), with the color "this.color"
   display(){

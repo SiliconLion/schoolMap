@@ -6,6 +6,8 @@ var hiddenCanvas = document.getElementById("hiddenCanvas");
 var htx = hiddenCanvas.getContext("2d");
 var visibleCanvas = document.getElementById("visibleCanvas");
 var vtx = visibleCanvas.getContext("2d");
+var nodeCanvas = document.getElementById("nodeCanvas");
+var ntx = nodeCanvas.getContext("2d");
 
 //holds every node
 var arrayOfNodes = [];
