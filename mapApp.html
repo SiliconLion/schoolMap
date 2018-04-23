@@ -8,31 +8,18 @@
     <!-- <link href="index.css" rel="stylesheet" type="text/css" /> -->
   </head>
   <body>
-    <canvas id="myCanvas" width="800" height="800"  ></canvas>
-
-    <img id="bluePrint" width="220" height="277" src="testMap.png" >
-    <input type="button" onclick="saveData()" value="Save Map">
-    <input type="file" onchange="readSavedFile(this.files[0])" value="Load Map">File</input>
 
     <canvas id="hiddenCanvas" width="800" height="800"  ></canvas>
     <canvas id="visibleCanvas" width="800" height="800"  ></canvas>
-
-    <input type="button" value="Make Hallway nodes disapear" onclick="makeHallwaysInvisible()">
-    <input type="button" value="Make Hallway nodes reappear" onclick="makeHallwaysVisible()">
     <input type="button" value="Refresh Path Display" onClick="redrawVTX()">
+    <input type="file" onchange="readSavedFile(this.files[0])" value="Load Map">File</input>
 
     <script>
       window.onload = function() {
-          var c = document.getElementById("myCanvas");
-          var ctx = c.getContext("2d");
-          var img = document.getElementById("bluePrint");
-          ctx.drawImage(img, 10, 10);
           htx.fillStyle="#FFFFFF";
           htx.fillRect(0,0,800,800);
-
       }
     </script>
-
     <script src="Connection.js"></script>
     <script src="findPath.js"></script>
     <script src="Node.js"></script>
@@ -40,122 +27,84 @@
     <script src="hiddenMap.js"></script>
     <script src="mapMain.js"></script>
     <script src="saveFileScripts.js"></script>
-    <script src="FileSaver.js"></script>
-    <script>
-
-    //listens for keydown events. when called, passes the keydown event to the keydown handler
-      document.addEventListener('keydown', event => { eventHandleKeyDown(event) } );
-      //listens for keyup events. when called, passes the keyup event to the keyup handler
-      document.addEventListener('keyup', event => { eventHandleKeyUp(event) } );
-    </script>
-
-
-    <script>
-    //creates a node where clicked, and displays it
-    document.getElementById("myCanvas").onclick = function() {
-      /* x and y coords adjusted for the canvas. (clientX & clientY are offset from
-      the cordinate system of the canvas. we use 'getBoundingClientRect' to
-      adjust the client coord system, to the canvas coord system*/
-      var xCoord = event.clientX - myCanvas.getBoundingClientRect().left;
-      var yCoord = event.clientY - myCanvas.getBoundingClientRect().top;
-      console.log(xCoord, yCoord);
-      clickHandler(xCoord, yCoord);
-      //this is a bad way to do this, i just want to see if other stuff works
-      redraw();
-    }
-
-    </script>
-    <script>
-    function saveData(event){
-        // Save the map!
-        fileName = "Saved map.txt";
-        unwrapNodeJSON();
-        console.log("WORK YOU BASTARD");
-        createData(arrayOfNodes,arrayOfRooms);
-        writeFile();
-        rewrapNodeJSON();
-        }
-    </script>
 
     <script>
     function readSavedFile(f){
-      var reader = new FileReader(); // Reads the file
-      var masterArray = [];
-      var roomArray = [];
-      var nodeArray = [];
-      console.log("Load Node Objects");
-      reader.readAsText(f); // Ok, this actual reads the file
-      reader.onload = function(){ // When it finishes
-          // We have our contents
-          var text = reader.result;
-          masterArray = masterArray.splice(0,array.length);
-          // The @ symbol is how we split the string into the array
-          masterArray = text.split("@@");
-          nodeArray = masterArray[0];
-          roomArray = masterArray[1];
+    var masterArray = [];
+    var roomArray = [];
+    var nodeArray = [];
+     reader.readAsText(f); // Ok, this actual reads the file
+     reader.onload = function(){ // When it finishes
+         // We have our contents
+         var text = reader.result;
+         masterArray = masterArray.splice(0,array.length);
+         // The @ symbol is how we split the string into the array
+         masterArray = text.split("@@");
+         nodeArray = masterArray[0];
+         roomArray = masterArray[1];
 
-          nodeArray = nodeArray.split("@");
-          roomArray = roomArray.split("@");
-          nodeArray.pop();
-          roomArray.pop();
-          roomArray[0] = roomArray[0].substring(1);
-          // This is the actual logic of the function
-          for(var i = 0; i<nodeArray.length;i++)
-            {
-            // This removes the @ symobol
-            nodeArray[i] = nodeArray[i].replace('@','');
+         nodeArray = nodeArray.split("@");
+         roomArray = roomArray.split("@");
+         nodeArray.pop();
+         roomArray.pop();
+         roomArray[0] = roomArray[0].substring(1);
+         // This is the actual logic of the function
+         for(var i = 0; i<nodeArray.length;i++)
+           {
+           // This removes the @ symobol
+           nodeArray[i] = nodeArray[i].replace('@','');
 
-            // If we have an empty array entry
-            if(nodeArray[i] == " " || nodeArray[i] == "")
-              {
-              nodeArray.pop();
-              continue;
-              }
-            // I can't remember why this is necessary, but it breaks if you remove it
-            if(i > 0)
-              {
-              nodeArray[i] = nodeArray[i].substring(1,nodeArray[i].length);
-              }
-            // This transforms the entry string into an object
-            nodeArray[i] = JSON.parse(nodeArray[i]);
-            }
-        // Transfer all the information from the 'object' class to a node class
-        for(i=0;i<nodeArray.length;i++){
-          var node = new Node(nodeArray[i].x,nodeArray[i].y);
-          node.neighbors = nodeArray[i].neighbors;
-          node.color =  nodeArray[i].color;
-          node.location =  nodeArray[i].location;
-          nodeArray[i] = node;
+           // If we have an empty array entry
+           if(nodeArray[i] == " " || nodeArray[i] == "")
+             {
+             nodeArray.pop();
+             continue;
+             }
+           // I can't remember why this is necessary, but it breaks if you remove it
+           if(i > 0)
+             {
+             nodeArray[i] = nodeArray[i].substring(1,nodeArray[i].length);
+           }
+         // This transforms the entry string into an object
+         nodeArray[i] = JSON.parse(nodeArray[i]);
+         }
+     // Transfer all the information from the 'object' class to a node class
+     for(i=0;i<nodeArray.length;i++){
+       var node = new Node(nodeArray[i].x,nodeArray[i].y);
+       node.neighbors = nodeArray[i].neighbors;
+       node.color =  nodeArray[i].color;
+       node.location =  nodeArray[i].location;
+       nodeArray[i] = node;
+       }
+     arrayOfNodes = nodeArray.slice();
+
+     for(var i = 0; i<roomArray.length;i++)
+       {
+       // This removes the @ symobol
+       roomArray[i] = roomArray[i].replace('@','');
+
+       // If we have an empty array entry
+       if(roomArray[i] == " " || roomArray[i] == "")
+         {
+         roomArray.pop();
+         continue;
+         }
+       // I can't remember why this is necessary, but it breaks if you remove it
+       if(i > 0)
+         {
+         roomArray[i] = roomArray[i].substring(1,roomArray[i].length);
+         }
+       // This transforms the entry string into an object
+       roomArray[i] = JSON.parse(roomArray[i]);
+       }
+     // Transfer all the information from the 'object' class to a room class
+     for(i=0;i<roomArray.length;i++){
+         var room = new Room(roomArray[i].number,roomArray[i].name,[1,1,2,2,3,3]);
+         room.borders = roomArray[i].borders;
+         room.color = roomArray[i].color;
+         room.node = roomArray[i].node;
+          roomArray[i] = room;
           }
-        arrayOfNodes = nodeArray.slice();
-
-        for(var i = 0; i<roomArray.length;i++)
-          {
-          // This removes the @ symobol
-          roomArray[i] = roomArray[i].replace('@','');
-
-          // If we have an empty array entry
-          if(roomArray[i] == " " || roomArray[i] == "")
-            {
-            roomArray.pop();
-            continue;
-            }
-          // I can't remember why this is necessary, but it breaks if you remove it
-          if(i > 0)
-            {
-            roomArray[i] = roomArray[i].substring(1,roomArray[i].length);
-            }
-          // This transforms the entry string into an object
-          roomArray[i] = JSON.parse(roomArray[i]);
-          }
-        // Transfer all the information from the 'object' class to a room class
-        for(i=0;i<roomArray.length;i++){
-            var room = new Room(roomArray[i].number,roomArray[i].name,[1,1,2,2,3,3]);
-            room.borders = roomArray[i].borders;
-            room.color = roomArray[i].color;
-            room.node = roomArray[i].node;
-            roomArray[i] = room;
-            }
         arrayOfRooms = roomArray.slice();
         rewrapNodeJSON();
         redraw();
@@ -167,7 +116,7 @@
       }
     redraw();
     </script>
-    
+
     <script>
     document.getElementById("hiddenCanvas").onclick = function() {
       /* x and y coords adjusted for the canvas. (clientX & clientY are offset from
