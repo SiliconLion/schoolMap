@@ -8,11 +8,16 @@
     <link href="index.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-
-    <canvas id="hiddenCanvas" width="800" height="800" id="hiddenMap" ></canvas>
-    <canvas id="visibleCanvas" width="800" height="800"   ></canvas>
-    <input type="button" value="Refresh Path Display" onClick="redrawVTX()">
-    <input type="file" onchange="readSavedFile(this.files[0])" value="Load Map">File</input>
+    <div>
+      <canvas id="visibleCanvas" width="800" height="800"   ></canvas>
+      <canvas id="hiddenCanvas" width="800" height="800"  ></canvas>
+    </div>
+    <div>
+      <input type="button" value="Refresh Path Display" onClick="redrawVTX()" class="buttons">
+    </div>
+    <div>
+      <input type="file" onchange="readSavedFile(this.files[0])" size="90"></input>
+    </div>
 
     <script>
       window.onload = function() {
