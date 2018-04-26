@@ -27,11 +27,8 @@ function findRoom(string) {
 
 function redraw(){
   //redraws the map image so nodes that no longer exist disapear
-  var img = document.getElementById("bluePrint");
-
   arrayOfRooms.forEach(function(room){
     room.hiddenDisplay();
-    room.visibleMapDisplay();
   });
 }
 
@@ -39,10 +36,8 @@ function redrawVTX(){
 //Draws the background of VTX, effectivly clearing it.
   vtx.fillStyle="#FFFFFF";
   vtx.fillRect(0,0,800,800);
-
-  arrayOfRooms.forEach(function(room){
-    room.visibleMapDisplay()
-  });
+  var img = document.getElementById("bluePrint");
+  vtx.drawImage(img,10,10,676,480);
 }
 
 function drawPath(pathArray){

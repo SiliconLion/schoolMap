@@ -32,7 +32,7 @@
     <script src="hiddenMap.js"></script>
     <script src="mapMain.js"></script>
     <script src="saveFileScripts.js"></script>
-
+    <img id="bluePrint" height="1" width="1" src="testMap.png"> </img>
     <script>
     function readSavedFile(f){
     var masterArray = [];
@@ -113,13 +113,13 @@
         arrayOfRooms = roomArray.slice();
         rewrapNodeJSON();
         redraw();
+        redrawVTX();
         }
         reader.onerror = function(e) {
            // If it screws up
            redraw();
         }
       }
-    redraw();
     </script>
 
     <script>
@@ -160,6 +160,6 @@
     </script>
 
 <!-- this image is one pixle because it was an easy way to hide it -->
-  <img id="bluePrint" width="1" height="1" src="testMap.png" >
+
   </body>
 </html>
