@@ -30,7 +30,6 @@ function writeFile(){
 
 function unwrapNodeJSON() {
   var i,ii,iii,iv,neigh;
-
   arrayOfNodes.forEach(function(node){
   if(node.location == "room"){
     // Fixing Circlar flow in rooms. Thanks, david.

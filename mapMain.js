@@ -18,7 +18,7 @@ var pathSpecifications = [];
 // string is the room number, which is a ###(LETTER), like 112A
 function findRoom(string) {
   for(var i=0;i<arrayOfRooms.length;i++){
-    if(string === arrayOfRooms[i].number){
+    if(string === arrayOfRooms[i].roomNumber){
       return arrayOfRooms[i];
     }
   }

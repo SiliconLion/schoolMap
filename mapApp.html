@@ -18,13 +18,19 @@
     <div>
       <input type="file" onchange="readSavedFile(this.files[0])" size="90"></input>
     </div>
-
     <script>
       window.onload = function() {
           htx.fillStyle="#FFFFFF";
           htx.fillRect(0,0,800,800);
       }
     </script>
+    <form action="/action_page.php">
+      Starting room:<br>
+      <input type="text" id="startingRoom" value=""><br>
+      Ending room:<br>
+      <input type="text" id="endingRoom" value=""><br><br>
+      <input type="button" id="button01" value="Find path">
+    </form>
     <script src="Connection.js"></script>
     <script src="findPath.js"></script>
     <script src="Node.js"></script>
@@ -32,7 +38,21 @@
     <script src="hiddenMap.js"></script>
     <script src="mapMain.js"></script>
     <script src="saveFileScripts.js"></script>
-    <img id="bluePrint" height="1" width="1" src="testMap.png"> </img>
+    <img id="bluePrint" height="0" width="0" src="testMap.png"> </img>
+    <script>
+    var btn = document.querySelector('#button01');
+    var input1 = document.querySelector('#startingRoom');
+    var input2 = document.querySelector('#endingRoom');
+    btn.addEventListener('click', updateBtn);
+    function updateBtn() {
+      var Vroom1 = input1.value;
+      var Vroom2 = input2.value;
+      Vroom1 = findRoom(Vroom1);
+      Vroom2 = findRoom(Vroom2);
+    findPath(Vroom1.node,Vroom2.node);
+    }
+    </script>
+
     <script>
     function readSavedFile(f){
     var masterArray = [];
@@ -104,11 +124,13 @@
        }
      // Transfer all the information from the 'object' class to a room class
      for(i=0;i<roomArray.length;i++){
-         var room = new Room(roomArray[i].number,roomArray[i].name,[1,1,2,2,3,3]);
+         var room = new Room(roomArray[i].roomNumber,roomArray[i].roomName,[1,1,2,2,3,3]);
          room.borders = roomArray[i].borders;
          room.color = roomArray[i].color;
          room.node = roomArray[i].node;
-          roomArray[i] = room;
+         room.roomNumber =  roomArray[i].roomNumber;
+         room.roomName =  roomArray[i].roomName;
+         roomArray[i] = room;
           }
         arrayOfRooms = roomArray.slice();
         rewrapNodeJSON();
