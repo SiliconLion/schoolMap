@@ -18,4 +18,5 @@ def main(path):
         pixelString = str.replace(pixelString," ", "")
         file.write(pixelString + ";")
 
-main('testImage.png')
+
+main('/Users/davidsullivan/schoolMap/PixelMap.bmp')
