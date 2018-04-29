@@ -6,10 +6,13 @@ var colorIndex = 0;
 
 //takes a rgb color, and treats it as a number in base 255,
 // with r being the ones place, g being the 255's place, and b being the 255^2 place
-function rgbToDecimal(colorArr) {
-  //colorArr[0] == r, colorArr[1] == g,colorArr[2] == b,
-  //change this to bit manipulation
-  return (colorArr[2]*65025) + (colorArr[1] * 255) + colorArr[0];
+function rgbToDecimal(color) {
+  let colorArr = [];
+  if ((typeof color) == "string") {
+    colorArr = color.replace(/[^\d,]/g, '').split(',');
+
+  } else {colorArr = color;}
+  return (parseInt(colorArr[2])*65025) + (parseInt(colorArr[1]) * 255) + parseInt(colorArr[0]);
 }
 
 //takes a decimal number, and turns it into a rbg color.

@@ -45,11 +45,13 @@
     var input2 = document.querySelector('#endingRoom');
     btn.addEventListener('click', updateBtn);
     function updateBtn() {
+      //read Vroom1 as just room1. we were afraid of naming conflicts lol. probably shouldnt matter but we were afraid still.
       var Vroom1 = input1.value;
       var Vroom2 = input2.value;
       Vroom1 = findRoom(Vroom1);
       Vroom2 = findRoom(Vroom2);
-    findPath(Vroom1.node,Vroom2.node);
+      redrawVTX();
+      drawPath(findPath(Vroom1.node,Vroom2.node));
     }
     </script>
 
@@ -172,6 +174,7 @@
         pathSpecifications.splice(0,pathSpecifications.length);
         //'path' will be an array of nodes for the path from start to end
         let path = findPath(start, end);
+        redrawVTX();
         drawPath(path);
         //colors every node in the path red
         path.forEach(function(node){
