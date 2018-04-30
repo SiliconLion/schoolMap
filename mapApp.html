@@ -9,28 +9,26 @@
   </head>
   <body>
     <div>
-      <canvas id="visibleCanvas" width="800" height="800"   ></canvas>
-      <canvas id="hiddenCanvas" width="800" height="800"  ></canvas>
-    </div>
-    <div>
-      <input type="button" value="Refresh Path Display" onClick="redrawVTX()" class="buttons">
-    </div>
-    <div>
-      <input type="file" onchange="readSavedFile(this.files[0])" size="90"></input>
+      <canvas id="visibleCanvas" width="676" height="480"   ></canvas>
+      <canvas id="hiddenCanvas" width="676" height="480"  ></canvas>
     </div>
     <script>
       window.onload = function() {
           htx.fillStyle="#FFFFFF";
-          htx.fillRect(0,0,800,800);
+          htx.fillRect(0,0,676,480);
       }
     </script>
-    <form action="/action_page.php">
+    <form action="">
+      <br><br><br><br><br><br><br><br><br><br>
+      <input type="button" id="button01" value="Find path" class="buttons"><br>
       Starting room:<br>
       <input type="text" id="startingRoom" value=""><br>
       Ending room:<br>
-      <input type="text" id="endingRoom" value=""><br><br>
-      <input type="button" id="button01" value="Find path">
+      <input type="text" id="endingRoom" value=""><br>
     </form>
+    <div>
+      <input type="file" onchange="readSavedFile(this.files[0])" size="90" class="files"></input>
+    </div>
     <script src="Connection.js"></script>
     <script src="findPath.js"></script>
     <script src="Node.js"></script>

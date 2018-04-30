@@ -35,7 +35,7 @@ function redraw(){
 function redrawVTX(){
 //Draws the background of VTX, effectivly clearing it.
   vtx.fillStyle="#FFFFFF";
-  vtx.fillRect(0,0,800,800);
+  vtx.fillRect(0,0,676,480);
   var img = document.getElementById("bluePrint");
   vtx.drawImage(img,10,10,676,480);
 }
