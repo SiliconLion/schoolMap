@@ -1,7 +1,7 @@
 'use strict'
-
+/*
 //Data values used in scanning for nodes
-var emptyVal = rgbToDecimal([255,255,255]); //<--- potentially the same as blueVar, if so we can just substitute all references to emptyVal with blueVal
+var emptyVal = rgbToDecimal([255,255,255]); //<--- potentially the same as blueVal, if so we can just substitute all references to emptyVal with blueVal
 var blueVal = rgbToDecimal([0,0,255]);
 var roomColorVal = rgbToDecimal([0,255,255]);
 var nodeWidth = 13;
@@ -135,3 +135,89 @@ function makeNodeFromColors(x,y,rad,colorID,location){
   var node = new Node(x,y,rad,colorID,location);
   arrayOfNodes[colorID] = node;
 }
+*/
+//ImageHandler2.0 New and Improved to use Python Generated Text File!
+
+//Data values used in scanning for nodes
+var imgWidth;
+var imgHeight;
+var pixArr;
+var blueVal = [0,0,255];
+var emptyVal = [255,255,255]; //<--- potentially the same as blueVal, if so we can just substitute all references to emptyVal with blueVal
+var roomColorVal = [0,255,255];
+var nodeWidth = 13;
+//List of the x and y values of nodes in the format [x,y],[x,y]
+var foundNodes[];
+
+//WIP: Python being modified to simplify
+function readImageText(str){
+  var pixText = str;
+  var whatAreFirst2Lns = pixText.split('/n');
+  var nmbrOfCharToDel = whatAreFirst2Lns[0].length + whatAreFirst2Lns[1].length;
+  var tempArr1 = pixText.split(';');
+  tempArr1[0]
+
+  }
+
+  //Pulls the image width and height from the first two lines of the pixel text file
+  imgWidth = tempArr1[1];
+  imgHeight = tempArr1[0];
+
+  for (h = 0; h < imgHeight; h++){
+    //Scans through all x values from 0 to the width of the canvas
+    for (w = 0; w < imgWidth; w++){
+
+      //Checks to see if the pixel at (w,h) is the top left corner of a node
+      if (pixArr[w][h] === blueVal
+      &&  pixArr[w+1][h] === blueVal
+      &&  pixArr[w][h+1] === blueVal
+      &&  pixArr[w-1][h] !== blueVal
+      &&  pixArr[w][h-1] !== blueVal){
+
+        console.log("I've struck gold! ...blue gold.");
+        //Skips the next few values which we know will be blue because they are part of the node we just found.
+        w = w + nodeWidth - 1;
+
+        //Adds node coordinates to an array for future use in drawing connections.
+        //Saves the x and y value of the nodes center ((w or h)+(nodeWidth/2)-1) rather than the x and y of the top left corner (w or h)
+        foundNodes.push([w+(nodeWidth/2)-1,h+(nodeWidth/2)-1]);
+
+        iFoundANode(w+(nodeWidth/2)-1,h+(nodeWidth/2)-1);
+
+      }
+    }
+  }
+}
+
+function iFoundANode(x,y){
+  makeNodeFromColors(x,y,undefined,getPixelColor(x, y),whichLocation(x,y));
+}//End iFoundANode(x,y)
+
+//Generates a node in the arrayOfNodes at the index of it's color ID
+function makeNodeFromColors(x,y,rad,colorID,location){
+  var node = new Node(x,y,rad,colorID,location);
+  arrayOfNodes[colorID] = node;
+}
+
+//Called from iFoundANode(x,y) and accepts two integers as input.
+function whichLocation(x,y){
+  //Checks if the pixel to the right of the top left corner is the color (roomColorVal) that indicates that the node is a room
+  if (getPixelColor(x+2,y)===roomColorVal)
+    //Returns "room" if the node is indicated to be a room
+    return "room";
+  else
+    //Returns "hallway" if the node is not indicated to be a room.
+    return "hallway";
+}//End whichLocation(x,y)
+
+//Called from iFoundANode(x,y), whichLocation(x,y), and scanForNodes() and accepts two integers as input.
+function getPixelColor(x,y){
+  //Returns the decimal equivelant of the RGB value of the pixel at (x,y)
+  return rgbToDecimal(getColorAtPixleNTX(x,y));
+}//End getPixelColor(x,y)
+
+//Called from getPixelColor(x,y) and accepts two integers as input.
+function getColorAtPixleNTX(x,y){
+  //Returns the RGB value of the pixel at (x,y) in the format of [R,G,B,A] ('A' value is typically ignored)
+  return ntx.getImageData(x,y, 1, 1).data;
+}//End getColorAtPixleNTX(x,y)

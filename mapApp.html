@@ -14,6 +14,8 @@
     <input type="button" onclick="saveData()" value="Save Map">
     <input type="file" onchange="readSavedFile(this.files[0])" value="Load Map">File</input>
 
+    <input type="file" onchange="readImageFile(this.files[0])" value="Load Map">ImageFile</input>
+
     <canvas id="hiddenCanvas" width="800" height="800"  ></canvas>
     <canvas id="visibleCanvas" width="800" height="800"  ></canvas>
 
@@ -81,6 +83,17 @@
         }
     </script>
 
+    <script>
+    function readImageFile(f){
+      var reader = new FileReader(); // Reads the file
+      var bigAssString;
+      reader.readAsText(f); // Ok, this actual reads the file
+      reader.onload = function(){ // When it finishes
+          bigAssString = reader.result;
+          readImageText(bigAssString);
+          }
+        }
+    </script>
     <script>
     function readSavedFile(f){
       var reader = new FileReader(); // Reads the file
@@ -171,7 +184,7 @@
       }
     redraw();
     </script>
-    
+
     <script>
     document.getElementById("hiddenCanvas").onclick = function() {
       /* x and y coords adjusted for the canvas. (clientX & clientY are offset from

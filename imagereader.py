@@ -19,4 +19,4 @@ def main(path):
         file.write(pixelString + ";")
 
 
-main('/Users/davidsullivan/schoolMap/PixelMap.bmp')
+main('PixelMap.bmp')
