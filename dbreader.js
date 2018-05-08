@@ -1,14 +1,3 @@
-function getRoom() {
-  var name = new String(document.getElementById("teacher").value).toLowerCase();
-  var period = parseInt(document.getElementById("period").value);
-  if(isNaN(period) || period <= 0 || period >= 9) period = 1;
-  accessDatabase(name, period);
-}
-
-//function to edit html or return whatever, can be changed to whatever really, but it is called when an xml change is detected
-function update(response) {
-  document.getElementById("display").innerHTML = response;
-}
 
 //function that takes care of grabbing the info for the teachers
 function accessDatabase(name, period) {
