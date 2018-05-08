@@ -23,10 +23,12 @@
     <img id="bluePrint" width="220" height="277" src="testMap.png" >
 
 <!--
-  We need a button that calls the function readImageText(str) in 
+  We need a button that calls the function readImageText(str) in
   the imagehandler. It should be given the entire text file as
-  one string.
+  one string. Temporary fix below "make nodes from image data"
 -->
+
+    <input type="button"; value="make nodes from image data" onclick="readImageFile('pixels.txt')">
     <input type="button" value="Make Hallway nodes disapear" onclick="makeHallwaysInvisible()">
     <input type="button" value="Make Hallway nodes reappear" onclick="makeHallwaysVisible()">
     <input type="button" value="Refresh Path Display" onClick="redrawVTX()">

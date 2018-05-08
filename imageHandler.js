@@ -11,7 +11,7 @@ var emptyVal = [255,255,255]; //<--- potentially the same as blueVal, if so we c
 var roomColorVal = [0,255,255];
 var nodeWidth = 13;
 //List of the x and y values of nodes in the format [x,y],[x,y]
-var foundNodes[];
+var foundNodes = [];
 
 //Node Generation
 
@@ -119,7 +119,7 @@ function getPixelColor(x,y){
 
 //loops to run the connectNodesFromImage() funtion on each found node, accepts input of an array in the format of [[x,y],[x,y],[x,y]]
 function connectAllFoundNodes(nodeCoordList){
-  for (i=0, i < nodeCoordList.length; i++){
+  for (var i=0; i < nodeCoordList.length; i++){
     connectNodesFromImage(nodeCoordList[i][0],nodeCoordList[i][1]);
   }
 }
