@@ -5,7 +5,7 @@
 //Data values used in scanning for nodes
 var imgWidth;
 var imgHeight;
-var pixArr = [];
+var pixArr;
 var blueVal = [0,0,255];
 var emptyVal = [255,255,255]; //<--- potentially the same as blueVal, if so we can just substitute all references to emptyVal with blueVal
 var roomColorVal = [0,255,255];
@@ -38,6 +38,7 @@ function readImageText(str){
 
     }
   }
+  scanForNodes();
 }
 
 //written by users Matthew Crumley and yckart on https://stackoverflow.com/questions/966225/how-can-i-create-a-two-dimensional-array-in-javascript/966938#966938
@@ -53,6 +54,8 @@ function createArray(length) {
     return arr;
 }
 //End copied code
+
+function scanForNodes(){
 
   for (h = 0; h < imgHeight; h++){
     //Scans through all x values from 0 to the width of the canvas
@@ -78,6 +81,7 @@ function createArray(length) {
       }
     }
   }
+  connectAllFoundNodes(foundNodes);
 }
 
 function iFoundANode(x,y){
