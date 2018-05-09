@@ -40,7 +40,7 @@ def update():
             file.write("\t\t")
         else:
             file.write(str(row["Period1"]))
-            
+
         file.write("</room>\n")
         file.write("\t</teacherinfo>\n")
 
@@ -68,5 +68,5 @@ def main():
 
 def currentTime():
     return int(round(time.time() * 1000))
-
-main()
+    
+update()

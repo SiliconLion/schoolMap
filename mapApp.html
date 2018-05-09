@@ -26,9 +26,24 @@
       Ending room:<br>
       <input type="text" id="endingRoom" value=""><br>
     </form>
+
     <div>
       <input type="file" onchange="readSavedFile(this.files[0])" size="90" class="files"></input>
     </div>
+
+    <br>
+    <h4>Find By Name and Hour<h4>
+    <form action="">
+      Starting room:<br>
+      <input type="text" id="startingRoom2" value=""><br>
+      Tearcher's Name:<br>
+      <input type="text" id="teacherName" value=""><br>
+      Hour:<br>
+      <input type="text" id="hour" value=""><br><br>
+      <input type="button" class="buttons" id="button02" value="Find path">
+    </form>
+    <script src="dbreader.js"></script>
+
     <script src="Connection.js"></script>
     <script src="findPath.js"></script>
     <script src="Node.js"></script>
@@ -37,6 +52,7 @@
     <script src="mapMain.js"></script>
     <script src="saveFileScripts.js"></script>
     <img id="bluePrint" height="0" width="0" src="testMap.png"> </img>
+
     <script>
     var btn = document.querySelector('#button01');
     var input1 = document.querySelector('#startingRoom');
@@ -50,6 +66,25 @@
       Vroom2 = findRoom(Vroom2);
       redrawVTX();
       drawPath(findPath(Vroom1.node,Vroom2.node));
+    }
+    </script>
+    <script>
+    var btn2 = document.querySelector('#button02');
+    var startRoomInput = document.querySelector('#startingRoom2');
+    var teacherNameInput = document.querySelector('#teacherName');
+    var hourInput = document.querySelector('#hour')
+    btn2.addEventListener('click', updateBtn2);
+    function updateBtn2() {
+      var startRoom = startRoomInput.value;
+      var teacherName = teacherNameInput.value;
+      var hour = hourInput.value;
+      startRoom = findRoom(startRoom);
+      var endRoom = accessDatabase(teacherName, hour);
+      console.log(endRoom);
+      endRoom = arrayOfRooms[endRoom];
+      console.log(endRoom);
+      redrawVTX();
+      drawPath(findPath(startRoom.node,endRoom.node));
     }
     </script>
 
