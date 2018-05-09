@@ -6,9 +6,9 @@
 var imgWidth;
 var imgHeight;
 var pixArr;
-var blueVal = [0,0,255];
-var emptyVal = [255,255,255]; //<--- potentially the same as blueVal, if so we can just substitute all references to emptyVal with blueVal
-var roomColorVal = [0,255,255];
+var blueVal = "0,0,255";
+var emptyVal = "255,255,255"; //<--- potentially the same as blueVal, if so we can just substitute all references to emptyVal with blueVal
+var roomColorVal = "0,255,255";
 var nodeWidth = 13;
 //List of the x and y values of nodes in the format [x,y],[x,y]
 var foundNodes = [];
@@ -18,20 +18,22 @@ var foundNodes = [];
 //WIP: Python being modified to simplify
 function readImageText(str){
   var pixText = str;
+  pixText = pixText.replace("\n","");
+  pixText = pixText.replace("\n","");
+
   var tempArr1 = pixText.split(';');
 
   //Pulls the image width and height from the first two lines of the pixel text file
   imgWidth = tempArr1[1];
   imgHeight = tempArr1[0];
-  tempArr2 = tempArr1.slice(2,tempArr1.length);
-
+  var tempArr2 = tempArr1.slice(2,tempArr1.length);
   //[x value][y value]
   pixArr = createArray(imgWidth,imgHeight);
 
   //Sorts tempArr2 into the two dimentional array pixArr
   var i = 0;
-  for (w = 0; w < imgWidth; w++){
-    for (h = 0; h < imgHeight; h++){
+  for (var w = 0; w < imgWidth; w++){
+    for (var h = 0; h < imgHeight; h++){
 
     pixArr[w][h] = tempArr2[i]
     i++;
@@ -56,35 +58,37 @@ function createArray(length) {
 //End copied code
 
 function scanForNodes(){
-
-  for (h = 0; h < imgHeight; h++){
+  //w and h need to be set at 0 if there is a node that starts in the top left
+  for (var h = 1; h < imgHeight; h++){
     //Scans through all x values from 0 to the width of the canvas
-    for (w = 0; w < imgWidth; w++){
-
+    for (var w = 1; w < imgWidth; w++){
       //Checks to see if the pixel at (w,h) is the top left corner of a node
-      if (pixArr[w][h] === blueVal
-      &&  pixArr[w+1][h] === blueVal
+      if (pixArr[w][h] === blueVal){
+      if( pixArr[w+1][h] === blueVal
       &&  pixArr[w][h+1] === blueVal
       &&  pixArr[w-1][h] !== blueVal
       &&  pixArr[w][h-1] !== blueVal){
-
-        console.log("I've struck gold! ...blue gold.");
+        console.log("I've struck gold! ...blue gold.\n@: "+w+", "+h);
         //Skips the next few values which we know will be blue because they are part of the node we just found.
         w = w + nodeWidth - 1;
 
         //Adds node coordinates to an array for future use in drawing connections.
         //Saves the x and y value of the nodes center ((w or h)+(nodeWidth/2)-1) rather than the x and y of the top left corner (w or h)
-        foundNodes.push([w+(nodeWidth/2)-1,h+(nodeWidth/2)-1]);
+        //Adjusts to find the center of the found node
+        foundNodes.push([w+(nodeWidth/2)-.5,h+(nodeWidth/2)-.5]);
 
-        iFoundANode(w+(nodeWidth/2)-1,h+(nodeWidth/2)-1);
+        iFoundANode(w+(nodeWidth/2)-.5,h+(nodeWidth/2)-.5);
 
       }
+    }
     }
   }
   connectAllFoundNodes(foundNodes);
 }
 
 function iFoundANode(x,y){
+  console.log(x);
+  console.log(y);
   makeNodeFromColors(x,y,undefined,getPixelColor(x, y),whichLocation(x,y));
 }//End iFoundANode(x,y)
 
@@ -108,6 +112,7 @@ function whichLocation(x,y){
 //Called from iFoundANode(x,y), whichLocation(x,y), and scanForNodes() and accepts two integers as input.
 function getPixelColor(x,y){
   //Returns the decimal equivelant of the RGB value of the pixel at (x,y)
+
   return rgbToDecimal(pixArr[x][y]);
 }//End getPixelColor(x,y)
 
@@ -122,13 +127,15 @@ function connectAllFoundNodes(nodeCoordList){
   for (var i=0; i < nodeCoordList.length; i++){
     connectNodesFromImage(nodeCoordList[i][0],nodeCoordList[i][1]);
   }
+      console.log(arrayOfNodes);
+      redraw();
 }
 
 //Function used to connect nodes using the image they were generated from, accepts input of (x,y), called from connectAllFoundNodes
 function connectNodesFromImage(x,y){
 
   //creates a variable that stores the index in arrayOfNodes of the node whose neighbors array is currently being built
-  homeColorID = getPixelColor(x,y);
+  var homeColorID = getPixelColor(x,y);
 
   //Checks top left corner of the node for a color other than emptyVal and adds the corresponding node to arrayOfNodes[homeColorID].neighbors
   if (pixArr[x-4,y-4] !== emptyVal)
