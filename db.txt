@@ -5,7 +5,7 @@
 			<last>Ouda</last>
 		</name>
 		<moving>false</moving>
-		<room>312</room>
+		<room>40</room>
 	</teacherinfo>
 	<teacherinfo>
 		<name>
@@ -14,14 +14,14 @@
 		</name>
 		<moving>true</moving>
 		<room>
-			<p1>435</p1>
-			<p2>242</p2>
-			<p3>767</p3>
-			<p4>890</p4>
-			<p5>123</p5>
-			<p6>542</p6>
-			<p7>536</p7>
-			<p8>111</p8>
+			<p1>43</p1>
+			<p2>24</p2>
+			<p3>41</p3>
+			<p4>41</p4>
+			<p5>12</p5>
+			<p6>19</p6>
+			<p7>29</p7>
+			<p8>33</p8>
 		</room>
 	</teacherinfo>
 	<teacherinfo>
@@ -30,7 +30,7 @@
 			<last>McLaughlin</last>
 		</name>
 		<moving>false</moving>
-		<room>130</room>
+		<room>13</room>
 	</teacherinfo>
 	<teacherinfo>
 		<name>
@@ -41,7 +41,7 @@
 		<room>
 			<p1>25</p1>
 			<p2>15</p2>
-			<p3>15</p3>
+			<p3>17</p3>
 			<p4>15</p4>
 			<p5>8</p5>
 			<p6>30</p6>

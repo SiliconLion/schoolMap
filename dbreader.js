@@ -5,8 +5,8 @@ function accessDatabase(name, period) {
   var xhttp = new XMLHttpRequest();   //create xhttp object to grab xml
   xhttp.onreadystatechange = function() {       //creates function for when a change occurs
     if (this.readyState == 4 && this.status == 200) {
-      var endRoom = getInfo(this, name, period);
-      endRoom = arrayOfRooms[endRoom];
+      var roomInfo = getInfo(this, name, period);
+      endRoom = arrayOfRooms[roomInfo];
       redrawVTX();
       console.log(startingRoom + "   " + endRoom);
       drawPath(findPath(startingRoom.node,endRoom.node));
@@ -31,7 +31,7 @@ function getInfo(xml, name, period) {
         and selects the first attribute(which is text, and also the only attribute given to any element in my XML document)
       */
       var teacherName = teachers[i].getElementsByTagName("name")[0].getElementsByTagName("last")[0].childNodes[0].nodeValue;
-      if(teacherName == name) {
+      if(teacherName.toLowerCase() == name.toLowerCase()) {
           /*this get the XML attribute "moving", it is either true or false, and is dependant on whether or not the teacher is a "cart teacher", that is the move classes depending on the period
           if you are reading this post 2018, this is probably a foreign concept. Furthermore if you are from post-2018 and in charge of reviewing this code, the moving attribute
           is likely obscelete, to this code can likely be removes and the tag can be removed from the XML document. However, it isn't too expensive to keep there so maybe just keep it
