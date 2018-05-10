@@ -78,13 +78,8 @@
       var startRoom = startRoomInput.value;
       var teacherName = teacherNameInput.value;
       var hour = hourInput.value;
-      startRoom = findRoom(startRoom);
-      var endRoom = accessDatabase(teacherName, hour);
-      console.log(endRoom);
-      endRoom = arrayOfRooms[endRoom];
-      console.log(endRoom);
-      redrawVTX();
-      drawPath(findPath(startRoom.node,endRoom.node));
+      startingRoom = findRoom(startRoom);
+      accessDatabase(teacherName, hour);
     }
     </script>
 

@@ -13,7 +13,7 @@ def update():
     sheet = client.open('TeacherDatabase').sheet1
     data = sheet.get_all_records()
     #open the xml file we will be writing to
-    file = open("..\db.txt", "w")
+    file = open("../db.txt", "w")
     file.write("<list>\n");
 
     for row in data:
@@ -68,5 +68,5 @@ def main():
 
 def currentTime():
     return int(round(time.time() * 1000))
-    
+
 update()

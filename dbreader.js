@@ -1,12 +1,15 @@
+var startingRoom;
 
 //function that takes care of grabbing the info for the teachers
 function accessDatabase(name, period) {
   var xhttp = new XMLHttpRequest();   //create xhttp object to grab xml
-
   xhttp.onreadystatechange = function() {       //creates function for when a change occurs
     if (this.readyState == 4 && this.status == 200) {
-      var response = getInfo(this, name, period);
-      update(response);
+      var endRoom = getInfo(this, name, period);
+      endRoom = arrayOfRooms[endRoom];
+      redrawVTX();
+      console.log(startingRoom + "   " + endRoom);
+      drawPath(findPath(startingRoom.node,endRoom.node));
     }
   };
 
